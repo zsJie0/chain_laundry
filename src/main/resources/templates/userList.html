@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ChainLaundry-主页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+
+</head>
+<body>
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="/index">连锁洗衣店管理系统</a></div>
+    <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+    <ul class="layui-nav right" lay-filter="">
+
+        <li class="layui-nav-item">
+            <a href="javascript:;">
+                <img th:src="${userMap.get('image')}" class="layui-nav-img"/>
+                <span th:text="${userMap.get('user_name')}"></span>
+            </a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <!--                <dd><a href="">个人信息</a></dd>-->
+                <dd><a href="/login" type="button" id="change">切换帐号</a></dd>
+                <dd><a href="/login">退出</a></dd>
+            </dl>
+        </li>
+        <!--        <li class="layui-nav-item"><a href="/">前台首页</a></li>-->
+    </ul>
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<div class="wrapper">
+    <!-- 左侧菜单开始 -->
+    <div class="left-nav">
+        <div id="side-nav">
+            <ul id="nav" lay-shrink="all">
+                <li class="list" current>
+                    <a href="/index">
+                        <i class="iconfont">&#xe761;</i>
+                        欢迎页面
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu opened">
+                        <li>
+                            <a href="/queryUserList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        连锁店管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" >
+                        <li>
+                            <a href="/laundryList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                连锁店列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/settleIn">
+                                <i class="iconfont">&#xe6a7;</i>
+                                入驻管理
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        物资管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="./banner-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                物资列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 左侧菜单结束 -->
+
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+            <form class="layui-form xbs" action="" >
+                <div class="layui-form-pane" style="text-align: center;">
+                  <div class="layui-form-item" style="display: inline-block;">
+                    <div class="layui-input-inline">
+                        <input type="text"  placeholder="请输入用户的名称" autocomplete="on" class="layui-input" id="userName">
+                    </div>
+                    <div class="layui-input-inline" style="width:80px">
+                        <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>
+                    </div>
+                  </div>
+                </div> 
+            </form>
+            <xblock>
+                <button class="layui-btn layui-btn-danger" id="del">
+                    <i class="layui-icon">&#xe640;</i>批量开除</button>
+                <button class="layui-btn" onclick="member_add('添加普通管理员','member-add.html','600','500')">
+                    <i class="layui-icon">&#xe608;</i>添加普通管理员</button>
+                <span class="x-right">
+                     共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
+                    &nbsp;条
+                </span>
+
+            </xblock>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <input type="checkbox" id="checkAll">
+                        </th>
+                        <th>
+                            用户ID
+                        </th>
+                        <th>
+                            姓名
+                        </th>
+                        <th>
+                            年龄
+                        </th>
+                        <th>
+                            性别
+                        </th>
+                        <th>
+                            用户类型
+                        </th>
+                        <th>
+                            联系方式
+                        </th>
+                        <th>
+                            所属洗衣店
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="checkOne">
+                    <tr th:each="user:${pageInfo.list}">
+                        <td>
+                            <input type="checkbox" name="checkOne"/>
+                        </td>
+                        <td th:text="${user.get('USER_ID')}" id="userId">
+                        </td>
+                        <td th:text="${user.get('USER_NAME')}">
+                        </td>
+                        <td th:text="${user.get('USER_AGE')}">
+                        </td>
+                        <td th:text="${user.get('USER_SEX')}">
+                        </td>
+                        <td th:text="${user.get('USER_TYPE')}">
+                        </td>
+                        <td th:text="${user.get('PHONE')}">
+                        </td>
+                        <td th:text="${user.get('LAUNDRY_NAME')}">
+                        </td>
+                        <td class="td-manage">
+                            <a title="查看" href="javascript:;" onclick="member_edit('查看','member-edit.html','4','','510')"
+                               class="ml-5" style="text-decoration:none">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" href="javascript:;" onclick="member_del(this,'1')"
+                               style="text-decoration:none">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+              <div class="page">
+                  <ul class="pagination">
+                      <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
+                      <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                      <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
+                  </ul>
+              </div>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <!-- 底部开始 -->
+    <!-- 底部结束 -->
+    <!-- 背景切换开始 -->
+    <div class="bg-changer">
+        <div class="swiper-container changer-list">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+                <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            </div>
+        </div>
+        <div class="bg-out"></div>
+        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
+    </div>
+    <!-- 背景切换结束 -->
+    <!-- 页面动态效果 -->
+    <script>
+    // --模糊查询----------------------------------------------------------------------------------------------------------------------------------------------------
+    $(document).ready(function () {
+        $("#search").click(function () {
+            var userName = document.getElementById("userName").value;
+            if (userName == null || userName == "" || userName == undefined) {
+                layer.msg("输入内容不能为空！");
+            } else {
+                window.location.href = "queryUserInfoByName/"+userName
+            }
+        });
+    });
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    /*用户-添加*/
+    function member_add(title,url,w,h){
+        x_admin_show(title,url,w,h);
+    }
+
+    //获取事件源
+    var del = document.getElementById("del");
+    var checkAll = document.getElementById("checkAll");
+    var checkOnes = document.getElementById("checkOne").querySelectorAll('input');
+
+    //---批量删除---------------2-------------------------------------------------------------------------------------------------------------------------------------------
+    // $("#b2").click(function () {
+    //     var userIdNum = $("input[type='checkbox']:checked").length;
+    //     if (userIdNum <= 0) {
+    //         alert("请选择你要删除用户");
+    //     } else {
+    //         var userIds = new Array();
+    //         $("input[type='checkbox']:checked").each(function () {
+    //             userIds.push($(this).val());
+    //         });
+    //         alert(userIds);
+    //         alert("确定删除" + userIds + "个商品？");
+    //
+    //         window.location.href = "deleteUserById?userIds=" + userIds;
+    //     }
+    // });
+
+    //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
+    del.onclick = function () {
+        var userIdNum = $("input[type='checkbox']:checked").length;
+        if (userIdNum <= 0) {
+            alert("请选择你要开除用户");
+        } else {
+            var userIds = new Array();
+            $("input[name='checkOne']:checked").each(function () {
+                if(!isNaN($(this).val())){
+                    userIds.push($(this).val());
+                }
+            });
+            deleteUser(userIds);
+        }
+    };
+
+    //删除函数
+    function deleteUser(userIds){
+        if(confirm("您确定要开除以下同事吗？开出后无法恢复，请谨慎操作")){
+            $.ajax({
+                type:"post",
+                url:"deleteUserById",
+                data:{"userIds":userIds.toString()},
+                dataType:"json",
+                success:function (data) {
+                    if(data == "success"){
+                        //成功后把全选按钮设置成不选中
+                        $("#checkAll").prop("checked",false);
+                        window.location.href="userList"
+                    }
+                }
+            })
+        }
+    }
+
+    //-----复选框全选------------------------------------------------------------------------------------------------------------------------------------------------------
+    //点击全选按钮，下面所有的按钮的状态跟随全选按钮的状态
+    checkAll.onclick = function () {
+        //tbody里面每一个按钮都没选中 for循环每个
+        for(var i=0;i<checkOnes.length;i++){
+            checkOnes[i].checked = checkAll.checked;
+        }
+    };
+    //小按钮点击事件
+    for(var i=0;i<checkOnes.length;i++){
+        checkOnes[i].onclick = function () {
+            //检测全选按钮的状态，默认没有选中
+            var flag = false;
+            for(var i=0;i<checkOnes.length;i++){
+                //按钮中有一个没选择
+                if(!checkOnes[i].checked){
+                    flag = false;
+                    break;
+                }
+            }
+            //检测完之后设置全选按钮的状态
+            checkAll.checked = flag;
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------
+        //百度统计可去掉
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+<style>
+    ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {display: inline;}
+
+    ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+    }
+
+    ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+</style>
+</body>
+</html>

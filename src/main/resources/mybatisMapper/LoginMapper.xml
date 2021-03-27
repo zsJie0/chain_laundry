@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.laundry.mapper.LoginMapper">
+<!--    根据账号与密码查询用户-->
+    <select id="queryUserByIdAndPwd" resultType="java.util.Map">
+        SELECT user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url
+        FROM `user1` WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
+    </select>
+<!--    查询用户是否存在-->
+    <select id="isExist" resultType="java.util.Map">
+        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url
+        from user1 where user_id = #{userId}
+    </select>
+<!--    查询全部用户  -->
+    <select id="queryAllUser" resultType="java.util.Map">
+        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url from user1
+    </select>
+<!--    根据Id更新用户信息  -->
+    <update id="updateUserInfoById" parameterType="java.util.Map">
+        update user1 set user_name = #{userName},user_pwd = #{userPwd},user_age = #{userAge},user_sex =#{userSex},
+        user_type = #{userType},laundry_id = #{laundryId} where user_id = #{userId}
+    </update>
+<!--    注册(添加)用户信息-->
+    <insert id="addUserInfo" parameterType="java.util.Map">
+        insert into user1 values(#{userId},#{userName},#{userPwd},#{userAge},#{userSex},'普通员工',#{laundryId},'./images/j.jpg',null )
+    </insert>
+<!--    查询洗衣店信息 -->
+    <select id="queryAllLaundryInfo" resultType="java.util.Map">
+        SELECT
+            a.laundry_id,
+            a.laundry_name,
+            a.laundry_position,
+            a.turnover,
+            a.credit,
+            a.sqtime,
+            a.state_name,
+            b.user_name,
+            b.phone
+        FROM
+            (
+            SELECT
+                l.laundry_id,
+                l.laundry_name,
+                l.laundry_position,
+                l.credit,
+                l.turnover,
+                l.sqtime,
+                l.state,
+                s.state_name
+            FROM
+                laundry l
+                LEFT JOIN state_info s ON l.STATE = s.STATE
+            ) a
+            LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
+        WHERE
+            b.user_type = '普通管理员'
+            ORDER BY a.laundry_id
+    </select>
+<!--    根据id查询用户信息  -->
+    <select id="queryUserById" resultType="java.util.Map">
+        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url from user1 where user_id = #{userId}
+    </select>
+<!--    根据洗衣店id查询洗衣店-->
+    <select id="queryLaundryById" resultType="java.util.Map">
+        SELECT
+            l.laundry_id,
+            laundry_name,
+            l.laundry_position,
+            l.credit,
+            l.turnover,
+            l.sqtime,
+            l.state,
+            s.state_name
+        FROM
+            laundry l
+            LEFT JOIN state_info s ON l.STATE = s.STATE
+        WHERE
+            laundry_id = #{laundryId}
+    </select>
+<!--    查询一个洗衣店有多少个用户-->
+    <select id="queryIndexShow" resultType="java.util.Map">
+    SELECT
+        l.LAUNDRY_ID,
+        l.LAUNDRY_NAME,
+        l.LAUNDRY_POSITION,
+        l.TURNOVER,
+        l.CREDIT,
+        IFNULL( u.numberOfUser, 0 ) AS numberOfUser
+    FROM
+        laundry l
+        LEFT JOIN ( SELECT count( LAUNDRY_ID ) AS "numberOfUser", LAUNDRY_ID AS "laundry_id" FROM user1 GROUP BY LAUNDRY_ID ) u ON u.laundry_id = l.LAUNDRY_ID
+    </select>
+<!--查询总的营业额-->
+    <select id="queryTurnover" resultType="java.util.Map">
+       SELECT
+            sum( TURNOVER ) as sumOfTurnover
+        FROM
+            laundry
+    </select>
+<!--    根据洗衣店名称模糊查询-->
+    <select id="queryLaundryInfoByName" resultType="java.util.Map">
+        <bind name="laundryName" value=" '%' + laundryName + '%' "/>
+        SELECT
+        l.laundry_id,
+        laundry_name,
+        l.laundry_position,
+        l.credit,
+        l.turnover,
+        l.sqtime,
+        l.state,
+        s.state_name
+        FROM
+        laundry l
+        LEFT JOIN state_info s ON l.STATE = s.STATE
+        WHERE l.LAUNDRY_NAME like #{laundryName}
+    </select>
+<!--    查询已经入驻的连锁店-->
+    <select id="queryNotSetInLaundryInfo" resultType="java.util.Map">
+              SELECT
+            a.laundry_id,
+            a.laundry_name,
+            a.laundry_position,
+            a.turnover,
+            a.credit,
+            a.sqtime,
+            a.state_name,
+            b.user_name,
+            b.phone
+        FROM
+            (
+            SELECT
+                l.laundry_id,
+                l.laundry_name,
+                l.laundry_position,
+                l.credit,
+                l.turnover,
+                l.sqtime,
+                l.state,
+                s.state_name
+            FROM
+                laundry l
+                LEFT JOIN state_info s ON l.STATE = s.STATE
+            ) a
+            LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
+            WHERE
+            a.state_name = '未加盟'
+	        OR a.state_name = '审核中'
+            AND b.user_type = '普通管理员'
+        ORDER BY
+            a.laundry_id
+    </select>
+<!--    根据ID申请处理跟审核处理   -->
+    <update id="updateStateByLaundryId" parameterType="String">
+       UPDATE laundry
+       SET state = state + 1
+       WHERE
+            LAUNDRY_ID = #{laundryId}
+    </update>
+<!--    查询状态码表-->
+    <select id="queryStateInfo" resultType="java.util.Map">
+        SELECT
+            STATE,
+            STATE_NAME
+        FROM
+            `state_info`
+    </select>
+<!--查询所有用户信息-->
+    <select id="queryAllUserInfo" resultType="java.util.Map">
+        SELECT
+            u.USER_ID,
+            u.USER_NAME,
+            u.USER_AGE,
+            u.USER_SEX,
+            u.USER_TYPE,
+            u.PHONE,
+            l.LAUNDRY_NAME,
+            u.IMAGE
+        FROM
+            user1 u
+            LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+    </select>
+<!--    根据用户name模糊查询用户列表-->
+    <select id="queryUserInfoByName" resultType="java.util.Map">
+        <bind name="userName" value=" '%' + userName + '%' "/>
+           SELECT
+            u.USER_ID,
+            u.USER_NAME,
+            u.USER_AGE,
+            u.USER_SEX,
+            u.USER_TYPE,
+            u.PHONE,
+            l.LAUNDRY_NAME,
+            u.IMAGE
+        FROM
+            user1 u
+            LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+            WHERE u.USER_NAME like #{userName}
+    </select>
+<!--  批量删除用户    -->
+    <delete id="deleteUserById" parameterType="java.util.Map">
+    DELETE
+        FROM
+            user1
+        WHERE
+            USER_ID IN
+            <foreach collection="userIds" open="(" separator="," item="userId" close=")">
+                #{userId}
+            </foreach>
+    </delete>
+</mapper>
