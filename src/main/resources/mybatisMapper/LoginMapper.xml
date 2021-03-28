@@ -199,14 +199,14 @@
             WHERE u.USER_NAME like #{userName}
     </select>
 <!--  批量删除用户    -->
-    <delete id="deleteUserById" parameterType="java.util.Map">
+    <delete id="deleteUserById">
     DELETE
         FROM
             user1
         WHERE
             USER_ID IN
-            <foreach collection="userIds" open="(" separator="," item="userId" close=")">
-                #{userId}
-            </foreach>
+                <foreach collection="userIds" open="(" separator="," item="userId" close=")">
+                    #{userId}
+                </foreach>
     </delete>
 </mapper>

@@ -174,7 +174,7 @@
                 <tbody id="checkOne">
                     <tr th:each="user:${pageInfo.list}">
                         <td>
-                            <input type="checkbox" name="checkOne"/>
+                            <input type="checkbox" th:value="${user.get('USER_ID')}"/>
                         </td>
                         <td th:text="${user.get('USER_ID')}" id="userId">
                         </td>
@@ -264,58 +264,23 @@
     var checkAll = document.getElementById("checkAll");
     var checkOnes = document.getElementById("checkOne").querySelectorAll('input');
 
-    //---批量删除---------------2-------------------------------------------------------------------------------------------------------------------------------------------
-    // $("#b2").click(function () {
-    //     var userIdNum = $("input[type='checkbox']:checked").length;
-    //     if (userIdNum <= 0) {
-    //         alert("请选择你要删除用户");
-    //     } else {
-    //         var userIds = new Array();
-    //         $("input[type='checkbox']:checked").each(function () {
-    //             userIds.push($(this).val());
-    //         });
-    //         alert(userIds);
-    //         alert("确定删除" + userIds + "个商品？");
-    //
-    //         window.location.href = "deleteUserById?userIds=" + userIds;
-    //     }
-    // });
-
     //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
-    del.onclick = function () {
+
+    $("#del").click(function () {
         var userIdNum = $("input[type='checkbox']:checked").length;
         if (userIdNum <= 0) {
             alert("请选择你要开除用户");
         } else {
             var userIds = new Array();
-            $("input[name='checkOne']:checked").each(function () {
-                if(!isNaN($(this).val())){
-                    userIds.push($(this).val());
-                }
+            $("input[type='checkbox']:checked").each(function () {
+                userIds.push($(this).val());
             });
-            deleteUser(userIds);
+            alert(userIds);
+            alert("确定开除编号为" + userIds + "的用户？");
+            window.location.href = "deleteUserById?userIds="+userIds;
+            layer.alert("删除成功！")
         }
-    };
-
-    //删除函数
-    function deleteUser(userIds){
-        if(confirm("您确定要开除以下同事吗？开出后无法恢复，请谨慎操作")){
-            $.ajax({
-                type:"post",
-                url:"deleteUserById",
-                data:{"userIds":userIds.toString()},
-                dataType:"json",
-                success:function (data) {
-                    if(data == "success"){
-                        //成功后把全选按钮设置成不选中
-                        $("#checkAll").prop("checked",false);
-                        window.location.href="userList"
-                    }
-                }
-            })
-        }
-    }
-
+    });
     //-----复选框全选------------------------------------------------------------------------------------------------------------------------------------------------------
     //点击全选按钮，下面所有的按钮的状态跟随全选按钮的状态
     checkAll.onclick = function () {

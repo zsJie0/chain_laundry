@@ -104,8 +104,8 @@ public interface LoginMapper {
 
     /**
      * 批量删除
-     * @param param
+     * @param userIds
      * @return
      */
-    int deleteUserById(Map<String,Object> param);
+    int deleteUserById(@Param("userIds") String[] userIds);
 }

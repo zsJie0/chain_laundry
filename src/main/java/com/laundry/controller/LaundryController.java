@@ -12,10 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class LaundryController {
@@ -308,18 +305,19 @@ public class LaundryController {
      * 批量删除用户
      * @return
      */
-    @ResponseBody
+//    @ResponseBody
     @RequestMapping("/deleteUserById")
-    public String deleteUserById(@RequestParam Map<String,Object> userIds) {
+    public String deleteUserById(String[] userIds) {
+        //转换成数组
+        Arrays.asList(userIds);
         System.out.println(userIds);
-        int i = loginMapper.deleteUserById(userIds);
-        if(i>0){
-            return "success";
-        }else {
-            return "fail";
-        }
-
-//        return "redirect:queryUserList";
+        loginMapper.deleteUserById(userIds);
+//        if(i>0){
+//            return "success";
+//        }else {
+//            return "fail";
+//        }
+        return "redirect:queryUserList";
     }
 
 
