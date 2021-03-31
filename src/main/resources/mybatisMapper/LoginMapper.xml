@@ -26,6 +26,10 @@
     <insert id="addUserInfo" parameterType="java.util.Map">
         insert into user1 values(#{userId},#{userName},#{userPwd},#{userAge},#{userSex},'普通员工',#{laundryId},'./images/j.jpg',null )
     </insert>
+<!--    根据ID删除用户信息  -->
+    <delete id="deleteUserInfoById">
+        delete from user1 where user_id = #{userId}
+    </delete>
 <!--    查询洗衣店信息 -->
     <select id="queryAllLaundryInfo" resultType="java.util.Map">
         SELECT
@@ -60,7 +64,22 @@
     </select>
 <!--    根据id查询用户信息  -->
     <select id="queryUserById" resultType="java.util.Map">
-        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url from user1 where user_id = #{userId}
+        SELECT
+            u.user_id,
+            u.user_name,
+            u.time,
+            u.user_age,
+            u.user_sex,
+            u.user_type,
+            u.laundry_id,
+            u.image,
+            u.url,
+            u.evaluate,
+            l.laundry_name
+        FROM
+            user1 u
+            LEFT JOIN laundry l ON u.laundry_id = l.laundry_id
+            where user_id = #{userId}
     </select>
 <!--    根据洗衣店id查询洗衣店-->
     <select id="queryLaundryById" resultType="java.util.Map">
@@ -176,10 +195,13 @@
             u.USER_TYPE,
             u.PHONE,
             l.LAUNDRY_NAME,
-            u.IMAGE
+            u.IMAGE,
+            u.TIME
         FROM
             user1 u
             LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+        WHERE
+            USER_ID != #{uId}
     </select>
 <!--    根据用户name模糊查询用户列表-->
     <select id="queryUserInfoByName" resultType="java.util.Map">

@@ -131,8 +131,8 @@
             <xblock>
                 <button class="layui-btn layui-btn-danger" id="del">
                     <i class="layui-icon">&#xe640;</i>批量开除</button>
-                <button class="layui-btn" onclick="member_add('添加普通管理员','member-add.html','600','500')">
-                    <i class="layui-icon">&#xe608;</i>添加普通管理员</button>
+                <button class="layui-btn" onclick="member_add('升级为店长','member-add.html','600','500')">
+                    <i class="layui-icon">&#xe608;</i>升级为店长</button>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
@@ -191,12 +191,11 @@
                         <td th:text="${user.get('LAUNDRY_NAME')}">
                         </td>
                         <td class="td-manage">
-                            <a title="查看" href="javascript:;" onclick="member_edit('查看','member-edit.html','4','','510')"
+                            <a title="查看资料" href="javascript:;" th:onclick="member_edit('查看资料','queryUserInfoById/[[${user.get('USER_ID')}]]','4','','520')"
                                class="ml-5" style="text-decoration:none">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
-                            <a title="删除" href="javascript:;" onclick="member_del(this,'1')"
-                               style="text-decoration:none">
+                            <a title="删除" th:href="@{'deleteUserInfoById?userId='+${user.get('USER_ID')}}" style="text-decoration:none">
                                 <i class="layui-icon">&#xe640;</i>
                             </a>
                         </td>
@@ -254,11 +253,14 @@
         });
     });
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    /*用户-添加*/
-    function member_add(title,url,w,h){
-        x_admin_show(title,url,w,h);
+    // 用户-编辑
+    function member_edit (title,url,id,w,h) {
+        var url2 = url.replace('"','').slice(0,-1);
+        // alert(w);
+        // alert(h);
+        x_admin_show(title,url2,w,h);
     }
-
+    //------------------------------------------------------------------------------------------------------------------------------------------------------------
     //获取事件源
     var del = document.getElementById("del");
     var checkAll = document.getElementById("checkAll");

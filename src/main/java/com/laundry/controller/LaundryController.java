@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpSession;
+import javax.xml.transform.Source;
+import java.text.ParseException;
 import java.util.*;
 
 @Controller
@@ -285,7 +287,6 @@ public class LaundryController {
     /**
      * 用户列表
      */
-
     @RequestMapping("/queryUserList")
     public String queryUserList(Model model,
                                 @RequestParam(required = false, defaultValue = "1") int page,
@@ -293,8 +294,7 @@ public class LaundryController {
         getUserInfo(model);
         //分页
         PageHelper.startPage(page,pageSize);
-        List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfo();
-//        System.out.println(userInfo);
+        List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfo(uId);
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
         model.addAttribute("pageInfo",pageInfo);
         return "userList";
@@ -312,12 +312,33 @@ public class LaundryController {
         Arrays.asList(userIds);
         System.out.println(userIds);
         loginMapper.deleteUserById(userIds);
-//        if(i>0){
-//            return "success";
-//        }else {
-//            return "fail";
-//        }
         return "redirect:queryUserList";
+    }
+
+    /**
+     * 根据ID删除用户信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/deleteUserInfoById")
+    public String deleteUserInfoById(String userId){
+        loginMapper.deleteUserInfoById(userId);
+        return "redirect:queryUserList";
+    }
+
+    /**
+     * 根据ID获取用户信息
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/queryUserInfoById/{userId}")
+    public String queryUserInfoById(@PathVariable("userId")String userId,Model model){
+        Map<String, Object> userList = loginMapper.queryUserById(userId);
+        String time = CommonUtils.defaultValueOfObjects(userList.get("time"),"");
+        String formatDate = CommonUtils.dateTransformation(String.valueOf(time));
+        userList.put("time",formatDate);
+        model.addAttribute("userList",userList);
+        return "userInfo";
     }
 
 
@@ -327,7 +348,7 @@ public class LaundryController {
     }
 
     /**
-     * 根据用户id获取用户信息
+     * 根据登录id获取用户信息
      * @return
      */
     public void getUserInfo(Model model){

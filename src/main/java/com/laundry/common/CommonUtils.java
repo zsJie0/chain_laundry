@@ -2,6 +2,8 @@ package com.laundry.common;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -326,6 +328,25 @@ public final class CommonUtils {
             }
         }
         return resultMap;
+    }
+
+    /**
+     * 日期类型转换
+     */
+    public static String dateTransformation(String date) {
+        if(isEmpty(date)){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date formatDate = null;
+        try {
+            formatDate = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatNewDate = sdf2.format(formatDate);
+        return formatNewDate;
     }
 
 }

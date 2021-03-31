@@ -93,7 +93,7 @@ public interface LoginMapper {
     /**
      * 查询所有用户的信息
      */
-    List<Map<String,Object>> queryAllUserInfo();
+    List<Map<String,Object>> queryAllUserInfo(@Param("uId") String uId);
 
     /**
      * 根据name模糊查询用户信息
@@ -108,4 +108,11 @@ public interface LoginMapper {
      * @return
      */
     int deleteUserById(@Param("userIds") String[] userIds);
+
+    /**
+     * 根据ID删除用户信息
+     * @param userId
+     * @return
+     */
+    int deleteUserInfoById(String userId);
 }
