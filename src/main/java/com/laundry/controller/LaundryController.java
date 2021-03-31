@@ -343,7 +343,8 @@ public class LaundryController {
 
 
     @RequestMapping("/userInfo")
-    public String queryUserList(){
+    public String queryUserList(Model model){
+        getUserInfo(model);
         return "userInfo";
     }
 

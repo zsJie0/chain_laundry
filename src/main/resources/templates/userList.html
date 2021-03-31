@@ -107,6 +107,21 @@
                         </li>
                     </ul>
                 </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        出入库管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="./banner-list.html">
+                                <i class="iconfont">&#xe6a7;</i>
+                                物资状态
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -131,7 +146,7 @@
             <xblock>
                 <button class="layui-btn layui-btn-danger" id="del">
                     <i class="layui-icon">&#xe640;</i>批量开除</button>
-                <button class="layui-btn" onclick="member_add('升级为店长','member-add.html','600','500')">
+                <button class="layui-btn" id="addOwner">
                     <i class="layui-icon">&#xe608;</i>升级为店长</button>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
@@ -265,9 +280,23 @@
     var del = document.getElementById("del");
     var checkAll = document.getElementById("checkAll");
     var checkOnes = document.getElementById("checkOne").querySelectorAll('input');
-
+//添加普通用户--------------------------------------------------------------------------------------------------------------------------------------------------------------
+    $("#addOwner").click(function () {
+        var userIdNum = $("input[type='checkbox']:checked").length;
+        if (userIdNum <= 0) {
+            alert("请选择你要进行操作的用户");
+        } else {
+            var userIds = new Array();
+            $("input[type='checkbox']:checked").each(function () {
+                userIds.push($(this).val());
+            });
+            alert(userIds);
+            alert("确定开除编号为" + userIds + "的用户？");
+            // window.location.href = "deleteUserById?userIds="+userIds;
+            layer.alert("删除成功！")
+        }
+    });
     //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
-
     $("#del").click(function () {
         var userIdNum = $("input[type='checkbox']:checked").length;
         if (userIdNum <= 0) {
