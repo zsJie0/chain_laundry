@@ -69,6 +69,7 @@ public class LaundryController {
     public String memberList(Model model, @RequestParam(required = false, defaultValue = "1") int page,
                              @RequestParam(required = false, defaultValue = "5") int pageSize){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         //分页
         PageHelper.startPage(page,pageSize);
         //查询所有洗衣店信息
@@ -91,6 +92,7 @@ public class LaundryController {
                             @RequestParam(required = false, defaultValue = "1") int page,
                             @RequestParam(required = false, defaultValue = "5") int pageSize){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> notSetInLaundryInfo = loginService.queryNotSetInLaundryInfo();
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(notSetInLaundryInfo);
@@ -128,19 +130,22 @@ public class LaundryController {
     @ResponseBody
     @RequestMapping("/addUserInfo")
     public String addUserInfo(@RequestParam Map<String,Object> param){
+        String date = String.valueOf(param.get("time"));
+        String formatDate = CommonUtils.dateTransformation2(date);
+        param.put("date", formatDate);
         System.out.println("addUserInfo"+param);
+        //判断该账号是否存在
+        if(!CommonUtils.isEmpty(loginMapper.isExist(param))){
+            return "exist";
+        }
         //判断年龄是否为数字
         if(CommonUtils.isNumeric(param.get("userAge").toString())){
         //判断必填字段是否为空
         if(!(CommonUtils.isEmpty(param.get("userId")) || CommonUtils.isEmpty(param.get("userPwd")) || CommonUtils.isEmpty(param.get("userName")))){
-            int i = loginService.addUserInfo(param);
-                if(i>0){
-                    //判断该账号是否已经存在
-                    if(CommonUtils.isEmpty(loginService.isExist(param))){
-                        return "exist";
-                    }
-                    return "success";
-                }else {
+            int i = loginMapper.addUserInfo(param);
+            if(i>0){
+                return "success";
+            }else {
                     return "fail";
                 }
             }
@@ -159,7 +164,7 @@ public class LaundryController {
     @RequestMapping("/queryUserByIdAndPwd")
     public String queryUserByIdAndPwd(@RequestParam Map<String,Object> map,HttpSession session ){
         if (!(CommonUtils.isEmpty(map.get("userId")) || CommonUtils.isEmpty(map.get("userPwd")))) {
-            Map<String, Object> stringObjectMap = loginService.queryUserByIdAndPwd(map);
+            Map<String, Object> stringObjectMap = loginMapper.queryUserByIdAndPwd(map);
             if(CommonUtils.isEmpty(stringObjectMap)){
                 return "fail";
             }else {
@@ -179,9 +184,9 @@ public class LaundryController {
     @RequestMapping("/queryAllLaundryInfo")
     public String queryAllLaundryInfo(Model model){
         List<Map<String, Object>> laundryInfoList = loginService.queryAllLaundryInfo();
-        for(Map<String,Object> laundryMap : laundryInfoList){
-            System.out.println(laundryMap);
-        }
+//        for(Map<String,Object> laundryMap : laundryInfoList){
+//            System.out.println(laundryMap);
+//        }
         model.addAttribute("laundryInfoList",laundryInfoList);
         //年龄段
         Map<String,Integer> ageMap = new HashMap<>();
@@ -205,8 +210,8 @@ public class LaundryController {
                                 @RequestParam(required = false, defaultValue = "1") int page,
                                 @RequestParam(required = false, defaultValue = "4") int pageSize){
         uId = userId;
-//        System.out.println(page);
-        Map<String, Object> userMap = loginService.queryUserById(userId);
+        getUrlOrImage(model,userId);
+        Map<String, Object> userMap = loginMapper.queryUserById(userId);
         if(!CommonUtils.isEmpty(userMap)){
             model.addAttribute("userMap",userMap);
             //总营业额
@@ -292,6 +297,7 @@ public class LaundryController {
                                 @RequestParam(required = false, defaultValue = "1") int page,
                                 @RequestParam(required = false, defaultValue = "5") int pageSize){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         //分页
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfo(uId);
@@ -345,6 +351,7 @@ public class LaundryController {
     @RequestMapping("/userInfo")
     public String queryUserList(Model model){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         return "userInfo";
     }
 
@@ -376,4 +383,12 @@ public class LaundryController {
         return newLaundryList;
     }
 
+    /**
+     * 查询跳转连接/头像
+     */
+
+    public void getUrlOrImage(Model model,String userId){
+        Map<String, Object> imageMap = loginMapper.queryImageById(userId);
+        model.addAttribute("imageMap",imageMap);
+    }
 }

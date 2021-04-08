@@ -332,6 +332,7 @@ public final class CommonUtils {
 
     /**
      * 日期类型转换
+     * yyyyMMdd -- yyyy-MM-dd
      */
     public static String dateTransformation(String date) {
         if(isEmpty(date)){
@@ -345,6 +346,26 @@ public final class CommonUtils {
             e.printStackTrace();
         }
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+        String formatNewDate = sdf2.format(formatDate);
+        return formatNewDate;
+    }
+
+    /**
+     * 日期类型转换
+     * yyyy-MM-dd -> yyyyMMdd
+     */
+    public static String dateTransformation2(String date) {
+        if(isEmpty(date)){
+            return null;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date formatDate = null;
+        try {
+            formatDate = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMdd");
         String formatNewDate = sdf2.format(formatDate);
         return formatNewDate;
     }

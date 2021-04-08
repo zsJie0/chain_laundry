@@ -115,4 +115,11 @@ public interface LoginMapper {
      * @return
      */
     int deleteUserInfoById(String userId);
+
+    /**
+     * 根据id查询用户头像
+     * @param userId
+     * @return
+     */
+    Map<String,Object> queryImageById(@Param("userId") String userId);
 }

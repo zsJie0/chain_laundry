@@ -5,17 +5,17 @@
 <mapper namespace="com.laundry.mapper.LoginMapper">
 <!--    根据账号与密码查询用户-->
     <select id="queryUserByIdAndPwd" resultType="java.util.Map">
-        SELECT user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url
+        SELECT user_id,user_name,time,user_age,user_sex,user_type,phone
         FROM `user1` WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
     </select>
 <!--    查询用户是否存在-->
     <select id="isExist" resultType="java.util.Map">
-        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url
+        select user_id,user_name,time,user_age,user_sex,user_type,phone
         from user1 where user_id = #{userId}
     </select>
 <!--    查询全部用户  -->
     <select id="queryAllUser" resultType="java.util.Map">
-        select user_id,user_name,user_pwd,user_age,user_sex,user_type,laundry_id,image,url from user1
+        select user_id,user_name,time,user_age,user_sex,user_type,phone from user1
     </select>
 <!--    根据Id更新用户信息  -->
     <update id="updateUserInfoById" parameterType="java.util.Map">
@@ -24,7 +24,9 @@
     </update>
 <!--    注册(添加)用户信息-->
     <insert id="addUserInfo" parameterType="java.util.Map">
-        insert into user1 values(#{userId},#{userName},#{userPwd},#{userAge},#{userSex},'普通员工',#{laundryId},'./images/j.jpg',null )
+        INSERT INTO user1
+        VALUES
+        (#{userId},#{userName},#{userPwd},#{userAge},#{userSex},'普通员工',#{laundryId},'3','PY',#{phone},#{time},null )
     </insert>
 <!--    根据ID删除用户信息  -->
     <delete id="deleteUserInfoById">
@@ -72,8 +74,6 @@
             u.user_sex,
             u.user_type,
             u.laundry_id,
-            u.image,
-            u.url,
             u.evaluate,
             l.laundry_name
         FROM
@@ -195,7 +195,6 @@
             u.USER_TYPE,
             u.PHONE,
             l.LAUNDRY_NAME,
-            u.IMAGE,
             u.TIME
         FROM
             user1 u
@@ -231,4 +230,17 @@
                     #{userId}
                 </foreach>
     </delete>
+<!--    查询用户对应的头像   -->
+    <select id="queryImageById" resultType="java.util.Map">
+        SELECT
+            u.user_id,
+            u.user_name,
+            u.image_id,
+            i.image_desc AS image
+        FROM
+            user1 u
+                LEFT JOIN image_info i ON u.image_id = i.image_id
+        WHERE
+            user_id = #{userId}
+    </select>
 </mapper>

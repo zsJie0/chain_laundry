@@ -18,6 +18,14 @@
             width: 49%;
             display: inline-block;
         }
+        .login-box{
+            width: 310px;
+            height: 422px;
+            padding: 20px 15px 15px;
+            background-color: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255, 0.3);
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -27,9 +35,8 @@
 
         <h3 style="padding-left: 190px;color: #eea236 " >注册你的账号</h3>
         <div class="formItme">
-            <label class="login-title" >帐号</label>
+            <label class="login-title" >账号</label>
             <div class="layui-form-item">
-<!--                <label class="layui-form-label login-form"></label>-->
                 <div class="layui-input-inline login-inline">
                     <input type="text" id="userId" name="userId" lay-verify="required" placeholder="请输入你的帐号" autocomplete="on" class="layui-input">
                 </div>
@@ -39,7 +46,6 @@
         <div class="formItme">
             <label class="login-title" >密码</label>
             <div class="layui-form-item">
-<!--                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>-->
                 <div class="layui-input-inline login-inline">
                     <input type="text" id="userPwd" name="userPwd" lay-verify="required" placeholder="请输入你的密码" autocomplete="on" class="layui-input">
                 </div>
@@ -49,7 +55,6 @@
         <div class="formItme">
             <label class="login-title" >姓名</label>
             <div class="layui-form-item">
-<!--                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>-->
                 <div class="layui-input-inline login-inline">
                     <input type="text" id="userName" name="userName" lay-verify="required" placeholder="请输入你的姓名" autocomplete="on" class="layui-input">
                 </div>
@@ -87,8 +92,26 @@
 <!--                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>-->
                 <div class="layui-input-inline login-inline">
                     <select name="laundry" class="layui-select" id="laundryId">
-                        <option th:each="laundryMap : ${laundryInfoList}" th:value="${laundryMap.get('LAUNDRY_ID')}" th:text="${laundryMap.get('LAUNDRY_NAME') }"></option>
+                        <option th:each="laundryMap : ${laundryInfoList}" th:value="${laundryMap.get('laundry_id')}" th:text="${laundryMap.get('laundry_name') }"></option>
                     </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="formItme">
+            <label class="login-title" >手机号</label>
+            <div class="layui-form-item">
+                <div class="layui-input-inline login-inline">
+                    <input type="text" id="userPhone" name="userPhone" lay-verify="required" placeholder="请输入你的手机号" autocomplete="on" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="formItme">
+            <label class="login-title" >加入连锁店时间</label>
+            <div class="layui-form-item">
+                <div class="layui-input-inline login-inline">
+                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="on" class="layui-input" onclick="layui.laydate({elem: this})">
                 </div>
             </div>
         </div>
@@ -130,6 +153,8 @@
             var userAge = document.getElementById("userAge").value;
             var userSex = document.getElementById("userSex").value;
             var laundryId = document.getElementById("laundryId").value;
+            var phone = document.getElementById("userPhone").value;
+            var time = document.getElementById("date").value;
             $.ajax({
                 type:"post",
                 url:"addUserInfo",
@@ -139,7 +164,9 @@
                     userName,
                     userAge,
                     userSex,
-                    laundryId
+                    laundryId,
+                    phone,
+                    time
                 },
                 success:function (data) {
                     if(data == "success"){
