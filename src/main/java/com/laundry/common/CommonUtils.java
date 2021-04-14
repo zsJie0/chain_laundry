@@ -336,7 +336,7 @@ public final class CommonUtils {
      */
     public static String dateTransformation(String date) {
         if(isEmpty(date)){
-            return null;
+            return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         Date formatDate = null;

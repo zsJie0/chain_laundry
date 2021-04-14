@@ -141,25 +141,49 @@
                 <legend>个人信息</legend>
             </fieldset>
             <form class="layui-form layui-form-pane text-aglin:center"  action="">
-                <div class="layui-form-item layui-inline">
+                <div class="layui-form-item">
                     <label class="layui-form-label">用户名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_id')}">
                     </div>
                 </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">邮箱地址</label>
+                <div class="layui-form-item layui-inline ">
+                    <label class="layui-form-label">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">手机号码</label>
+                    <label class="layui-form-label">加入时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}" >
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">所属洗衣店</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}">
+                    </div>
+                </div>
+                <div class="layui-form-item ">
                     <button class="layui-btn" lay-submit="" lay-filter="demo2">编辑</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>

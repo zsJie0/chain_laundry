@@ -111,6 +111,7 @@ public class LaundryController {
                         @RequestParam(required = false, defaultValue = "4") int pageSize){
         System.out.println(uId);
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         //总营业额
         Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
         model.addAttribute("turnoverMap",queryTurnoverMap);
@@ -348,12 +349,19 @@ public class LaundryController {
     }
 
 
+    /**
+     * 个人信息
+     * @param model
+     * @return
+     */
     @RequestMapping("/userInfo")
     public String queryUserList(Model model){
         getUserInfo(model);
         getUrlOrImage(model,uId);
+
         return "userInfo";
     }
+
 
     /**
      * 根据登录id获取用户信息
@@ -362,6 +370,9 @@ public class LaundryController {
     public void getUserInfo(Model model){
         if(!"".equals(uId)) {
             Map<String, Object> userMap = loginService.queryUserById(uId);
+            String time = CommonUtils.defaultValueOfObjects(userMap.get("time"),"");
+            String formatTime = CommonUtils.dateTransformation(time);
+            userMap.put("time",formatTime);
             model.addAttribute("userMap", userMap);
         }
     }
