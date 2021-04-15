@@ -19,8 +19,8 @@
     </select>
 <!--    根据Id更新用户信息  -->
     <update id="updateUserInfoById" parameterType="java.util.Map">
-        update user1 set user_name = #{userName},user_pwd = #{userPwd},user_age = #{userAge},user_sex =#{userSex},
-        user_type = #{userType},laundry_id = #{laundryId} where user_id = #{userId}
+        update user1 set user_name = #{userName},user_age = #{userAge},user_sex =#{userSex},
+        user_type = #{userType},laundry_id = #{laundryId} ,time=#{time},phone=#{phone} where user_id = #{userId}
     </update>
 <!--    注册(添加)用户信息-->
     <insert id="addUserInfo" parameterType="java.util.Map">
@@ -70,6 +70,7 @@
             u.user_id,
             u.user_name,
             u.time,
+            u.phone,
             u.user_age,
             u.user_sex,
             u.user_type,

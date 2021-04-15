@@ -358,8 +358,28 @@ public class LaundryController {
     public String queryUserList(Model model){
         getUserInfo(model);
         getUrlOrImage(model,uId);
-
         return "userInfo";
+    }
+
+    /**
+     * 修改个人信息
+     * @param
+     * @return
+     */
+    @RequestMapping("/updateUserInfo")
+    @ResponseBody
+    public String updateUserInfo(@RequestParam Map<String,Object> map){
+        System.out.println(map);
+        String time = map.get("time").toString();
+        String formatTime = CommonUtils.dateTransformation2(time);
+        map.put("time",formatTime);
+        int i = loginMapper.updateUserInfoById(map);
+        if(i>0){
+            return "success";
+        }else {
+            return "fail";
+        }
+
     }
 
 
@@ -369,7 +389,7 @@ public class LaundryController {
      */
     public void getUserInfo(Model model){
         if(!"".equals(uId)) {
-            Map<String, Object> userMap = loginService.queryUserById(uId);
+            Map<String, Object> userMap = loginMapper.queryUserById(uId);
             String time = CommonUtils.defaultValueOfObjects(userMap.get("time"),"");
             String formatTime = CommonUtils.dateTransformation(time);
             userMap.put("time",formatTime);

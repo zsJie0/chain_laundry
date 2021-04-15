@@ -122,4 +122,11 @@ public interface LoginMapper {
      * @return
      */
     Map<String,Object> queryImageById(@Param("userId") String userId);
+
+    /**
+     * 修改个人信息
+     * @param param
+     * @return
+     */
+    int updateUserInfoById(Map<String,Object> param);
 }
