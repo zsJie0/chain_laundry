@@ -129,4 +129,9 @@ public interface LoginMapper {
      * @return
      */
     int updateUserInfoById(Map<String,Object> param);
+
+    /**
+     * 修改密码
+     */
+    int  updatePwd(Map<String,Object> param);
 }

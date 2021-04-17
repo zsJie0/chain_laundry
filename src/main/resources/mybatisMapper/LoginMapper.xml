@@ -244,4 +244,8 @@
         WHERE
             user_id = #{userId}
     </select>
+<!--    根据ID修改用户密码  -->
+    <update id="updatePwd">
+        update user1 set user_pwd = #{userPwd} where user_id = #{userId}
+    </update>
 </mapper>

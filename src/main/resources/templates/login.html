@@ -77,36 +77,8 @@
                 },
                 success: function (data) {
                     if (data == "success") {
-                        // window.location.href = "http://localhost:8080/SSMProjectTrain/userController/queryUserByUserNameAndPwd?userName=" + userName + "&userPwd=" + userPwd;
+                        // layer.msg('登录成功！');
                         window.location.href = "queryUserById/"+userId;
-                        // window.location.href = "classpath:/WEB-INF/jsp/index";
-                        // $.ajax({
-                        //     type:"post",
-                        //     url:"queryUserById",
-                        //     data:{
-                        //         userId
-                        //     },
-                        //     success:function (data) {
-                        //         // alert(data.userMap);
-                        //         const newData = JSON.parse(data);
-                        //         const userMap = newData.userMap;
-                        //         const turnoverMap = newData.turnoverMap;
-                        //         const showList = newData.showList;
-                        //         $.ajax({
-                        //             type:"post",
-                        //             url:"index",
-                        //             data:{
-                        //                 userMap,
-                        //                 turnoverMap,
-                        //                 showList
-                        //             }
-                        //         })
-                        //
-                        //         // alert(data);
-                        //
-                        //         // window.location.href = "index";
-                        //     }
-                        // });
                     } else if (data == "fail") {
                         layer.msg('登录失败,请检查用户名或密码！');
                     }else {

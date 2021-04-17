@@ -382,6 +382,35 @@ public class LaundryController {
 
     }
 
+    /**
+     * 修改密码(页面)
+     * @param model
+     * @return
+     */
+    @RequestMapping("/updatePwd")
+    public String updatePwd(Model model,@RequestParam Map<String,Object> param) {
+        getUserInfo(model);
+        getUrlOrImage(model, uId);
+        return "updatePwd";
+    }
+
+    /**
+     * 修改密码
+     * @param param
+     * @return
+     */
+    @RequestMapping("/updatePassword")
+    @ResponseBody
+    public String updatePassword(@RequestParam Map<String,Object> param) {
+        int i = loginMapper.updatePwd(param);
+        if(i>0){
+            return "success";
+        }else {
+            return "fail";
+        }
+    }
+
+
 
     /**
      * 根据登录id获取用户信息
