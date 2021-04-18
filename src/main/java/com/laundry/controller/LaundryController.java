@@ -410,7 +410,36 @@ public class LaundryController {
         }
     }
 
+    /**
+     * 物资列表
+     * @param model
+     * @return
+     */
+    @RequestMapping("/queryMaterialInfo")
+    public String queryMaterialInfo(Model model,
+                                    @RequestParam(required = false, defaultValue = "1") int page,
+                                    @RequestParam(required = false, defaultValue = "5") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> materialList = loginMapper.queryMaterialInfo();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(materialList);
+        model.addAttribute("pageInfo",pageInfo);
+//        System.out.println(model);
+        return "materialList";
+   }
 
+    /**
+     * 入库管理->添加物资入库
+     * @return
+     */
+    @RequestMapping("/addMaterial")
+    public String addMaterial(Model model){
+        List<Map<String, Object>> typeList = loginMapper.queryMaterialTypeInfo();
+        model.addAttribute("typeList",typeList);
+        return "ruku";
+
+    }
 
     /**
      * 根据登录id获取用户信息
@@ -425,6 +454,7 @@ public class LaundryController {
             model.addAttribute("userMap", userMap);
         }
     }
+
 
     /**
      * 获取相应的洗衣店列表

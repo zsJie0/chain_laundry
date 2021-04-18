@@ -248,4 +248,40 @@
     <update id="updatePwd">
         update user1 set user_pwd = #{userPwd} where user_id = #{userId}
     </update>
+<!--    查询物资信息  -->
+    <select id="queryMaterialInfo" resultType="java.util.Map">
+        SELECT
+            m1.material_id mId,
+            m1.material_name mName,
+            m1.material_type_id mTypeId,
+            m1.material_number mNumber,
+            m1.state_id mState,
+            m3.state_name mStateName,
+            m2.material_type_desc mTypeDesc
+        FROM
+            material m1,
+            material_type m2,
+            material_state m3
+        WHERE
+            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+          AND m1.STATE_ID = m3.STATE_ID
+        ORDER BY m1.material_id
+    </select>
+<!--    添加物资入库  -->
+    <insert id="addMaterial">
+        insert into material values(#{mId},#{mName},#{mTypeId},#{mNumber},0)
+    </insert>
+<!--    查询物资类型码表    -->
+    <select id="queryMaterialTypeInfo" resultType="java.util.Map">
+        select material_type_id as mTypeId,material_type_desc as mTypeDesc from material_type
+    </select>
+<!--    判断物资是否已经存在    -->
+    <select id="materialIsExist" resultType="java.util.Map">
+        select * from material
+        <where>
+            <choose>
+                <when test=""></when>
+            </choose>
+        </where>
+    </select>
 </mapper>

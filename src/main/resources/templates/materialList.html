@@ -55,7 +55,7 @@
                         用户管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened">
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryUserList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -104,7 +104,7 @@
                         物资管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" style="display:none">
+                    <ul class="sub-menu opened">
                         <li>
                             <a href="/queryMaterialInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -141,7 +141,7 @@
                 <div class="layui-form-pane" style="text-align: center;">
                   <div class="layui-form-item" style="display: inline-block;">
                     <div class="layui-input-inline">
-                        <input type="text"  placeholder="请输入用户的名称" autocomplete="on" class="layui-input" id="userName">
+                        <input type="text"  placeholder="根据类别查询" autocomplete="on" class="layui-input" id="userName">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>
@@ -151,9 +151,11 @@
             </form>
             <xblock>
                 <button class="layui-btn layui-btn-danger" id="del">
-                    <i class="layui-icon">&#xe640;</i>批量开除</button>
-                <button class="layui-btn" id="addOwner">
-                    <i class="layui-icon">&#xe608;</i>升级为店长</button>
+                    <i class="layui-icon">&#xe640;</i>物资出库管理</button>
+                <button class="layui-btn" onclick="ruku('物资入库','/addMaterial','4','' ,'450' )">
+                    <i class="layui-icon">&#xe608;</i>添加物资入库</button>
+                <button class="layui-btn layui-btn-danger" id="add" style="background: darkseagreen">
+                    <i class="layui-icon">&#xe608;</i>选择物资入库</button>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
@@ -167,59 +169,38 @@
                             <input type="checkbox" id="checkAll">
                         </th>
                         <th>
-                            用户ID
+                            物资编号
                         </th>
                         <th>
-                            姓名
+                            物资名称
                         </th>
                         <th>
-                            年龄
+                            物资类别
                         </th>
                         <th>
-                            性别
+                            数量(单位/台)
                         </th>
                         <th>
-                            用户类型
-                        </th>
-                        <th>
-                            联系方式
-                        </th>
-                        <th>
-                            所属洗衣店
-                        </th>
-                        <th>
-                            操作
+                            状态
                         </th>
                     </tr>
                 </thead>
                 <tbody id="checkOne">
-                    <tr th:each="user:${pageInfo.list}">
+                    <tr th:each="material:${pageInfo.list}">
                         <td>
-                            <input type="checkbox" th:value="${user.get('USER_ID')}"/>
+                            <input type="checkbox" th:value="${material.get('USER_ID')}"/>
                         </td>
-                        <td th:text="${user.get('USER_ID')}" id="userId">
+                        <td th:text="${material.get('mId')}" id="userId">
                         </td>
-                        <td th:text="${user.get('USER_NAME')}">
+                        <td th:text="${material.get('mName')}">
                         </td>
-                        <td th:text="${user.get('USER_AGE')}">
+                        <td th:text="${material.get('mTypeDesc')}">
                         </td>
-                        <td th:text="${user.get('USER_SEX')}">
+                        <td th:text="${material.get('mNumber')}">
                         </td>
-                        <td th:text="${user.get('USER_TYPE')}">
+                        <td th:text="${material.get('mStateName')}">
                         </td>
-                        <td th:text="${user.get('PHONE')}">
-                        </td>
-                        <td th:text="${user.get('LAUNDRY_NAME')}">
-                        </td>
-                        <td class="td-manage">
-                            <a title="查看资料" href="javascript:;" th:onclick="member_edit('查看资料','queryUserInfoById/[[${user.get('USER_ID')}]]','4','','520')"
-                               class="ml-5" style="text-decoration:none">
-                                <i class="layui-icon">&#xe642;</i>
-                            </a>
-                            <a title="删除" th:href="@{'deleteUserInfoById?userId='+${user.get('USER_ID')}}" style="text-decoration:none">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
-                        </td>
+                        <td th:text="${material.get('mState')}" style="display: none">
                     </tr>
                 </tbody>
             </table>
@@ -274,12 +255,9 @@
         });
     });
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    // 用户-编辑
-    function member_edit (title,url,id,w,h) {
-        var url2 = url.replace('"','').slice(0,-1);
-        // alert(w);
-        // alert(h);
-        x_admin_show(title,url2,w,h);
+    //入库管理
+    function ruku(title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
     }
     //------------------------------------------------------------------------------------------------------------------------------------------------------------
     //获取事件源

@@ -134,4 +134,23 @@ public interface LoginMapper {
      * 修改密码
      */
     int  updatePwd(Map<String,Object> param);
+
+    /**
+     * 查询物资资料
+     * @return
+     */
+    List<Map<String,Object>> queryMaterialInfo();
+
+    /**
+     * 添加物资入库
+     * @param param
+     * @return
+     */
+    int addMaterial(Map<String,Object> param);
+
+    /**
+     * 查询物资码表信息
+     * @return
+     */
+    List<Map<String,Object>> queryMaterialTypeInfo();
 }
