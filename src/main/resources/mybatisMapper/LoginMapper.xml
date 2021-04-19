@@ -267,21 +267,46 @@
           AND m1.STATE_ID = m3.STATE_ID
         ORDER BY m1.material_id
     </select>
-<!--    添加物资入库  -->
+<!--    物资入库（新物资） -->
     <insert id="addMaterial">
         insert into material values(#{mId},#{mName},#{mTypeId},#{mNumber},0)
     </insert>
+<!--    添加物资入库（旧物资） -->
+    <update id="updateMaterial" >
+        update material set material_number = material_number + #{mNumber}
+        where material_id = #{mId} and state_id = 0
+    </update>
+    <!--    未入库物资数量减少（旧物资） -->
+    <update id="updateNumber" >
+        update material set material_number = material_number - #{mNumber}
+        where material_id = #{mId} and state_id = 2
+    </update>
 <!--    查询物资类型码表    -->
     <select id="queryMaterialTypeInfo" resultType="java.util.Map">
         select material_type_id as mTypeId,material_type_desc as mTypeDesc from material_type
     </select>
-<!--    判断物资是否已经存在    -->
+<!--    判断未入库物资是否已经存在    -->
     <select id="materialIsExist" resultType="java.util.Map">
-        select * from material
-        <where>
-            <choose>
-                <when test=""></when>
-            </choose>
-        </where>
+        SELECT
+            *
+        FROM
+            material
+        WHERE
+            material_id = #{mId}
+          AND material_name = #{mName}
+          AND material_type_id = #{mTypeId}
+          AND state_id = 2
+    </select>
+    <!--    判断要入库物资是否已经存在    -->
+    <select id="materialIsExistNow" resultType="java.util.Map">
+        SELECT
+            *
+        FROM
+            material
+        WHERE
+            material_id = #{mId}
+          AND material_name = #{mName}
+          AND material_type_id = #{mTypeId}
+          AND state_id = 0
     </select>
 </mapper>

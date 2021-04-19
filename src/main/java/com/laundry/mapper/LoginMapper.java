@@ -142,15 +142,44 @@ public interface LoginMapper {
     List<Map<String,Object>> queryMaterialInfo();
 
     /**
-     * 添加物资入库
+     * 添加物资入库(新物资)
      * @param param
      * @return
      */
     int addMaterial(Map<String,Object> param);
 
     /**
+     * 添加物资入库(旧物资)
+     * @param param
+     * @return
+     */
+    int updateMaterial(Map<String,Object> param);
+
+    /**
+     * 未入库物资数量减少(旧物资)
+     * @param param
+     * @return
+     */
+    int updateNumber(Map<String,Object> param);
+
+
+    /**
      * 查询物资码表信息
      * @return
      */
     List<Map<String,Object>> queryMaterialTypeInfo();
+
+    /**
+     * 判断在未入库物资中是否已经存在
+     * @param param
+     * @return
+     */
+    Map<String,Object> materialIsExist(Map<String,Object> param);
+
+    /**
+     * 判断在已入库物资中是否已经存在
+     * @param param
+     * @return
+     */
+    Map<String,Object> materialIsExistNow(Map<String,Object> param);
 }

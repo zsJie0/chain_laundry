@@ -441,6 +441,44 @@ public class LaundryController {
 
     }
 
+    @RequestMapping("/ruK")
+    @ResponseBody
+    public String ruK(@RequestParam Map<String,Object> param){
+        System.out.println(param);
+        //判断该物资是否存在
+        Map<String, Object> isExist = loginMapper.materialIsExist(param);
+        Map<String, Object> isExistNow = loginMapper.materialIsExistNow(param);
+        boolean flag =  false;
+        //未入库物资存在 && 在库不存在
+        if(!CommonUtils.isEmpty(isExist) && CommonUtils.isEmpty(isExistNow) ){
+            //未入库数量减少
+            int i1 = loginMapper.updateNumber(param);
+            //添加物资入库
+            int i = loginMapper.addMaterial(param);
+            if(i>0 && i1>0){
+                flag = true;
+            }
+            //未入库不存在 && 在库存在
+        }else if(CommonUtils.isEmpty(isExist) && !CommonUtils.isEmpty(isExistNow)) {
+            //直接更新在库物资数量
+            int i = loginMapper.updateMaterial(param);
+            if(i>0){
+                flag = true;
+            }
+            //如果都不存在
+        }else if(!CommonUtils.isEmpty(isExist) && !CommonUtils.isEmpty(isExistNow)) {
+            //直接添加物资输入，数量为前端获取的数子
+            int i = loginMapper.addMaterial(param);
+            if(i>0){
+                flag = true;
+            }
+        }
+        if(flag){
+            return "success";
+        }else {
+            return "fail";
+        }
+    }
     /**
      * 根据登录id获取用户信息
      * @return

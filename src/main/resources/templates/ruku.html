@@ -45,8 +45,8 @@
                       物资类别
                      </label>
                       <div class="layui-input-inline">
-                          <select class="select" id="type"  name="type">
-                              <option th:each="type:${typeList}">[[${type.mTypeDesc}]]</option>
+                          <select class="select" id="mTypeId"  name="mTypeId">
+                              <option th:each="type:${typeList}" th:value="${type.get('mTypeId')}">[[${type.mTypeDesc}]]</option>
                           </select>
                       </div>
                       <div class="layui-form-mid layui-word-aux">
@@ -54,11 +54,11 @@
                       </div>
                   </div>
                   <div class="layui-form-item">
-                      <label for="Mnumber" class="layui-form-label">
+                      <label for="mNumber" class="layui-form-label">
                           入库数量
                       </label>
                       <div class="layui-input-inline">
-                          <input type="number" id="Mnumber" name="Mnumber"  class="layui-input">
+                          <input type="number" id="mNumber" name="mNumber"  class="layui-input">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
                           <span>*必须是数字哦！</span>
@@ -80,21 +80,25 @@
     <script>
         //处理
         $(document).ready(function () {
-            $("#startHandle").click(function () {
-
-                // var stateName = document.getElementById("stateName").value;
-                var laundryId = document.getElementById("laundryId").value;
-                alert(laundryId);
+            $("#ruku").click(function () {
+                var mId = document.getElementById("mId").value;
+                var mName = document.getElementById("mName").value;
+                var mTypeId = document.getElementById("mTypeId").value;
+                var mNumber = document.getElementById("mNumber").value;
                 $.ajax({
                     type:"post",
-                    url:"/updateStateByLaundryId",
+                    url:"/ruK",
                     data: {
-                        laundryId
+                        mId       ,
+                        mName     ,
+                        mTypeId ,
+                        mNumber
                     },
                     success:function (data) {
                         if(data == "success"){
                             layer.msg("处理成功！");
-                            // window.location.href = "settleIn";
+                            // window.location.reload();
+                            // setTimeout('window.location.href="/queryMaterialInfo"',3000)
                         }else if(data == "fail"){
                             layer.msg("处理失败！系统异常")
                         }
