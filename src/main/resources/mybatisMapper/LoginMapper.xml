@@ -267,6 +267,46 @@
           AND m1.STATE_ID = m3.STATE_ID
         ORDER BY m1.material_id
     </select>
+    <!--    查询物资信息rk  -->
+    <select id="queryMaterialInfoRk" resultType="java.util.Map">
+        SELECT
+            m1.material_id mId,
+            m1.material_name mName,
+            m1.material_type_id mTypeId,
+            m1.material_number mNumber,
+            m1.state_id mState,
+            m3.state_name mStateName,
+            m2.material_type_desc mTypeDesc
+        FROM
+            material m1,
+            material_type m2,
+            material_state m3
+        WHERE
+            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+          AND m1.STATE_ID = m3.STATE_ID
+          AND (m1.state_id = 0 OR m1.state_id = 2)
+          ORDER BY m1.material_id
+    </select>
+    <!--    查询物资信息ck  -->
+    <select id="queryMaterialInfoCk" resultType="java.util.Map">
+        SELECT
+            m1.material_id mId,
+            m1.material_name mName,
+            m1.material_type_id mTypeId,
+            m1.material_number mNumber,
+            m1.state_id mState,
+            m3.state_name mStateName,
+            m2.material_type_desc mTypeDesc
+        FROM
+            material m1,
+            material_type m2,
+            material_state m3
+        WHERE
+            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+          AND m1.STATE_ID = m3.STATE_ID
+          AND m1.state_id = 0
+        ORDER BY m1.material_id
+    </select>
 <!--    物资入库（新物资） -->
     <insert id="addMaterial">
         insert into material values(#{mId},#{mName},#{mTypeId},#{mNumber},0)
@@ -309,4 +349,61 @@
           AND material_type_id = #{mTypeId}
           AND state_id = 0
     </select>
+<!--    根据物资类别模糊查询物资信息  -->
+    <select id="queryMaterialByName" resultType="java.util.Map">
+        <bind name="mName" value=" '%' + mName + '%' "/>
+        SELECT
+            m1.material_id mId,
+            m1.material_name mName,
+            m1.material_type_id mTypeId,
+            m1.material_number mNumber,
+            m1.state_id mState,
+            m3.state_name mStateName,
+            m2.material_type_desc mTypeDesc
+        FROM
+            material m1,
+            material_type m2,
+            material_state m3
+        WHERE
+              m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+          AND m1.STATE_ID = m3.STATE_ID
+          AND material_name like #{mName}
+        ORDER BY m1.material_id
+    </select>
+<!--    根据在库物资id查询物资列表    -->
+    <select id="queryMaterialById" resultType="java.util.Map">
+        SELECT
+            m1.material_id mId,
+            m1.material_name mName,
+            m1.material_type_id mTypeId,
+            m1.material_number mNumber,
+            m1.state_id mState,
+            m3.state_name mStateName,
+            m2.material_type_desc mTypeDesc
+        FROM
+            material m1,
+            material_type m2,
+            material_state m3
+        WHERE
+            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+          AND m1.STATE_ID = m3.STATE_ID
+          AND material_id in 
+        <foreach collection="mIds" item="mId" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+        AND m1.state_id = 0
+        ORDER BY m1.material_id
+    </select>
+<!--更新所选在库物资的数量-->
+    <update id="updateSelectMaterialNumber">
+        update material set material_number = material_number - #{mNumber}
+        where material_id in
+        <foreach collection="mIds" item="mId" open="(" close=")" separator=",">
+            #{mId}
+        </foreach>
+    </update>
+<!--    添加出库物资  -->
+    <insert id="addMaterialCk" >
+        insert into material
+    </insert>
 </mapper>

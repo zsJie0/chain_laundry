@@ -23,52 +23,46 @@
               <form class="layui-form">
                   <div class="layui-form-item">
                       <label for="mId" class="layui-form-label">
-                          物资编号
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="mId" name="mId" class="layui-input">
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>提示：型号-类型编号-0(类型编号)</span>
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label for="mName" class="layui-form-label">
-                          物资名称
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="mName" name="mName" class="layui-input">
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label for="mName" class="layui-form-label">
-                      物资类别
+                      在库物资编号
                      </label>
                       <div class="layui-input-inline">
-                          <select class="select" id="mTypeId"  name="mTypeId">
-                              <option th:each="type:${typeList}" th:value="${type.get('mTypeId')}">[[${type.mTypeDesc}]]</option>
+                          <select class="select" id="mId"  name="mId" onkeyup="check()">
+                              <option th:each="mIdMap:${materialList}" th:value="${mIdMap.get('mId')}">[[${mIdMap.mId}]]</option>
                           </select>
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>注：物资类型编号从上到下依次为1、2、3、4</span>
                       </div>
                   </div>
                   <div class="layui-form-item">
-                      <label for="mNumber" class="layui-form-label">
-                          入库数量
+                      <label for="maxNumber" class="layui-form-label">
+                          物资数量最大值
                       </label>
                       <div class="layui-input-inline">
-                          <input type="number" id="mNumber" name="mNumber"  class="layui-input">
+                          <input type="number" id="maxNumber" name="maxNumber"  class="layui-input" th:value="${max}" readonly>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="minNumber" class="layui-form-label">
+                          物资数量最小值
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="number" id="minNumber" name="minNumber"  class="layui-input" th:value="${min}" readonly>
+                      </div>
+                  </div>
+                  <div class="layui-form-item">
+                      <label for="selectNumber" class="layui-form-label">
+                          选择出库数量
+                      </label>
+                      <div class="layui-input-inline">
+                          <input type="number" id="selectNumber" name="selectNumber"  class="layui-input">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
-                          <span>*必须是数字哦！</span>
+                          <span>注：若选择的物资>1，则出库方式为批量出库；若选择的物资=1，则出库方式为单一出库</span>
                       </div>
                   </div>
                   <div class="layui-form-item">
                       <label  class="layui-form-label">
                       </label>
-                      <button class="layui-btn"  type="button" id="ruku" style="background: goldenrod">
-                          <i class="layui-icon">&#xe650;</i> 开始入库</button>
+                      <button class="layui-btn"  type="button" id="chuku" style="background: goldenrod">
+                          <i class="layui-icon">&#xe650;</i> 开始出库</button>
                   </div>
               </form>
             <!-- 右侧内容框架，更改从这里结束 -->
@@ -110,7 +104,10 @@
             })
         });
 
-
+        function check(){
+            var mId = document.getElementById("mId").value;
+            window.location.href = ""
+        }
 
 
     //百度统计可去掉

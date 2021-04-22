@@ -82,7 +82,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
+                    <ul class="sub-menu" >
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -104,7 +104,7 @@
                         物资管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" style="display:none">
+                    <ul class="sub-menu opened">
                         <li>
                             <a href="/queryMaterialInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -135,20 +135,23 @@
         <div class="page-content">
           <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <form class="layui-form xbs" action="" >
-                <div class="layui-form-pane" style="text-align: center;">
-                  <div class="layui-form-item" style="display: inline-block;">
-                    <div class="layui-input-inline">
-                        <input type="text"  placeholder="请输入连锁店名称" autocomplete="on" class="layui-input" id="laundryName">
-                    </div>
-                    <div class="layui-input-inline" style="width:80px">
-                        <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>
-                    </div>
-                  </div>
-                </div> 
-            </form>
+<!--            <form class="layui-form xbs" action="" >-->
+<!--                <div class="layui-form-pane" style="text-align: center;">-->
+<!--                  <div class="layui-form-item" style="display: inline-block;">-->
+<!--                    <div class="layui-input-inline">-->
+<!--                        <input type="text"  placeholder="根据类别查询" autocomplete="on" class="layui-input" id="mName">-->
+<!--                    </div>-->
+<!--                    <div class="layui-input-inline" style="width:80px">-->
+<!--                        <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </div> -->
+<!--            </form>-->
             <xblock>
-                <span style="font-weight: bold;color: black">
+                <button class="layui-btn" onclick="ruku('物资入库','/addMaterial','4','' ,'450' )" style="background: goldenrod">
+                    <i class="layui-icon">&#xe650;</i>物资入库管理</button>
+                <a class="layui-btn" href="/ruWarehouse"style="background: brown">↑↓</a>
+                <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
                 </span>
@@ -158,58 +161,35 @@
                 <thead>
                     <tr>
                         <th>
-                            连锁店编号
+                            物资编号
                         </th>
                         <th>
-                            名称
+                            物资名称
                         </th>
                         <th>
-                            管理店长
+                            物资类别
                         </th>
                         <th>
-                            联系方式
-                        </th>
-                        <th>
-                            位置
-                        </th>
-                        <th>
-                            信誉度
-                        </th>
-                        <th>
-                            营业额
-                        </th>
-                        <th>
-                            申请入驻时间
+                            数量(单位/台)
                         </th>
                         <th>
                             状态
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="laundry:${pageInfo.list}">
-                        <td th:text="${laundry.get('laundry_id')}">
+                <tbody id="checkOne">
+                    <tr th:each="material:${pageInfo.list}">
+                        <td th:text="${material.get('mId')}" id="mId">
                         </td>
-                        <td th:text="${laundry.get('laundry_name')}">
+                        <td th:text="${material.get('mName')}">
                         </td>
-                        <td th:text="${laundry.get('user_name')}">
+                        <td th:text="${material.get('mTypeDesc')}">
                         </td>
-                        <td th:text="${laundry.get('phone')}">
+                        <td th:text="${material.get('mNumber')}">
                         </td>
-                        <td th:text="${laundry.get('laundry_position')}">
+                        <td th:text="${material.get('mStateName')}">
                         </td>
-                        <td th:text="${laundry.get('credit')}">
-
-                        </td>
-                        <td th:text="${laundry.get('turnover')}">
-
-                        </td>
-                        <td th:text="${laundry.get('sqtime')}">
-                        </td>
-                        <td class="td-status">
-                            <span class="layui-btn layui-btn-normal layui-btn-mini"th:text="${laundry.get('state_name')}">
-                            </span>
-                        </td>
+                        <td th:text="${material.get('mState')}" style="display: none">
                     </tr>
                 </tbody>
             </table>
@@ -252,20 +232,12 @@
     <!-- 背景切换结束 -->
     <!-- 页面动态效果 -->
     <script>
-    <!--模糊查询-->
-    $(document).ready(function () {
-        $("#search").click(function () {
-            var laundryName = document.getElementById("laundryName").value;
-            if (laundryName == null || laundryName == "" || laundryName == undefined) {
-                layer.msg("输入内容不能为空！");
-            } else {
-                // console.log("ssssssss","sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-                window.location.href = "queryLaundryInfoByName/" + laundryName
-            }
-        });
-    });
-    </script>
-<script>
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+    //入库管理
+    function ruku(title,url,id,w,h) {
+        x_admin_show(title,url,w,h);
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         //百度统计可去掉
         var _hmt = _hmt || [];
         (function() {
@@ -274,7 +246,7 @@
           var s = document.getElementsByTagName("script")[0]; 
           s.parentNode.insertBefore(hm, s);
         })();
-        </script>
+    </script>
 <style>
     ul.pagination {
         display: inline-block;

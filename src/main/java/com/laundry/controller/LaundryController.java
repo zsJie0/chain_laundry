@@ -19,7 +19,9 @@ import java.util.*;
 @Controller
 public class LaundryController {
     String uId = "";
+//    public static List<String> MIds = new ArrayList<>();
 
+    String[] MIds = {};
     @Autowired
     LoginService loginService;
 
@@ -244,6 +246,7 @@ public class LaundryController {
                                          @RequestParam(required = false, defaultValue = "1") int page,
                                          @RequestParam(required = false, defaultValue = "3") int pageSize){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> laundryList = loginService.queryLaundryInfoByName(laundryName);
         if(CommonUtils.isEmpty(laundryList)){
@@ -267,12 +270,36 @@ public class LaundryController {
                                       @RequestParam(required = false, defaultValue = "1") int page,
                                       @RequestParam(required = false, defaultValue = "3") int pageSize){
         getUserInfo(model);
+        getUrlOrImage(model,uId);
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> userInfo = loginMapper.queryUserInfoByName(userName);
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
         model.addAttribute("pageInfo",pageInfo);
         return "userList";
     }
+
+    /**
+     * 模糊查询物资信息
+     * @param mName
+     * @param model
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/queryMaterialByName/{mName}")
+    public String queryMaterialByName(@PathVariable String mName, Model model,
+                                      @RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "3") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> userInfo = loginMapper.queryMaterialByName(mName);
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
+        model.addAttribute("pageInfo",pageInfo);
+        return "materialList";
+    }
+
+
 
     /**
      * 入驻申请/审核处理
@@ -425,9 +452,26 @@ public class LaundryController {
         List<Map<String, Object>> materialList = loginMapper.queryMaterialInfo();
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(materialList);
         model.addAttribute("pageInfo",pageInfo);
-//        System.out.println(model);
         return "materialList";
    }
+
+    /**
+     * 入库页面
+     * @param model
+     * @return
+     */
+    @RequestMapping("/ruWarehouse")
+    public String ruWarehouse(Model model,
+                                    @RequestParam(required = false, defaultValue = "1") int page,
+                                    @RequestParam(required = false, defaultValue = "5") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> materialList = loginMapper.queryMaterialInfoRk();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(materialList);
+        model.addAttribute("pageInfo",pageInfo);
+        return "rkManager";
+    }
 
     /**
      * 入库管理->添加物资入库
@@ -441,6 +485,11 @@ public class LaundryController {
 
     }
 
+    /**
+     * 入库操作
+     * @param param
+     * @return
+     */
     @RequestMapping("/ruK")
     @ResponseBody
     public String ruK(@RequestParam Map<String,Object> param){
@@ -459,14 +508,14 @@ public class LaundryController {
                 flag = true;
             }
             //未入库不存在 && 在库存在
-        }else if(CommonUtils.isEmpty(isExist) && !CommonUtils.isEmpty(isExistNow)) {
+        }else if(!CommonUtils.isEmpty(isExistNow)) {
             //直接更新在库物资数量
             int i = loginMapper.updateMaterial(param);
             if(i>0){
                 flag = true;
             }
             //如果都不存在
-        }else if(!CommonUtils.isEmpty(isExist) && !CommonUtils.isEmpty(isExistNow)) {
+        }else if(CommonUtils.isEmpty(isExist) && CommonUtils.isEmpty(isExistNow)) {
             //直接添加物资输入，数量为前端获取的数子
             int i = loginMapper.addMaterial(param);
             if(i>0){
@@ -479,6 +528,58 @@ public class LaundryController {
             return "fail";
         }
     }
+
+    /**
+     * 出库管理页面
+     * @return
+     */
+    @RequestMapping("/chuWarehouse")
+    public String chuWarehouse(Model model,
+                               @RequestParam(required = false, defaultValue = "1") int page,
+                               @RequestParam(required = false, defaultValue = "5") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> materialList = loginMapper.queryMaterialInfoCk();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(materialList);
+        model.addAttribute("pageInfo",pageInfo);
+        return "ckManager";
+    }
+
+    /**
+     * 出库
+     * @param mIds
+     * @param model
+     * @return
+     */
+    @RequestMapping("/delMaterial")
+    public String delMaterial(String[] mIds,Model model){
+        //方便更新操作
+        MIds = mIds;
+        //转换成数组
+        Arrays.asList(mIds);
+        List<Map<String, Object>> materialList = loginMapper.queryMaterialById(mIds);
+        List<String> mNumberList = CommonUtils.getId(materialList, "mNumber");
+        //类型转换
+        List<Integer> integerList = CommonUtils.parseIntegersList(mNumberList);
+        //获取最大值跟最小值
+        model.addAttribute("max",Collections.max(integerList));
+        model.addAttribute("min",Collections.min(integerList));
+        model.addAttribute("materialList",materialList);
+        return "chuku";
+    }
+
+    /**
+     *
+     * @return
+     */
+    @RequestMapping("/updateSelectMaterialNumber")
+    @ResponseBody
+    public String updateSelectMaterialNumber(){
+        loginMapper.updateSelectMaterialNumber(MIds);
+        return null;
+    }
+
     /**
      * 根据登录id获取用户信息
      * @return

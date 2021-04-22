@@ -370,4 +370,24 @@ public final class CommonUtils {
         return formatNewDate;
     }
 
+    /**
+     * 类型转换(List<String> ---> List<Integer>)
+     * @param StringList 要进行转换的list集合
+     * @return
+     */
+    public static List<Integer> parseIntegersList(List<String> StringList){
+        List<Integer> IntegersList = new ArrayList<>();
+        //遍历String的list
+        for(String data : StringList){
+            if(CommonUtils.isEmpty(data)){
+                break;
+            }else {
+                //类型转换
+                Integer iData = Integer.parseInt(data);
+                IntegersList.add(iData);
+            }
+        }
+        return IntegersList;
+    }
+
 }
