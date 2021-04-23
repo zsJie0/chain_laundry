@@ -570,12 +570,12 @@ public class LaundryController {
     }
 
     /**
-     *
+     *开始出库
      * @return
      */
-    @RequestMapping("/updateSelectMaterialNumber")
+    @RequestMapping("/chuK")
     @ResponseBody
-    public String updateSelectMaterialNumber(){
+    public String chuK(Map<String,Object> map){
         loginMapper.updateSelectMaterialNumber(MIds);
         return null;
     }

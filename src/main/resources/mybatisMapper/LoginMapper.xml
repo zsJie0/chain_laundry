@@ -404,6 +404,12 @@
     </update>
 <!--    添加出库物资  -->
     <insert id="addMaterialCk" >
-        insert into material
+        insert into material values
+        <foreach collection="materialist" item="map" open="(" close=")" separator=",">
+            (
+             #{map.}
+            )
+        </foreach>
+
     </insert>
 </mapper>

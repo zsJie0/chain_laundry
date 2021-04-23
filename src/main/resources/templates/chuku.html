@@ -26,7 +26,7 @@
                       在库物资编号
                      </label>
                       <div class="layui-input-inline">
-                          <select class="select" id="mId"  name="mId" onkeyup="check()">
+                          <select id="mId"  name="mId" onkeyup="check()" multiple="multiple">
                               <option th:each="mIdMap:${materialList}" th:value="${mIdMap.get('mId')}">[[${mIdMap.mId}]]</option>
                           </select>
                       </div>
@@ -74,33 +74,30 @@
     <script>
         //处理
         $(document).ready(function () {
-            $("#ruku").click(function () {
-                var mId = document.getElementById("mId").value;
-                var mName = document.getElementById("mName").value;
-                var mTypeId = document.getElementById("mTypeId").value;
-                var mNumber = document.getElementById("mNumber").value;
-                $.ajax({
-                    type:"post",
-                    url:"/ruK",
-                    data: {
-                        mId       ,
-                        mName     ,
-                        mTypeId ,
-                        mNumber
-                    },
-                    success:function (data) {
-                        if(data == "success"){
-                            layer.msg("入库成功！");
-                            // window.location.reload();
-                            // setTimeout('window.location.href="/queryMaterialInfo"',3000)
-                        }else if(data == "fail"){
-                            layer.msg("入库失败！系统异常")
-                        }
-                    },
-                    error:function(res){
-                        console.log(res)
-                    }
-                })
+            $("#chuku").click(function () {
+                var mId = document.getElementById("mId").value+",";
+                var selectNumber = document.getElementById("selectNumber").value;
+                alert(mId);
+                // $.ajax({
+                //     type:"post",
+                //     url:"/ruK",
+                //     data: {
+                //         mId       ,
+                //         selectNumber
+                //     },
+                //     success:function (data) {
+                //         if(data == "success"){
+                //             layer.msg("入库成功！");
+                //             // window.location.reload();
+                //             // setTimeout('window.location.href="/queryMaterialInfo"',3000)
+                //         }else if(data == "fail"){
+                //             layer.msg("入库失败！系统异常")
+                //         }
+                //     },
+                //     error:function(res){
+                //         console.log(res)
+                //     }
+                // })
             })
         });
 
