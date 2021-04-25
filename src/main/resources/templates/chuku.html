@@ -22,33 +22,34 @@
             <!-- 右侧内容框架，更改从这里开始 -->
               <form class="layui-form">
                   <div class="layui-form-item">
-                      <label for="mId" class="layui-form-label">
+                      <label for="mId" class="layui-form-label" style="width: 90px">
                       在库物资编号
                      </label>
-                      <div class="layui-input-inline">
-                          <select id="mId"  name="mId" onkeyup="check()" multiple="multiple">
-                              <option th:each="mIdMap:${materialList}" th:value="${mIdMap.get('mId')}">[[${mIdMap.mId}]]</option>
-                          </select>
+                      <div class="row cl layui-input-inline">
+                          <input type="text" id="mId" name="mId"  class="layui-input" th:value="${mIdList}">
+<!--                          <select id="mId"  name="mId" multiple="multiple" >-->
+<!--                              <option th:each="${mIds}" th:value="${mIds}">[[${mIdMap.mId}]]</option>-->
+<!--                          </select>-->
                       </div>
                   </div>
-                  <div class="layui-form-item">
-                      <label for="maxNumber" class="layui-form-label">
-                          物资数量最大值
+                  <div class="layui-form-item" >
+                      <label for="maxNumber" class="layui-form-label" style="width: 90px">
+                         数量最大值
                       </label>
                       <div class="layui-input-inline">
                           <input type="number" id="maxNumber" name="maxNumber"  class="layui-input" th:value="${max}" readonly>
                       </div>
                   </div>
                   <div class="layui-form-item">
-                      <label for="minNumber" class="layui-form-label">
-                          物资数量最小值
+                      <label for="minNumber" class="layui-form-label" style="width: 90px">
+                          数量最小值
                       </label>
                       <div class="layui-input-inline">
                           <input type="number" id="minNumber" name="minNumber"  class="layui-input" th:value="${min}" readonly>
                       </div>
                   </div>
                   <div class="layui-form-item">
-                      <label for="selectNumber" class="layui-form-label">
+                      <label for="selectNumber" class="layui-form-label" style="width: 90px">
                           选择出库数量
                       </label>
                       <div class="layui-input-inline">
@@ -78,33 +79,30 @@
                 var mId = document.getElementById("mId").value+",";
                 var selectNumber = document.getElementById("selectNumber").value;
                 alert(mId);
-                // $.ajax({
-                //     type:"post",
-                //     url:"/ruK",
-                //     data: {
-                //         mId       ,
-                //         selectNumber
-                //     },
-                //     success:function (data) {
-                //         if(data == "success"){
-                //             layer.msg("入库成功！");
-                //             // window.location.reload();
-                //             // setTimeout('window.location.href="/queryMaterialInfo"',3000)
-                //         }else if(data == "fail"){
-                //             layer.msg("入库失败！系统异常")
-                //         }
-                //     },
-                //     error:function(res){
-                //         console.log(res)
-                //     }
-                // })
+                $.ajax({
+                    type:"post",
+                    url:"/ruK",
+                    data: {
+                        mId       ,
+                        selectNumber
+                    },
+                    success:function (data) {
+                        if(data == "success"){
+                            layer.msg("入库成功！");
+                            // window.location.reload();
+                            // setTimeout('window.location.href="/queryMaterialInfo"',3000)
+                        }else if(data == "fail"){
+                            layer.msg("入库失败！系统异常")
+                        }
+                    },
+                    error:function(res){
+                        console.log(res)
+                    }
+                })
             })
         });
 
-        function check(){
-            var mId = document.getElementById("mId").value;
-            window.location.href = ""
-        }
+
 
 
     //百度统计可去掉

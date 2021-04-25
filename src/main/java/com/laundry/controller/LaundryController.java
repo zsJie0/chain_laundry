@@ -555,9 +555,15 @@ public class LaundryController {
     @RequestMapping("/delMaterial")
     public String delMaterial(String[] mIds,Model model){
         //方便更新操作
-        MIds = mIds;
+//        MIds = mIds;
         //转换成数组
-        Arrays.asList(mIds);
+        List<String> mIdList = Arrays.asList(mIds);
+        String MIDS = "";
+        String Mids = "";
+        mIdList.forEach(mid ->{
+            String concat = MIDS.concat(mid).concat(",");
+        });
+        System.out.println(MIDS);
         List<Map<String, Object>> materialList = loginMapper.queryMaterialById(mIds);
         List<String> mNumberList = CommonUtils.getId(materialList, "mNumber");
         //类型转换
@@ -566,6 +572,7 @@ public class LaundryController {
         model.addAttribute("max",Collections.max(integerList));
         model.addAttribute("min",Collections.min(integerList));
         model.addAttribute("materialList",materialList);
+        model.addAttribute("mIdList",MIDS);
         return "chuku";
     }
 
