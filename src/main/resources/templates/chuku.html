@@ -12,6 +12,7 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
+    <script type="text/javascript" src="../js/selectMultip.js"></script>
 </head>
 <body>
     <!-- 中部开始 -->
@@ -25,11 +26,16 @@
                       <label for="mId" class="layui-form-label" style="width: 90px">
                       在库物资编号
                      </label>
-                      <div class="row cl layui-input-inline">
-                          <input type="text" id="mId" name="mId"  class="layui-input" th:value="${mIdList}">
-<!--                          <select id="mId"  name="mId" multiple="multiple" >-->
-<!--                              <option th:each="${mIds}" th:value="${mIds}">[[${mIdMap.mId}]]</option>-->
+                      <div class="layui-input-inline layui-input-block ">
+                          <tr th:each="mIdMap:${materialList}">
+                              <input type="checkbox" th:value="${mIdMap.get('mId')}" name="mId" th:title="${mIdMap.get('mId')}">
+                          </tr>
+<!--                          <select id="mId"  name="mId" multiple>-->
+<!--                              <option th:each="mIdMap:${materialList}" th:value="${mIdMap.get('mId')}">[[${mIdMap.mId}]]</option>-->
 <!--                          </select>-->
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">
+                          <span>注：该下拉选框只赋予展示效果，不予选中操作</span>
                       </div>
                   </div>
                   <div class="layui-form-item" >
@@ -76,14 +82,11 @@
         //处理
         $(document).ready(function () {
             $("#chuku").click(function () {
-                var mId = document.getElementById("mId").value+",";
                 var selectNumber = document.getElementById("selectNumber").value;
-                alert(mId);
                 $.ajax({
                     type:"post",
                     url:"/ruK",
                     data: {
-                        mId       ,
                         selectNumber
                     },
                     success:function (data) {
