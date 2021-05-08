@@ -213,6 +213,26 @@ public interface LoginMapper {
      * @param mIds
      * @return
      */
-    int updateSelectMaterialNumber(@Param("mIds") String[] mIds);
+    int updateSelectMaterialNumber(@Param("mIds") String[] mIds,@Param("selectNumber") String selectNumber);
+
+    /**
+     * 插入出库物资
+     * @return
+     */
+    int addMaterialCk(Map<String,Object> param);
+
+    /**
+     * 根据id查询出库物资
+     * @param mIds
+     * @return
+     */
+    List<Map<String,Object>> queryCkMaterial(@Param("mIds") String[] mIds);
+
+    /**
+     * 更新出库物资的数量
+     * @param mIds
+     * @return
+     */
+    int updateMaterialById(@Param("mIds") String[] mIds,@Param("selectNumber") String selectNumber);
 
 }

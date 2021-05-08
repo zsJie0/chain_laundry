@@ -137,6 +137,8 @@
             <xblock>
                 <button class="layui-btn layui-btn-danger" id="del" style="background: goldenrod">
                     <i class="layui-icon">&#xe650;</i>物资出库管理</button>
+                <a class="layui-btn layui-btn-danger" style="background: goldenrod" href="/chuWarehouse">
+                    <i class="layui-icon">&#xe650;</i>刷新显示最新在库物资</a>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
@@ -239,6 +241,7 @@
             $("input[type='checkbox']:checked").each(function () {
                 mIds.push($(this).val());
             });
+            mIds= mIds.filter((x) => x !== 'on');
             alert(mIds);
             alert("确定操作编号为" + mIds + "的物资吗？");
             var url = "/delMaterial?mIds="+mIds;

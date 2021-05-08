@@ -63,6 +63,12 @@ public final class CommonUtils {
      */
     public static final String POINT = ".";
 
+    /**
+     * 初始出库物资
+     */
+    public static final int START_NUMBER = 0;
+
+
 
     /**
      * 工具类，不允许new对象
@@ -389,5 +395,36 @@ public final class CommonUtils {
         }
         return IntegersList;
     }
+
+    /**
+     * 删除字符串数组中指定值 / 删除数组中的元素包含指定值
+     * @param str 要进行操作的字符串
+     * @param element 要删除的元素
+     * @return result 返回的结果
+     */
+    public static String[] deleteElement(String[] str,String element){
+        String[] result = null;
+        //如果数组不为空
+        if(!isEmpty(str)){
+            //将字符串数组转换成list集合
+            List<String> asList = Arrays.asList(str);
+            //迭代器实现类不支持remove()删除，多一步转化
+//            list.remove(element);
+            Iterator<String> it = asList.iterator();
+            while (it.hasNext()){
+                String next = it.next();
+                //返回指定字符在字符串中第一次出现处的索引，如果字符串没有这样的字符，则返回-1
+                if(!(next.indexOf(element) == -1)){
+                    it.remove();
+                }
+            }
+            result = new String[asList.size()];
+            asList.toArray();
+
+        }
+        return result;
+    }
+
+
 
 }

@@ -396,20 +396,43 @@
     </select>
 <!--更新所选在库物资的数量-->
     <update id="updateSelectMaterialNumber">
-        update material set material_number = material_number - #{mNumber}
+        update material set material_number = material_number - #{selectNumber}
         where material_id in
         <foreach collection="mIds" item="mId" open="(" close=")" separator=",">
             #{mId}
         </foreach>
+        and state_id = 0
     </update>
 <!--    添加出库物资  -->
     <insert id="addMaterialCk" >
-        insert into material values
-        <foreach collection="materialist" item="map" open="(" close=")" separator=",">
+        insert into material(material_id,material_name,material_type_id,material_number,state_id)
+        values
+        <foreach collection="materialist" item="map" separator=",">
             (
-             #{map.}
+             #{map.mId},#{map.mName},#{map.mTypeId},#{map.mNumber},#{map.mState}
             )
         </foreach>
-
     </insert>
+<!--    查询在库物资是否存在  -->
+    <select id="queryCkMaterial" resultType="java.util.Map">
+        SELECT
+            *
+        FROM
+            material
+        WHERE
+            material_id IN
+        <foreach collection="mIds" item="mId" open="(" separator="," close=")">
+            #{mId}
+        </foreach>
+          AND state_id = 1
+    </select>
+<!--    更新出库物资的数量（存在出库物资）-->
+    <update id="updateMaterialById">
+        update material set material_number = material_number + #{selectNumber}
+        where material_id in
+        <foreach collection="mIds" item="mId" open="(" close=")" separator=",">
+            #{mId}
+        </foreach>
+        and state_id = 1
+    </update>
 </mapper>

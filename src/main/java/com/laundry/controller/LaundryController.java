@@ -564,6 +564,8 @@ public class LaundryController {
         model.addAttribute("max",Collections.max(integerList));
         model.addAttribute("min",Collections.min(integerList));
         model.addAttribute("materialList",materialList);
+        model.addAttribute("mIds",Arrays.asList(mIds));
+        System.out.println(Arrays.asList(mIds));
         return "chuku";
     }
 
@@ -573,9 +575,42 @@ public class LaundryController {
      */
     @RequestMapping("/chuK")
     @ResponseBody
-    public String chuK(Map<String,Object> map){
-        loginMapper.updateSelectMaterialNumber(MIds);
-        return null;
+    public String chuK(@RequestParam Map<String,Object> requestMap){
+        //点击出库之后执行
+        //更新所选在库物资的数量
+        loginMapper.updateSelectMaterialNumber(MIds,String.valueOf(requestMap.get("selectNumber")));
+        //查询是否有对应的出库物资
+        List<Map<String, Object>> ckMaterial = loginMapper.queryCkMaterial(MIds);
+        //如果有：
+        if(!CommonUtils.isEmpty(ckMaterial)){
+            //在原有出库数量上添加现在出库数量(更新数量)
+            int selectNumber = loginMapper.updateMaterialById(MIds, String.valueOf(requestMap.get("selectNumber")));
+            if(selectNumber > 0){
+                //出库
+                return "success";
+            }else {
+                return "fail";
+            }
+        }else {
+            //如果没有:
+            //查询变更的id是哪些物资信息
+            List<Map<String, Object>> materialist = loginMapper.queryMaterialById(MIds);
+            //将物资状态id更改，以及数量更改
+            materialist.forEach( map ->{
+                map.put("mState",1);
+                map.put("mNumber",Integer.parseInt(String.valueOf(requestMap.get("selectNumber"))));
+            });
+            Map<String,Object> addMap = new HashMap<>();
+            addMap.put("materialist",materialist);
+            //将更改完的物资信息作为出库物资插入数据库
+            if(loginMapper.addMaterialCk(addMap) > 0){
+                //出库
+                return "success";
+            }else {
+                return "fail";
+            }
+        }
+
     }
 
     /**

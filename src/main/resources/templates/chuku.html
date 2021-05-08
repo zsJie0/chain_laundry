@@ -22,21 +22,13 @@
           <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
               <form class="layui-form">
-                  <div class="layui-form-item">
-                      <label for="mId" class="layui-form-label" style="width: 90px">
-                      在库物资编号
-                     </label>
-                      <div class="layui-input-inline layui-input-block ">
-                          <tr th:each="mIdMap:${materialList}">
-                              <input type="checkbox" th:value="${mIdMap.get('mId')}" name="mId" th:title="${mIdMap.get('mId')}">
-                          </tr>
-<!--                          <select id="mId"  name="mId" multiple>-->
-<!--                              <option th:each="mIdMap:${materialList}" th:value="${mIdMap.get('mId')}">[[${mIdMap.mId}]]</option>-->
-<!--                          </select>-->
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>注：该下拉选框只赋予展示效果，不予选中操作</span>
-                      </div>
+                  <div class="layui-form-item" >
+                          <label  class="layui-form-label" style="width: 90px">
+                              在库物资
+                          </label>
+                          <div class="layui-input-inline">
+                              <input type="text" class="layui-input" th:value="${mIds}" readonly>
+                          </div>
                   </div>
                   <div class="layui-form-item" >
                       <label for="maxNumber" class="layui-form-label" style="width: 90px">
@@ -85,15 +77,13 @@
                 var selectNumber = document.getElementById("selectNumber").value;
                 $.ajax({
                     type:"post",
-                    url:"/ruK",
+                    url:"/chuK",
                     data: {
                         selectNumber
                     },
                     success:function (data) {
                         if(data == "success"){
-                            layer.msg("入库成功！");
-                            // window.location.reload();
-                            // setTimeout('window.location.href="/queryMaterialInfo"',3000)
+                            layer.msg("出库成功！");
                         }else if(data == "fail"){
                             layer.msg("入库失败！系统异常")
                         }
