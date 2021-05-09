@@ -614,6 +614,17 @@ public class LaundryController {
     }
 
     /**
+     * 公告管理
+     * @return
+     */
+    @RequestMapping("/notice")
+    public String notice(Model model){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        return "notice";
+    }
+
+    /**
      * 根据登录id获取用户信息
      * @return
      */
