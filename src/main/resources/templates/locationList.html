@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ChainLaundry-处理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
+    <script src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    <script type="text/javascript" src="../js/selectMultip.js"></script>
+</head>
+<body>
+    <!-- 中部开始 -->
+    <div class="wrapper">
+        <!-- 右侧主体开始 -->
+        <div class="page-content">
+          <div class="content">
+            <!-- 右侧内容框架，更改从这里开始 -->
+              <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                  <legend>
+                      当前位置：
+                      <span th:text="${pageInfo.list.get(0).get('position')}"></span>
+                  </legend>
+              </fieldset>
+              <form class="layui-form">
+                  <table class="layui-table">
+                      <thead>
+                      <tr>
+                          <th>
+                              连锁店编号
+                          </th>
+                          <th>
+                              连锁店名称
+                          </th>
+                          <th>
+                              信誉度
+                          </th>
+                          <th>
+                              营业额
+                          </th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr th:each="laundry:${pageInfo.list}">
+                          <td th:text="${laundry.get('id')}" th:value="${laundry.get('id')}" id="laundryId">
+                          </td>
+                          <td th:text="${laundry.get('name')}">
+                          </td>
+                          <td th:text="${laundry.get('credit')}">
+                          </td>
+                          <td th:text="${laundry.get('turnover')}">
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+                  <div class="page">
+                      <ul class="pagination">
+                          <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
+                          <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                          <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
+                      </ul>
+                  </div>
+              </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
+          </div>
+        </div>
+        <!-- 右侧主体结束 -->
+    </div>
+    <!-- 中部结束 -->
+    <script>
+    //百度统计可去掉
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+    <style>
+        ul.pagination {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.pagination li {display: inline;}
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+        ul.pagination li a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+    </style>
+
+</body>
+</html>

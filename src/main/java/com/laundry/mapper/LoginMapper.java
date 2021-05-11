@@ -253,4 +253,17 @@ public interface LoginMapper {
      * @return
      */
     int updateUserType(Map<String,Object> param);
+
+    /**
+     * 定位管理
+     * @return
+     */
+    List<Map<String,Object>> queryPosition();
+
+    /**
+     * 定位下的连锁店列表信息
+     * @param position
+     * @return
+     */
+    List<Map<String,Object>> queryLaundryByPosition(@Param("position") String position);
 }

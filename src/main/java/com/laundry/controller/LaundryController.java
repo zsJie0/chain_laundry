@@ -104,6 +104,44 @@ public class LaundryController {
         return "settleIn";
     }
 
+    /**
+     * 定位管理
+     * @return
+     */
+    @RequestMapping("/location")
+    public String locationManager(Model model,
+                            @RequestParam(required = false, defaultValue = "1") int page,
+                            @RequestParam(required = false, defaultValue = "5") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> positionInfo = loginMapper.queryPosition();
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(positionInfo);
+        model.addAttribute("pageInfo",pageInfo);
+        return "location";
+    }
+
+    /**
+     * 定位下的连锁店信息列表
+     * @param position
+     * @param model
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/locationList/{position}")
+    public String locationList(@PathVariable String position, Model model,
+                                @RequestParam(required = false, defaultValue = "1") int page,
+                                @RequestParam(required = false, defaultValue = "4") int pageSize){
+        //分页
+        PageHelper.startPage(page,pageSize);
+        //根据位置信息查询连锁店信息列表
+        List<Map<String, Object>> positionInfo = loginMapper.queryLaundryByPosition(position);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(positionInfo);
+        model.addAttribute("pageInfo", pageInfo);
+
+        return "locationList";
+    }
 
     /**
      * 主页

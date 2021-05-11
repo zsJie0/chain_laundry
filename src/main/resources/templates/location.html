@@ -12,7 +12,6 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
-
 </head>
 <body>
 <!-- 顶部开始 -->
@@ -50,11 +49,11 @@
                     </a>
                 </li>
                 <li class="list" >
-                    <a href="javascript:;">
-                        <i class="iconfont">&#xe70b;</i>
-                        用户管理
-                        <i class="iconfont nav_right">&#xe697;</i>
-                    </a>
+                        <a href="javascript:;">
+                            <i class="iconfont">&#xe70b;</i>
+                            用户管理
+                            <i class="iconfont nav_right">&#xe697;</i>
+                        </a>
                     <ul class="sub-menu">
                         <li>
                             <a href="/queryUserList">
@@ -101,7 +100,6 @@
                                 定位管理
                             </a>
                         </li>
-
                     </ul>
                 </li>
                 <li class="list" >
@@ -150,154 +148,109 @@
         </div>
     </div>
     <!-- 左侧菜单结束 -->
-
-        <!-- 右侧主体开始 -->
-        <div class="page-content">
-          <div class="content">
-            <!-- 右侧内容框架，更改从这里开始 -->
-            <form class="layui-form xbs" action="" >
-                <div class="layui-form-pane" style="text-align: center;">
-                  <div class="layui-form-item" style="display: inline-block;">
-                    <div class="layui-input-inline">
-                        <input type="text"  placeholder="请输入连锁店名称" autocomplete="on" class="layui-input" id="laundryName">
-                    </div>
-                    <div class="layui-input-inline" style="width:80px">
-                        <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>
-                    </div>
-                  </div>
-                </div> 
-            </form>
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="content">
+            <blockquote class="layui-elem-quote">
+                温馨提示：该模块可以查看某个位置下的连锁店信息
+            </blockquote>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>连锁店定位管理</legend>
+            </fieldset>
             <xblock>
-                <span style="font-weight: bold;color: black">
-                     共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
-                    &nbsp;条
+                <a class="btn btn-warning pull-right" lay-submit lay-filter="refresh" type="button" id="refresh" href="/location" style="background-color: brown">刷新显示全部</a>
+                <span class="x-right" style="line-height:40px">
+                    共有数据：<span th:text="${pageInfo.size}"></span> &nbsp;条
                 </span>
-
             </xblock>
+
             <table class="layui-table">
                 <thead>
-                    <tr>
-                        <th>
-                            连锁店编号
-                        </th>
-                        <th>
-                            名称
-                        </th>
-                        <th>
-                            管理店长
-                        </th>
-                        <th>
-                            联系方式
-                        </th>
-                        <th>
-                            位置
-                        </th>
-                        <th>
-                            信誉度
-                        </th>
-                        <th>
-                            营业额
-                        </th>
-                        <th>
-                            申请入驻时间
-                        </th>
-                        <th>
-                            状态
-                        </th>
-                    </tr>
+                <tr>
+                    <th>
+                        位置信息
+                    </th>
+                    <th>
+                        连锁店数量
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="laundry:${pageInfo.list}">
-                        <td th:text="${laundry.get('laundry_id')}">
-                        </td>
-                        <td th:text="${laundry.get('laundry_name')}">
-                        </td>
-                        <td th:text="${laundry.get('user_name')}">
-                        </td>
-                        <td th:text="${laundry.get('phone')}">
-                        </td>
-                        <td th:text="${laundry.get('laundry_position')}">
-                        </td>
-                        <td th:text="${laundry.get('credit')}">
-
-                        </td>
-                        <td th:text="${laundry.get('turnover')}">
-
-                        </td>
-                        <td th:text="${laundry.get('sqtime')}">
-                        </td>
-                        <td class="td-status">
-                            <span class="layui-btn layui-btn-normal layui-btn-mini"th:text="${laundry.get('state_name')}">
-                            </span>
-                        </td>
-                    </tr>
+                <tr th:each="location:${pageInfo.list}">
+                    <td th:text="${location.get('position')}" th:value="${location.get('position')}" id="laundryId">
+                    </td>
+                    <td th:text="${location.get('count')}">
+                    </td>
+                    <td class="td-manage">
+                        <a title="查看" href="javascript:;" th:onclick="edit('查看连锁店信息','locationList/[[${location.get('position')}]]','4','' ,'450' )">
+                            <i class="layui-icon">&#xe615;</i>
+                        </a>
+                    </td>
+                </tr>
                 </tbody>
             </table>
-              <div class="page">
-                  <ul class="pagination">
-                      <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
-                      <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
-                      <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
-                  </ul>
-              </div>
-            <!-- 右侧内容框架，更改从这里结束 -->
-          </div>
-        </div>
-        <!-- 右侧主体结束 -->
-    </div>
-    <!-- 中部结束 -->
-    <!-- 底部开始 -->
-    <div class="footer">
-        <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
-    </div>
-    <!-- 底部结束 -->
-    <!-- 背景切换开始 -->
-    <div class="bg-changer">
-        <div class="swiper-container changer-list">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
-                <div class="swiper-slide"><span class="reset">初始化</span></div>
+            <div class="page">
+                <ul class="pagination">
+                    <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
+                    <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                    <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
+                </ul>
             </div>
+            <!-- 右侧内容框架，更改从这里结束 -->
         </div>
-        <div class="bg-out"></div>
-        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
     </div>
-    <!-- 背景切换结束 -->
-    <!-- 页面动态效果 -->
-    <script>
-    <!--模糊查询-->
-    $(document).ready(function () {
-        $("#search").click(function () {
-            var laundryName = document.getElementById("laundryName").value;
-            if (laundryName == null || laundryName == "" || laundryName == undefined) {
-                layer.msg("输入内容不能为空！");
-            } else {
-                // console.log("ssssssss","sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-                window.location.href = "queryLaundryInfoByName/" + laundryName
-            }
-        });
-    });
-    </script>
+    <!-- 右侧主体结束 -->
+</div>
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+</div>
+<!-- 底部结束 -->
+<!-- 背景切换开始 -->
+<div class="bg-changer">
+    <div class="swiper-container changer-list">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+            <div class="swiper-slide"><span class="reset">初始化</span></div>
+        </div>
+    </div>
+    <div class="bg-out"></div>
+    <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
+</div>
+<!-- 背景切换结束 -->
+<!-- 页面动态效果 -->
 <script>
-        //百度统计可去掉
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-        </script>
+
+    // 用户-编辑
+    function edit(title,url,id,w,h) {
+        //handle/"003"
+        var url2 = url.replace('"','').slice(0,-1);
+        // alert(url2);
+        x_admin_show(title,url2,w,h);
+    }
+    //百度统计可去掉
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 <style>
     ul.pagination {
         display: inline-block;
