@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.xml.transform.Source;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -361,6 +363,31 @@ public class LaundryController {
     }
 
     /**
+     * 升级普通用户为店长
+     * @return
+     */
+    @RequestMapping("/upgradeUser/{userId}")
+    public String upgradeUser(@PathVariable("userId") String userId,Model model){
+        //查用户对应的信息
+        Map<String, Object> userInfo = loginMapper.upgradeUser(userId);
+        System.out.println(userInfo);
+        model.addAttribute("userInfo",userInfo);
+        return "upgrade";
+    }
+
+    @RequestMapping("/updateUserType")
+    @ResponseBody
+    public String updateUserType(@RequestParam Map<String,Object> param){
+        //更改用户类型
+        int i = loginMapper.updateUserType(param);
+        if(i>0){
+            return "success";
+        }else {
+            return "fail";
+        }
+    }
+
+    /**
      * 根据ID获取用户信息
      * @param userId
      * @return
@@ -621,6 +648,17 @@ public class LaundryController {
     public String notice(Model model){
         getUserInfo(model);
         getUrlOrImage(model,uId);
+        //查询公告
+        List<Map<String, Object>> noticeInfo = loginMapper.queryNoticeInfo();
+        DecimalFormat df = new DecimalFormat("###,###,###,##0");
+        //格式化数值
+        noticeInfo.forEach(map->{
+            String number = String.valueOf(map.get("number"));
+            BigDecimal bigDecimal = new BigDecimal(number);
+            String format = df.format(bigDecimal);
+            map.put("number",format);
+        });
+        model.addAttribute("noticeInfo",noticeInfo);
         return "notice";
     }
 

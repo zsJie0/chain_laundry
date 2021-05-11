@@ -166,6 +166,8 @@
                     <i class="layui-icon">&#xe640;</i>批量开除</button>
                 <button class="layui-btn" id="addOwner">
                     <i class="layui-icon">&#xe608;</i>升级为店长</button>
+                <a class="layui-btn" href="/queryUserList" style="background-color: goldenrod">
+                    <i class="layui-icon">&#xe650;</i>刷新</a>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
@@ -224,7 +226,7 @@
                         <td th:text="${user.get('LAUNDRY_NAME')}">
                         </td>
                         <td class="td-manage">
-                            <a title="查看资料" href="javascript:;" th:onclick="member_edit('查看资料','queryUserInfoById/[[${user.get('USER_ID')}]]','4','','520')"
+                            <a title="升级为店长" href="javascript:;" th:onclick="member_edit('升级账号','upgradeUser/[[${user.get('USER_ID')}]]','4','','500')"
                                class="ml-5" style="text-decoration:none">
                                 <i class="layui-icon">&#xe642;</i>
                             </a>
@@ -249,6 +251,9 @@
     </div>
     <!-- 中部结束 -->
     <!-- 底部开始 -->
+    <div class="footer">
+        <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    </div>
     <!-- 底部结束 -->
     <!-- 背景切换开始 -->
     <div class="bg-changer">
@@ -279,7 +284,7 @@
         $("#search").click(function () {
             var userName = document.getElementById("userName").value;
             if (userName == null || userName == "" || userName == undefined) {
-                layer.msg("输入内容不能为空！");
+                layer.alert("输入内容不能为空！");
             } else {
                 window.location.href = "queryUserInfoByName/"+userName
             }
@@ -300,31 +305,19 @@
     var checkOnes = document.getElementById("checkOne").querySelectorAll('input');
 //添加普通用户--------------------------------------------------------------------------------------------------------------------------------------------------------------
     $("#addOwner").click(function () {
-        var userIdNum = $("input[type='checkbox']:checked").length;
-        if (userIdNum <= 0) {
-            alert("请选择你要进行操作的用户");
-        } else {
-            var userIds = new Array();
-            $("input[type='checkbox']:checked").each(function () {
-                userIds.push($(this).val());
-            });
-            alert(userIds);
-            alert("确定开除编号为" + userIds + "的用户？");
-            // window.location.href = "deleteUserById?userIds="+userIds;
-            layer.alert("删除成功！")
-        }
+        layer.alert("请选择右侧操作栏按钮进行操作！")
     });
     //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
     $("#del").click(function () {
         var userIdNum = $("input[type='checkbox']:checked").length;
         if (userIdNum <= 0) {
-            alert("请选择你要开除用户");
+            layer.alert("请选择你要开除用户");
         } else {
             var userIds = new Array();
             $("input[type='checkbox']:checked").each(function () {
                 userIds.push($(this).val());
             });
-            alert(userIds);
+            // alert(userIds);
             alert("确定开除编号为" + userIds + "的用户？");
             window.location.href = "deleteUserById?userIds="+userIds;
             layer.alert("删除成功！")

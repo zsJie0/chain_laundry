@@ -235,4 +235,22 @@ public interface LoginMapper {
      */
     int updateMaterialById(@Param("mIds") String[] mIds,@Param("selectNumber") String selectNumber);
 
+    /**
+     * 查询公告
+     * @return
+     */
+    List<Map<String,Object>> queryNoticeInfo();
+
+    /**
+     * 升级为店长
+     * @return
+     */
+    Map<String,Object> upgradeUser(@Param("userId") String userId);
+
+    /**
+     * 更改用户类型
+     * @param param
+     * @return
+     */
+    int updateUserType(Map<String,Object> param);
 }

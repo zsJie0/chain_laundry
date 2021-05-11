@@ -435,4 +435,41 @@
         </foreach>
         and state_id = 1
     </update>
+<!--    查询公告    -->
+    <select id="queryNoticeInfo" resultType="java.util.Map">
+        SELECT
+            c.nDesc,
+            a.number
+        FROM
+            (
+                SELECT
+                    '003' AS 'nId',
+                    sum( MATERIAL_NUMBER ) number
+                FROM
+                    material
+                WHERE
+                    STATE_ID = 0 UNION ALL
+                SELECT
+                    '002',
+                    sum( MATERIAL_NUMBER ) number
+                FROM
+                    material
+                WHERE
+                    STATE_ID = 1 UNION ALL
+                SELECT
+                    '001',
+                    sum( laundry_id ) number
+                FROM
+                    laundry
+            ) a
+                LEFT JOIN ( SELECT * FROM ( SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info ) b ) c ON a.nId = c.nId
+    </select>
+<!--    升级普通用户为店长   -->
+    <select id="upgradeUser" resultType="java.util.Map">
+        SELECT USER_ID as userId,user_type as userType  FROM `user1` where user_id = #{userId}
+    </select>
+<!--    更改用户信息  -->
+    <update id="updateUserType">
+        update user1 set user_type = #{userType} where user_id =#{userId}
+    </update>
 </mapper>

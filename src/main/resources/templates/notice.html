@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ChainLaundry-处理</title>
+    <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="../css/font.css">
@@ -12,45 +12,269 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
     <script src="../lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/xadmin.js"></script>
-    <script src="../js/layui.js"></script>
-    <link rel="stylesheet" href="../css/layui.css" media="all">
+
 </head>
 <body>
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="/index" style="color: whitesmoke">连锁洗衣店管理系统</a></div>
+    <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+    <ul class="layui-nav right" lay-filter="">
+
+        <li class="layui-nav-item">
+            <a href="javascript:;">
+                <img th:src="${imageMap.get('image')}" class="layui-nav-img"/>
+                <span th:text="${imageMap.get('user_name')}"></span>
+            </a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <!--                <dd><a href="">个人信息</a></dd>-->
+                <dd><a href="/login" type="button" id="change">切换帐号</a></dd>
+                <dd><a href="/login">退出</a></dd>
+            </dl>
+        </li>
+        <!--        <li class="layui-nav-item"><a href="/">前台首页</a></li>-->
+    </ul>
+</div>
+<!-- 顶部结束 -->
 <!-- 中部开始 -->
 <div class="wrapper">
+    <!-- 左侧菜单开始 -->
+    <div class="left-nav">
+        <div id="side-nav">
+            <ul id="nav" lay-shrink="all">
+                <li class="list" current>
+                    <a href="/index">
+                        <i class="iconfont">&#xe761;</i>
+                        欢迎页面
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/queryUserList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        连锁店管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" >
+                        <li>
+                            <a href="/laundryList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                连锁店列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/settleIn">
+                                <i class="iconfont">&#xe6a7;</i>
+                                入驻管理
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        物资管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" style="display:none">
+                        <li>
+                            <a href="/queryMaterialInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                物资列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/ruWarehouse">
+                                <i class="iconfont">&#xe6a7;</i>
+                                入库管理
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/chuWarehouse">
+                                <i class="iconfont">&#xe6a7;</i>
+                                出库管理
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" >
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        公告管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu opened" >
+                        <li>
+                            <a href="/notice">
+                                <i class="iconfont">&#xe6a7;</i>
+                                轮播展示
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 左侧菜单结束 -->
+
     <!-- 右侧主体开始 -->
     <div class="page-content">
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <div class="layui-carousel" id="test1">
-                <div carousel-item>
-                    <div>条目1</div>
-                    <div>条目2</div>
-                    <div>条目3</div>
-                    <div>条目4</div>
-                    <div>条目5</div>
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: wheat;background:#2F4056">
+                温馨提示：系统只对重要事件予以公告展示
+            </blockquote>
+<!--            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black;background-color: wheat">-->
+<!--                温馨提示：ChainLaundry每个页面都可以独立设置一个背景主题，如果每个都设置会比较消耗本地的存储，如果想全部恢复，请重置。-->
+<!--            </blockquote>-->
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+                <legend>公告轮播</legend>
+            </fieldset>
+            <div class="layui-carousel" id="test2" style="margin-top: 15px;">
+                <div carousel-item="lb">
+                    <div style="background:#2F4056" th:each="notice:${noticeInfo}">
+                        <div style="margin-top: 100px;margin-left: 100px;margin-right: 50px">
+                            <div style="padding-bottom: 50px;padding-left: 20px;padding-right: 20px">
+                                <span style="color:wheat;font-size: 25px">
+                                    <span th:text="${notice.get('nDesc')}"></span>
+                                     <span th:text="${notice.get('number')}" style="color:red;font-size: 30px"></span>
+                                     <span style="color:wheat;font-size: 25px">个</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <!-- 右侧内容框架，更改从这里结束 -->
+            </div><!-- 右侧内容框架，更改从这里结束 -->
         </div>
     </div>
     <!-- 右侧主体结束 -->
 </div>
 <!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+</div>
+<!-- 底部结束 -->
+<!-- 背景切换开始 -->
+<div class="bg-changer">
+    <div class="swiper-container changer-list">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+            <div class="swiper-slide"><span class="reset">初始化</span></div>
+        </div>
+    </div>
+    <div class="bg-out"></div>
+    <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
+</div>
+<!-- 背景切换结束 -->
+<script src="../js/layui.js"></script>
+<link rel="stylesheet" href="../css/layui.css" media="all">
 <script>
-    <!-- 条目中可以是任意内容，如：<img src=""> -->
-    layui.use('carousel', function(){
-        var carousel = layui.carousel;
-        //建造实例
+    layui.use(['carousel', 'form'], function(){
+        var carousel = layui.carousel
+            ,form = layui.form;
+
+        //改变下时间间隔、动画类型、高度
         carousel.render({
-            elem: '#test1'
-            ,width: '100%' //设置容器宽度
-            ,arrow: 'always' //始终显示箭头
-            //,anim: 'updown' //切换动画方式
+            elem: '#test2'
+            ,interval: 2000
+            ,anim: 'fade'
+            ,width: '750px'
+            ,height:'300px'
+            // ,height: '120px'
+        });
+
+        //设定各种参数
+        var ins3 = carousel.render({
+            elem: '#test3'
+        });
+        //图片轮播
+        carousel.render({
+            elem: '#test10'
+            ,width: '778px'
+            ,height: '440px'
+            ,interval: 5000
+        });
+
+        //事件
+        carousel.on('change(test4)', function(res){
+            console.log(res)
+        });
+
+        var $ = layui.$, active = {
+            set: function(othis){
+                var THIS = 'layui-bg-normal'
+                    ,key = othis.data('key')
+                    ,options = {};
+
+                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
+                options[key] = othis.data('value');
+                ins3.reload(options);
+            }
+        };
+
+        //监听开关
+        form.on('switch(autoplay)', function(){
+            ins3.reload({
+                autoplay: this.checked
+            });
+        });
+
+        $('.demoSet').on('keyup', function(){
+            var value = this.value
+                ,options = {};
+            if(!/^\d+$/.test(value)) return;
+
+            options[this.name] = value;
+            ins3.reload(options);
+        });
+
+        //其它示例
+        $('.demoTest .layui-btn').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
         });
     });
-
-
+</script>
+<script>
     //百度统计可去掉
     var _hmt = _hmt || [];
     (function() {
