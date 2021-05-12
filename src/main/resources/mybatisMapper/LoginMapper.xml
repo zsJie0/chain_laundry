@@ -76,12 +76,14 @@
             u.user_type,
             u.laundry_id,
             u.evaluate,
-            l.laundry_name
+            l.laundry_name,
+            l.laundry_position
         FROM
             user1 u
             LEFT JOIN laundry l ON u.laundry_id = l.laundry_id
             where user_id = #{userId}
     </select>
+
 <!--    根据洗衣店id查询洗衣店-->
     <select id="queryLaundryById" resultType="java.util.Map">
         SELECT
@@ -111,6 +113,37 @@
     FROM
         laundry l
         LEFT JOIN ( SELECT count( LAUNDRY_ID ) AS "numberOfUser", LAUNDRY_ID AS "laundry_id" FROM user1 GROUP BY LAUNDRY_ID ) u ON u.laundry_id = l.LAUNDRY_ID
+    </select>
+<!--    主页 普通管理员/普通用户的show  -->
+    <select id="queryIndexShowPT" resultType="java.util.Map">
+        SELECT
+            t1.clothesCount,
+            t2.orderCount
+        FROM
+            (
+                SELECT
+                    sum( c.CLOTHES_TYPE_NUMBER ) AS clothesCount
+                FROM
+                    `order` o
+                        LEFT JOIN clothes_type c ON o.CLOTHES_TYPE_ID = c.CLOTHES_TYPE_ID
+                WHERE
+                    LAUNDRY_ID = #{laundryId}
+            ) t1,
+            (
+                SELECT
+                    count( * ) AS orderCount
+                FROM
+                    (
+                        SELECT
+                            c.CLOTHES_TYPE_NAME,
+                            c.CLOTHES_TYPE_NUMBER
+                        FROM
+                            `order` o
+                                LEFT JOIN clothes_type c ON o.CLOTHES_TYPE_ID = c.CLOTHES_TYPE_ID
+                        WHERE
+                            LAUNDRY_ID =  #{laundryId}
+                    ) a
+            ) t2
     </select>
 <!--查询总的营业额-->
     <select id="queryTurnover" resultType="java.util.Map">
@@ -211,6 +244,25 @@
         WHERE
             USER_ID != #{uId}
     </select>
+    <!--查询所有普通用户信息-->
+    <select id="queryAllUserInfoPT" resultType="java.util.Map">
+        SELECT
+            u.USER_ID,
+            u.USER_NAME,
+            u.USER_AGE,
+            u.USER_SEX,
+            u.USER_TYPE,
+            u.PHONE,
+            l.LAUNDRY_NAME,
+            u.TIME
+        FROM
+            user1 u
+                LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+        WHERE
+            USER_ID != #{uId}
+            and u.LAUNDRY_ID = #{laundryId}
+    </select>
+
 <!--    根据用户name模糊查询用户列表-->
     <select id="queryUserInfoByName" resultType="java.util.Map">
         <bind name="userName" value=" '%' + userName + '%' "/>
@@ -221,8 +273,7 @@
             u.USER_SEX,
             u.USER_TYPE,
             u.PHONE,
-            l.LAUNDRY_NAME,
-            u.IMAGE
+            l.LAUNDRY_NAME
         FROM
             user1 u
             LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
@@ -472,6 +523,33 @@
             ) a
                 LEFT JOIN ( SELECT * FROM ( SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info ) b ) c ON a.nId = c.nId
     </select>
+<!--    查询普通管理员/普通用户公告  -->
+    <select id="queryNoticeInfoPT" resultType="java.util.Map">
+        SELECT
+            t2.nDesc,
+            t1.number
+        FROM
+            (
+                SELECT
+                    '005' AS 'nId',
+                    count( * ) number
+                FROM
+                    `order`
+                WHERE
+                    order_time =  #{date}
+                  AND laundry_id = #{laundryId} UNION ALL
+                SELECT
+                    '004',
+                    count( * ) number
+                FROM
+                    `order`
+                WHERE
+                    order_time =  #{date}
+                  AND laundry_id =  #{laundryId}
+                  AND state_id = 1
+            ) t1
+                LEFT JOIN (SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info WHERE spare = "1" ) t2 ON t1.nId = t2.nId
+    </select>
 <!--    升级普通用户为店长   -->
     <select id="upgradeUser" resultType="java.util.Map">
         SELECT USER_ID as userId,user_type as userType  FROM `user1` where user_id = #{userId}
@@ -480,4 +558,53 @@
     <update id="updateUserType">
         update user1 set user_type = #{userType} where user_id =#{userId}
     </update>
+<!--    查询订单信息  -->
+    <select id="queryOrderInfo" resultType="java.util.Map">
+        select
+            o.ORDER_ID  id,
+            o.ORDER_USER  user,
+            o.ORDER_ID name,
+            o.ORDER_USER_PHONE phone,
+            o.ORDER_TIME time,
+            o.ORDER_USER_ADDRESS address,
+            o.note,
+            o.PAYMENT_METHOD method,
+            o.TOTAL total,
+            o.state_id sId,
+            s.state_name sName
+            from `order` o left join order_state s on o.state_id = s.state_id
+            where laundry_id = #{laundryId}
+    </select>
+<!--  模糊查询订单信息  -->
+    <select id="queryOrderInfoByState" resultType="java.util.Map">
+        <bind name="state" value=" '%' + state + '%' "/>
+        select
+        o.ORDER_ID  id,
+        o.ORDER_USER  user,
+        o.ORDER_ID name,
+        o.ORDER_USER_PHONE phone,
+        o.ORDER_TIME time,
+        o.ORDER_USER_ADDRESS address,
+        o.note,
+        o.PAYMENT_METHOD method,
+        o.TOTAL total,
+        o.state_id sId,
+        s.state_name sName
+        from `order` o left join order_state s on o.state_id = s.state_id
+        where s.state_name like #{state}
+        and laundry_id = #{laundryId}
+    </select>
+<!--  更新订单的状态  -->
+    <update id="updateOrderState">
+        update `order`
+        set state_id = state_id +1
+        where ORDER_ID in
+        <foreach collection="orderIds" item="orderId" separator="," open="(" close=")">
+            #{orderId}
+        </foreach>
+    </update>
+<!--    查询超级管理员电话   -->
+    <select id="queryPhone" resultType="java.util.Map">
+        select phone as cgPhone from user1 where user_type = "超级管理员" and evaluate = "1"
+    </select>
 </mapper>

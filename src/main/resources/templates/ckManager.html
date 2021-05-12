@@ -76,7 +76,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list">
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true ">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         连锁店管理
@@ -103,7 +103,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true " >
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         物资管理

@@ -49,7 +49,7 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" >
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
@@ -76,7 +76,34 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list">
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通管理员'? false:true">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/queryUserList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true ">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         连锁店管理
@@ -103,7 +130,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true ">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         物资管理
@@ -145,8 +172,21 @@
                         </li>
                     </ul>
                 </li>
-
-
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false ">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        订单管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" >
+                        <li>
+                            <a href="/queryOrderInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                订单列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -158,7 +198,10 @@
             <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
                 欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('user_type')}"></span>
             </blockquote>
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false">
+                当前所登录的连锁店为：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('laundry_name')}"></span>
+            </blockquote>
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 温馨提示：ChainLaundry每个页面都可以独立设置一个背景主题，如果每个都设置会比较消耗本地的存储，如果想全部恢复，请重置。
             </blockquote>
             <fieldset class="layui-elem-field layui-field-title site-title">
@@ -187,14 +230,14 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="page">
+            <div class="page" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 <ul class="pagination">
                     <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
                         <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
                     <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
                 </ul>
             </div>
-            <fieldset class="layui-elem-field layui-field-title site-title">
+            <fieldset class="layui-elem-field layui-field-title site-title" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 今日营业总额：<span th:text="${turnoverMap.get('sumOfTurnover')}"></span>元
             </fieldset>
         </div>

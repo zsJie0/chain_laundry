@@ -428,4 +428,15 @@ public final class CommonUtils {
         return result;
     }
 
+    /**
+     * 获取当前日期（yyyyMMdd形式）
+     * @return
+     */
+    public static String currentTime(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String format = sdf.format(date);
+
+        return format;
+    }
 }

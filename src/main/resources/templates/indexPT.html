@@ -17,7 +17,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="/index" style="color: whitesmoke">连锁洗衣店管理系统</a></div>
+    <div class="logo"><a href="/index">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
 
@@ -49,7 +49,34 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/queryUserList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                用户列表
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通管理员'? false:true">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
@@ -92,7 +119,7 @@
                         <li>
                             <a href="/settleIn">
                                 <i class="iconfont">&#xe6a7;</i>
-                                入驻管理
+                                入驻审核管理
                             </a>
                         </li>
                         <li>
@@ -136,7 +163,7 @@
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
+                    <ul class="sub-menu" >
                         <li>
                             <a href="/notice">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -164,32 +191,44 @@
         </div>
     </div>
     <!-- 左侧菜单结束 -->
-
     <!-- 右侧主体开始 -->
     <div class="page-content">
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: wheat;background:#2F4056">
-                温馨提示：系统只对重要事件予以公告展示
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
+                欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('user_type')}"></span>
+                如果您相对自己的身份进行变更，请致电：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('cgPhone')}"></span>
             </blockquote>
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                <legend>公告轮播</legend>
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
+                当前所登录的连锁店为：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('laundry_name')}"></span>
+            </blockquote>
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
+                温馨提示：ChainLaundry每个页面都可以独立设置一个背景主题，如果每个都设置会比较消耗本地的存储，如果想全部恢复，请重置。
+            </blockquote>
+            <fieldset class="layui-elem-field layui-field-title site-title">
+                <legend><a name="default">本店信息统计</a></legend>
             </fieldset>
-            <div class="layui-carousel" id="test2" style="margin-top: 15px;">
-                <div carousel-item="lb">
-                    <div style="background:#2F4056" th:each="notice:${noticeInfo}">
-                        <div style="margin-top: 100px;margin-left: 100px;margin-right: 50px">
-                            <div style="padding-bottom: 50px;padding-left: 20px;padding-right: 20px">
-                                <span style="color:wheat;font-size: 25px">
-                                    <span th:text="${notice.get('nDesc')}"></span>
-                                     <span th:text="${notice.get('number')}" style="color:red;font-size: 30px"></span>
-                                     <span style="color:wheat;font-size: 25px">个</span>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!-- 右侧内容框架，更改从这里结束 -->
+            <table class="layui-table">
+                <thead>
+                <tr>
+                    <th>洗衣店编号</th>
+                    <th>洗衣店名称</th>
+                    <th>洗衣店位置</th>
+                    <th>订单量</th>
+                    <th>衣物量</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--                <tr th:each="laundry:${pageInfo.list}">-->
+                <tr>
+                    <td th:text="${userMap.get('laundry_id')}"></td>
+                    <td th:text="${userMap.get('laundry_name')}"></td>
+                    <td th:text="${userMap.get('laundry_position')}"></td>
+                    <td th:text="${showList.get('orderCount')}"></td>
+                    <td th:text="${showList.get('clothesCount')}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
     <!-- 右侧主体结束 -->
@@ -204,17 +243,17 @@
 <div class="bg-changer">
     <div class="swiper-container changer-list">
         <div class="swiper-wrapper">
-            <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
-            <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/a.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/b.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/c.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/d.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/e.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/f.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/g.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/h.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/i.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/j.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="../images/k.jpg" alt=""></div>
             <div class="swiper-slide"><span class="reset">初始化</span></div>
         </div>
     </div>
@@ -222,75 +261,6 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <!-- 背景切换结束 -->
-<script src="../js/layui.js"></script>
-<link rel="stylesheet" href="../css/layui.css" media="all">
-<script>
-    layui.use(['carousel', 'form'], function(){
-        var carousel = layui.carousel
-            ,form = layui.form;
-
-        //改变下时间间隔、动画类型、高度
-        carousel.render({
-            elem: '#test2'
-            ,interval: 2000
-            ,anim: 'fade'
-            ,width: '750px'
-            ,height:'300px'
-            // ,height: '120px'
-        });
-
-        //设定各种参数
-        var ins3 = carousel.render({
-            elem: '#test3'
-        });
-        //图片轮播
-        carousel.render({
-            elem: '#test10'
-            ,width: '778px'
-            ,height: '440px'
-            ,interval: 5000
-        });
-
-        //事件
-        carousel.on('change(test4)', function(res){
-            console.log(res)
-        });
-
-        var $ = layui.$, active = {
-            set: function(othis){
-                var THIS = 'layui-bg-normal'
-                    ,key = othis.data('key')
-                    ,options = {};
-
-                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
-                options[key] = othis.data('value');
-                ins3.reload(options);
-            }
-        };
-
-        //监听开关
-        form.on('switch(autoplay)', function(){
-            ins3.reload({
-                autoplay: this.checked
-            });
-        });
-
-        $('.demoSet').on('keyup', function(){
-            var value = this.value
-                ,options = {};
-            if(!/^\d+$/.test(value)) return;
-
-            options[this.name] = value;
-            ins3.reload(options);
-        });
-
-        //其它示例
-        $('.demoTest .layui-btn').on('click', function(){
-            var othis = $(this), type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
-        });
-    });
-</script>
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
@@ -301,5 +271,29 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
+<style>
+    ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {display: inline;}
+
+    ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+    }
+
+    ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+</style>
 </body>
 </html>

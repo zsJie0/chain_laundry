@@ -60,6 +60,12 @@ public interface LoginMapper {
     List<Map<String,Object>> queryIndexShow();
 
     /**
+     * 普通管理员/用户主页显示
+     * @return
+     */
+    Map<String,Object> queryIndexShowPT(@Param("laundryId") String laundryId);
+
+    /**
      * 查询营业额
      * @return
      */
@@ -94,6 +100,12 @@ public interface LoginMapper {
      * 查询所有用户的信息
      */
     List<Map<String,Object>> queryAllUserInfo(@Param("uId") String uId);
+
+    /**
+     * 查询所有普通用户的信息
+     */
+    List<Map<String,Object>> queryAllUserInfoPT(@Param("uId") String uId,@Param("laundryId") String laundryId);
+
 
     /**
      * 根据name模糊查询用户信息
@@ -242,6 +254,12 @@ public interface LoginMapper {
     List<Map<String,Object>> queryNoticeInfo();
 
     /**
+     * 查询普通管理员/员工的公告
+     * @return
+     */
+    List<Map<String,Object>> queryNoticeInfoPT(@Param("date") String date,@Param("laundryId") String laundryId);
+
+    /**
      * 升级为店长
      * @return
      */
@@ -266,4 +284,27 @@ public interface LoginMapper {
      * @return
      */
     List<Map<String,Object>> queryLaundryByPosition(@Param("position") String position);
+
+    /**
+     * 查询订单信息
+     */
+    List<Map<String,Object>> queryOrderInfo(@Param("laundryId") String laundryId);
+
+    /**
+     * 模糊查询订单信息
+     * @return
+     */
+    List<Map<String,Object>> queryOrderInfoByState(@Param("state") String state,@Param("laundryId") String laundryId);
+
+    /**
+     * 更新订单状态
+     * @param orderIds
+     * @return
+     */
+    int updateOrderState(@Param("orderIds") String[] orderIds);
+
+    /**
+     * 查询超管电话
+     */
+    Map<String,Object> queryPhone();
 }

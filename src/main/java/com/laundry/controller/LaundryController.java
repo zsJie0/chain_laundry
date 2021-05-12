@@ -151,18 +151,32 @@ public class LaundryController {
     public String index(Model model,
                         @RequestParam(required = false, defaultValue = "1") int page,
                         @RequestParam(required = false, defaultValue = "4") int pageSize){
-        System.out.println(uId);
+        Map<String, Object> userMap = loginMapper.queryUserById(uId);
         getUserInfo(model);
         getUrlOrImage(model,uId);
         //总营业额
         Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
         model.addAttribute("turnoverMap",queryTurnoverMap);
-        //分页
-        PageHelper.startPage(page,pageSize);
-        //主页显示
-        List<Map<String, Object>> showList = loginService.queryIndexShow();
-        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(showList);
-        model.addAttribute("pageInfo", pageInfo);
+        //权限判断
+        if(isPT(model)){
+            //分页
+            PageHelper.startPage(page,pageSize);
+            //主页显示
+            List<Map<String, Object>> showList = loginService.queryIndexShow();
+            PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(showList);
+            model.addAttribute("pageInfo", pageInfo);
+        }else {
+            //主页显示
+            Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
+            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
+                showList.put("clothesCount","-");
+            }
+            if(CommonUtils.isEmpty(showList)){
+                showList = new HashMap();
+            }
+            model.addAttribute("showList", showList);
+            return "indexPT";
+        }
         return "index";
     }
 
@@ -253,13 +267,14 @@ public class LaundryController {
                                 @RequestParam(required = false, defaultValue = "1") int page,
                                 @RequestParam(required = false, defaultValue = "4") int pageSize){
         uId = userId;
+        getUserInfo(model);
         getUrlOrImage(model,userId);
         Map<String, Object> userMap = loginMapper.queryUserById(userId);
-        if(!CommonUtils.isEmpty(userMap)){
-            model.addAttribute("userMap",userMap);
-            //总营业额
-            Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
-            model.addAttribute("turnoverMap",queryTurnoverMap);
+        //总营业额
+        Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
+        model.addAttribute("turnoverMap",queryTurnoverMap);
+        //判断权限
+        if("超级管理员".equals(userMap.get("user_type"))){
             //分页
             PageHelper.startPage(page,pageSize);
             //主页显示
@@ -269,6 +284,17 @@ public class LaundryController {
             }
             PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(showList);
             model.addAttribute("pageInfo", pageInfo);
+        }else {
+            //主页显示
+            Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
+            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
+                showList.put("clothesCount","-");
+            }
+            if(CommonUtils.isEmpty(showList)){
+                showList = new HashMap();
+            }
+            model.addAttribute("showList", showList);
+            return "indexPT";
         }
         return "index";
     }
@@ -366,11 +392,22 @@ public class LaundryController {
                                 @RequestParam(required = false, defaultValue = "5") int pageSize){
         getUserInfo(model);
         getUrlOrImage(model,uId);
-        //分页
-        PageHelper.startPage(page,pageSize);
-        List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfo(uId);
-        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
-        model.addAttribute("pageInfo",pageInfo);
+        //权限判断
+        if (isPT(model)){
+            //分页
+            PageHelper.startPage(page,pageSize);
+            List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfo(uId);
+            PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
+            model.addAttribute("pageInfo",pageInfo);
+        }else {
+            Map<String, Object> userMapInfo = loginMapper.queryUserById(uId);
+            //分页
+            PageHelper.startPage(page,pageSize);
+            List<Map<String, Object>> userInfo = loginMapper.queryAllUserInfoPT(uId, String.valueOf(userMapInfo.get("laundry_id")));
+            PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(userInfo);
+            model.addAttribute("pageInfo",pageInfo);
+            return "userListPT";
+        }
         return "userList";
     }
 
@@ -686,6 +723,96 @@ public class LaundryController {
     public String notice(Model model){
         getUserInfo(model);
         getUrlOrImage(model,uId);
+        List<Map<String, Object>> noticeInfo = new ArrayList<>();
+        //权限判断
+        if(isPT(model)){
+            //查询公告
+            noticeInfo = loginMapper.queryNoticeInfo();
+
+        }else {
+            Map<String, Object> userMap = loginMapper.queryUserById(uId);
+            noticeInfo =  loginMapper.queryNoticeInfoPT(CommonUtils.currentTime(),String.valueOf(userMap.get("laundry_id")));
+        }
+        DecimalFormat df = new DecimalFormat("###,###,###,##0");
+        //格式化数值
+        noticeInfo.forEach(map->{
+            String number = String.valueOf(map.get("number"));
+            BigDecimal bigDecimal = new BigDecimal(number);
+            String format = df.format(bigDecimal);
+            map.put("number",format);
+        });
+        model.addAttribute("noticeInfo",noticeInfo);
+        return "notice";
+    }
+
+    /**
+     * 订单管理页面
+     * @return
+     */
+    @RequestMapping("/queryOrderInfo")
+    public String queryOrderInfo(Model model,
+                               @RequestParam(required = false, defaultValue = "1") int page,
+                               @RequestParam(required = false, defaultValue = "3") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        PageHelper.startPage(page,pageSize);
+        Map<String, Object> userMap = loginMapper.queryUserById(uId);
+        List<Map<String, Object>> orderInfo = loginMapper.queryOrderInfo(String.valueOf(userMap.get("laundry_id")));
+        orderInfo.forEach(map ->{
+            String formatTime = CommonUtils.dateTransformation(String.valueOf(map.get("time")));
+            map.put("time",formatTime);
+        });
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(orderInfo);
+        model.addAttribute("pageInfo",pageInfo);
+        return "orderList";
+    }
+
+    /**
+     * 模糊查询订单信息
+     * @param state
+     * @param model
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/queryOrderInfoByState/{state}")
+    public String queryOrderInfoByState(@PathVariable String state, Model model,
+                                      @RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "3") int pageSize){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        Map<String, Object> userMap = loginMapper.queryUserById(uId);
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> orderInfo = loginMapper.queryOrderInfoByState(state,String.valueOf(userMap.get("laundry_id")));
+        orderInfo.forEach(map ->{
+            String formatTime = CommonUtils.dateTransformation(String.valueOf(map.get("time")));
+            map.put("time",formatTime);
+        });
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(orderInfo);
+        model.addAttribute("pageInfo",pageInfo);
+        return "orderList";
+    }
+
+    /**
+     *处理订单状态
+     * @return
+     */
+    @RequestMapping("/handleState")
+    public String handleState( String[] orderIds){
+        //点击处理之后执行
+        //更新所选订单的状态
+        int i = loginMapper.updateOrderState(orderIds);
+        return "redirect:queryOrderInfo";
+    }
+
+    /**
+     * 普通用户/管理员的公告管理
+     * @return
+     */
+    @RequestMapping("/noticePT")
+    public String noticePT(Model model){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
         //查询公告
         List<Map<String, Object>> noticeInfo = loginMapper.queryNoticeInfo();
         DecimalFormat df = new DecimalFormat("###,###,###,##0");
@@ -707,6 +834,9 @@ public class LaundryController {
     public void getUserInfo(Model model){
         if(!"".equals(uId)) {
             Map<String, Object> userMap = loginMapper.queryUserById(uId);
+            //查询超管电话
+            Map<String, Object> phoneMap = loginMapper.queryPhone();
+            userMap.put("cgPhone",String.valueOf(phoneMap.get("cgPhone")));
             String time = CommonUtils.defaultValueOfObjects(userMap.get("time"),"");
             String formatTime = CommonUtils.dateTransformation(time);
             userMap.put("time",formatTime);
@@ -740,4 +870,25 @@ public class LaundryController {
         Map<String, Object> imageMap = loginMapper.queryImageById(userId);
         model.addAttribute("imageMap",imageMap);
     }
+
+
+    /**
+     * 判断是否为普通管理员/用户
+     * @return
+     */
+    public boolean isPT(Model model){
+        if(!"".equals(uId)) {
+            Map<String, Object> userMap = loginMapper.queryUserById(uId);
+            if("超级管理员".equals(userMap.get("user_type"))){
+                return true;
+            }else {
+                //主页显示
+                Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
+                model.addAttribute("showList",showList);
+            }
+        }
+        return false;
+    }
+
+
 }

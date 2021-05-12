@@ -49,13 +49,13 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" >
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通管理员'? false:true ">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu">
+                    <ul class="sub-menu ">
                         <li>
                             <a href="/queryUserList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -82,7 +82,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
+                    <ul class="sub-menu" >
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -101,7 +101,6 @@
                                 定位管理
                             </a>
                         </li>
-
                     </ul>
                 </li>
                 <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true ">
@@ -146,6 +145,22 @@
                         </li>
                     </ul>
                 </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false ">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        订单管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu opened" >
+                        <li>
+                            <a href="/queryOrderInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                订单列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -155,12 +170,15 @@
         <div class="page-content">
           <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <form class="layui-form xbs" action="" >
+              <fieldset class="layui-elem-field layui-field-title site-title">
+                  <legend><a name="default">订单处理</a></legend>
+              </fieldset>
+            <form class="layui-form-pane">
                 <div class="layui-form-pane" style="text-align: center;">
                   <div class="layui-form-item" style="display: inline-block;">
                       <label class="layui-form-label xbs768">查询</label>
                     <div class="layui-input-inline">
-                        <input type="text"  placeholder="请输入连锁店名称" autocomplete="on" class="layui-input" id="laundryName">
+                        <input type="text"  placeholder="根据订单状态查询" autocomplete="on" class="layui-input" id="state">
                     </div>
                     <div class="layui-input-inline" style="width:80px">
                         <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>
@@ -169,7 +187,11 @@
                 </div> 
             </form>
             <xblock>
-                <span style="font-weight: bold;color: black">
+                <button class="layui-btn layui-btn-danger" id="handle" style="background-color: brown">
+                    <i class="layui-icon">&#xe650;</i>批量处理</button>
+                <a class="layui-btn layui-btn-danger" href="/queryOrderInfo" style="background-color: sandybrown">
+                    <i class="layui-icon">&#xe650;</i>刷新</a>
+                <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
                 </span>
@@ -179,57 +201,59 @@
                 <thead>
                     <tr>
                         <th>
-                            连锁店编号
+                            <input type="checkbox" id="checkAll">
                         </th>
                         <th>
-                            名称
+                            订单编号
                         </th>
                         <th>
-                            管理店长
+                            下单人
                         </th>
                         <th>
                             联系方式
                         </th>
                         <th>
-                            位置
+                            下单时间
                         </th>
                         <th>
-                            信誉度
+                            下单地址
                         </th>
                         <th>
-                            营业额
+                            备注
                         </th>
                         <th>
-                            申请入驻时间
+                            支付方式
                         </th>
                         <th>
-                            状态
+                            总计
+                        </th>
+                        <th>
+                            订单状态
                         </th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr th:each="laundry:${pageInfo.list}">
-                        <td th:text="${laundry.get('laundry_id')}">
+                <tbody id="checkOne">
+                    <tr th:each="order:${pageInfo.list}">
+                        <td>
+                            <input type="checkbox" th:value="${order.get('id')}"/>
                         </td>
-                        <td th:text="${laundry.get('laundry_name')}">
+                        <td th:text="${order.get('id')}" id="userId">
                         </td>
-                        <td th:text="${laundry.get('user_name')}">
+                        <td th:text="${order.get('user')}">
                         </td>
-                        <td th:text="${laundry.get('phone')}">
+                        <td th:text="${order.get('phone')}">
                         </td>
-                        <td th:text="${laundry.get('laundry_position')}">
+                        <td th:text="${order.get('time')}">
                         </td>
-                        <td th:text="${laundry.get('credit')}">
-
+                        <td th:text="${order.get('address')}">
                         </td>
-                        <td th:text="${laundry.get('turnover')}">
-
+                        <td th:text="${order.get('note')}">
                         </td>
-                        <td th:text="${laundry.get('sqtime')}">
+                        <td th:text="${order.get('method')}">
                         </td>
-                        <td class="td-status">
-                            <span class="layui-btn layui-btn-normal layui-btn-mini"th:text="${laundry.get('state_name')}">
-                            </span>
+                        <td th:text="${order.get('total')}">
+                        </td>
+                        <td th:text="${order.get('sName')}">
                         </td>
                     </tr>
                 </tbody>
@@ -276,20 +300,60 @@
     <!-- 背景切换结束 -->
     <!-- 页面动态效果 -->
     <script>
-    <!--模糊查询-->
+    // --模糊查询----------------------------------------------------------------------------------------------------------------------------------------------------
     $(document).ready(function () {
         $("#search").click(function () {
-            var laundryName = document.getElementById("laundryName").value;
-            if (laundryName == null || laundryName == "" || laundryName == undefined) {
-                layer.msg("输入内容不能为空！");
+            var state = document.getElementById("state").value;
+            if (state == null || state == "" || state == undefined) {
+                layer.alert("输入内容不能为空！");
             } else {
-                // console.log("ssssssss","sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss")
-                window.location.href = "queryLaundryInfoByName/" + laundryName
+                window.location.href = "queryOrderInfoByState/"+state
             }
         });
     });
-    </script>
-<script>
+    //获取事件源
+    var del = document.getElementById("handle");
+    var checkAll = document.getElementById("checkAll");
+    var checkOnes = document.getElementById("checkOne").querySelectorAll('input');
+    //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
+    $("#handle").click(function () {
+        var orderIdNum = $("input[type='checkbox']:checked").length;
+        if (orderIdNum <= 0) {
+            layer.alert("请选择你要处理的订单");
+        } else {
+            var orderIds = new Array();
+            $("input[type='checkbox']:checked").each(function () {
+                orderIds.push($(this).val());
+            });
+            orderIds= orderIds.filter((x) => x !== 'on');
+            setTimeout(window.location.href = "handleState?orderIds="+orderIds,3000);
+        }
+    });
+    //-----复选框全选------------------------------------------------------------------------------------------------------------------------------------------------------
+    //点击全选按钮，下面所有的按钮的状态跟随全选按钮的状态
+    checkAll.onclick = function () {
+        //tbody里面每一个按钮都没选中 for循环每个
+        for(var i=0;i<checkOnes.length;i++){
+            checkOnes[i].checked = checkAll.checked;
+        }
+    };
+    //小按钮点击事件
+    for(var i=0;i<checkOnes.length;i++){
+        checkOnes[i].onclick = function () {
+            //检测全选按钮的状态，默认没有选中
+            var flag = false;
+            for(var i=0;i<checkOnes.length;i++){
+                //按钮中有一个没选择
+                if(!checkOnes[i].checked){
+                    flag = false;
+                    break;
+                }
+            }
+            //检测完之后设置全选按钮的状态
+            checkAll.checked = flag;
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------
         //百度统计可去掉
         var _hmt = _hmt || [];
         (function() {
@@ -298,7 +362,7 @@
           var s = document.getElementsByTagName("script")[0]; 
           s.parentNode.insertBefore(hm, s);
         })();
-        </script>
+    </script>
 <style>
     ul.pagination {
         display: inline-block;

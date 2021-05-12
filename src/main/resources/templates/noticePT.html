@@ -49,7 +49,7 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                <li class="list" >
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
@@ -139,6 +139,14 @@
                     <ul class="sub-menu opened" >
                         <li>
                             <a href="/notice">
+                                <i class="iconfont">&#xe6a7;</i>
+                                轮播展示
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="sub-menu opened" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false ">
+                        <li>
+                            <a href="/noticePT">
                                 <i class="iconfont">&#xe6a7;</i>
                                 轮播展示
                             </a>
