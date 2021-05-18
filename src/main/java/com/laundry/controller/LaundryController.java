@@ -269,6 +269,8 @@ public class LaundryController {
         uId = userId;
         getUserInfo(model);
         getUrlOrImage(model,userId);
+        //更新Order表数据 日期
+        loginMapper.updateOrderTime(CommonUtils.currentTime());
         Map<String, Object> userMap = loginMapper.queryUserById(userId);
         //总营业额
         Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
@@ -487,8 +489,12 @@ public class LaundryController {
     public String queryUserList(Model model){
         getUserInfo(model);
         getUrlOrImage(model,uId);
+        if(isPY(model)){
+            return "userInfoPT";
+        }
         return "userInfo";
     }
+
 
     /**
      * 修改个人信息
@@ -520,8 +526,13 @@ public class LaundryController {
     public String updatePwd(Model model,@RequestParam Map<String,Object> param) {
         getUserInfo(model);
         getUrlOrImage(model, uId);
+        //权限判断
+        if(isPY(model)){
+            return "updatePwdPT";
+        }
         return "updatePwd";
     }
+
 
     /**
      * 修改密码
@@ -741,8 +752,28 @@ public class LaundryController {
             String format = df.format(bigDecimal);
             map.put("number",format);
         });
+        List<Map<String, Object>> noticeY = new ArrayList<>();
+        //查询其他可发布的公告
+        if("普通员工".equals(getUserType())){
+            noticeY = loginMapper.queryNoticeY("普通管理员");
+        }else {
+            noticeY = loginMapper.queryNoticeY(getUserType());
+        }
+
+        model.addAttribute("noticeY",noticeY);
         model.addAttribute("noticeInfo",noticeInfo);
         return "notice";
+    }
+
+    /**
+     * 发布公告
+     * @return
+     */
+    @RequestMapping("/updateNotice")
+    public String updateNoticeById(String[] noticeIdList){
+        System.out.println(Arrays.asList(noticeIdList));
+        loginMapper.updateNoticeById(noticeIdList);
+        return "redirect:queryNoticeList";
     }
 
     /**
@@ -805,27 +836,74 @@ public class LaundryController {
         return "redirect:queryOrderInfo";
     }
 
+
     /**
      * 普通用户/管理员的公告管理
      * @return
      */
-    @RequestMapping("/noticePT")
-    public String noticePT(Model model){
+//    @RequestMapping("/noticePT")
+//    public String noticePT(Model model){
+//        getUserInfo(model);
+//        getUrlOrImage(model,uId);
+//        //查询公告
+//        List<Map<String, Object>> noticeInfo = loginMapper.queryNoticeInfo();
+//        DecimalFormat df = new DecimalFormat("###,###,###,##0");
+//        //格式化数值
+//        noticeInfo.forEach(map->{
+//            String number = String.valueOf(map.get("number"));
+//            BigDecimal bigDecimal = new BigDecimal(number);
+//            String format = df.format(bigDecimal);
+//            map.put("number",format);
+//        });
+//        model.addAttribute("noticeInfo",noticeInfo);
+//        return "notice";
+//    }
+
+    /**
+     * 查询公告列表
+     * @return
+     */
+    @RequestMapping("/queryNoticeList")
+    public String queryNoticeList(Model model,
+                                  @RequestParam(required = false, defaultValue = "1") int page,
+                                  @RequestParam(required = false, defaultValue = "3") int pageSize){
         getUserInfo(model);
         getUrlOrImage(model,uId);
-        //查询公告
-        List<Map<String, Object>> noticeInfo = loginMapper.queryNoticeInfo();
-        DecimalFormat df = new DecimalFormat("###,###,###,##0");
-        //格式化数值
-        noticeInfo.forEach(map->{
-            String number = String.valueOf(map.get("number"));
-            BigDecimal bigDecimal = new BigDecimal(number);
-            String format = df.format(bigDecimal);
-            map.put("number",format);
-        });
-        model.addAttribute("noticeInfo",noticeInfo);
-        return "notice";
+        PageHelper.startPage(page,pageSize);
+        List<Map<String, Object>> noticeList = loginMapper.queryNoticeList(getUserType());
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(noticeList);
+        model.addAttribute("pageInfo",pageInfo);
+        return "noticeList";
     }
+
+    /**
+     * 新增公告->页面
+     * @return
+     */
+    @RequestMapping("/addNotice")
+    public String addNotice(Model model){
+        getUserInfo(model);
+        getUrlOrImage(model,uId);
+        return "addNotice";
+    }
+
+    /**
+     * 新增公告->操作
+     * @return
+     */
+    @RequestMapping("/addNoticeInfo")
+    @ResponseBody
+    public String addNoticeInfo(@RequestParam Map<String,Object> param){
+        //当前用户角色什么类型就put什么类型
+        param.put("spare",getUserType());
+        //添加公告
+        int i = loginMapper.addNotice(param);
+        if(i>0){
+            return "success";
+        }
+        return "fail";
+    }
+
 
     /**
      * 根据登录id获取用户信息
@@ -873,7 +951,7 @@ public class LaundryController {
 
 
     /**
-     * 判断是否为普通管理员/用户
+     * 判断是否为普通管理员
      * @return
      */
     public boolean isPT(Model model){
@@ -890,5 +968,32 @@ public class LaundryController {
         return false;
     }
 
+    /**
+     * 判断是否为普通用户
+     * @return
+     */
+    public boolean isPY(Model model){
+        if(!"".equals(uId)) {
+            Map<String, Object> userMap = loginMapper.queryUserById(uId);
+            if("普通员工".equals(userMap.get("user_type"))){
+                return true;
+            }else {
+                //主页显示
+                Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
+                model.addAttribute("showList",showList);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 查询用户类型
+     * @return
+     */
+    public String getUserType(){
+        Map<String, Object> userMap = loginMapper.queryUserById(uId);
+        String userType = String.valueOf(userMap.get("user_type"));
+        return userType;
+    }
 
 }

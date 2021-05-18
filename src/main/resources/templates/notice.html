@@ -137,6 +137,18 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu opened" >
+                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/queryNoticeList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                发布公告
+                            </a>
+                        </li>
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/addNotice">
+                                <i class="iconfont">&#xe6a7;</i>
+                                新增公告
+                            </a>
+                        </li>
                         <li>
                             <a href="/notice">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -160,6 +172,28 @@
                         </li>
                     </ul>
                 </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? false:true">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        个人信息管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
@@ -169,8 +203,8 @@
     <div class="page-content">
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: wheat;background:#2F4056">
-                温馨提示：系统只对重要事件予以公告展示
+            <blockquote class="layui-elem-quote" style="color: white;background:#92B8B1">
+                温馨提示：横轮播展示系统物资数据，竖轮播展示管理员发布的动态
             </blockquote>
             <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
                 <legend>公告轮播</legend>
@@ -189,7 +223,21 @@
                         </div>
                     </div>
                 </div>
-            </div><!-- 右侧内容框架，更改从这里结束 -->
+            </div>
+            <div class="layui-carousel" id="test3" style="margin-top: 15px;">
+                <div carousel-item="lb">
+                    <div style="background:#2F4056" th:each="notice:${noticeY}">
+                        <div style="margin-top: 100px;margin-left: 100px;margin-right: 50px">
+                            <div style="padding-bottom: 50px;padding-left: 20px;padding-right: 20px">
+                                <span style="color:wheat;font-size: 25px">
+                                    <span th:text="${notice.get('noticeDesc')} == null ?'暂无新公告消息': ${notice.get('noticeDesc')}"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 右侧内容框架，更改从这里结束 -->
         </div>
     </div>
     <!-- 右侧主体结束 -->
@@ -235,20 +283,31 @@
             ,interval: 2000
             ,anim: 'fade'
             ,width: '750px'
-            ,height:'300px'
+            ,height:'245px'
             // ,height: '120px'
         });
 
-        //设定各种参数
-        var ins3 = carousel.render({
+        carousel.render({
             elem: '#test3'
+            ,interval: 2000
+            ,anim: 'fade'
+            ,width: '750px'
+            ,height:'245px'
+            ,anim: 'updown' //切换动画方式
+            // ,height: '120px'
         });
+
+        // //设定各种参数
+        // var ins3 = carousel.render({
+        //     elem: '#test3'
+        // });
         //图片轮播
         carousel.render({
             elem: '#test10'
             ,width: '778px'
             ,height: '440px'
             ,interval: 5000
+
         });
 
         //事件

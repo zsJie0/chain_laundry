@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
@@ -109,7 +109,7 @@
                         物资管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened">
+                    <ul class="sub-menu" style="display:none">
                         <li>
                             <a href="/queryMaterialInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -136,8 +136,8 @@
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu opened" >
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -157,153 +157,133 @@
                         </li>
                     </ul>
                 </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false ">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe6a3;</i>
+                        订单管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu" >
+                        <li>
+                            <a href="/queryOrderInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                订单列表
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
             </ul>
         </div>
     </div>
     <!-- 左侧菜单结束 -->
 
-        <!-- 右侧主体开始 -->
-        <div class="page-content">
-          <div class="content">
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-<!--            <form class="layui-form xbs" action="" >-->
-<!--                <div class="layui-form-pane" style="text-align: center;">-->
-<!--                  <div class="layui-form-item" style="display: inline-block;">-->
-<!--                    <div class="layui-input-inline">-->
-<!--                        <input type="text"  placeholder="根据类别查询" autocomplete="on" class="layui-input" id="mName">-->
-<!--                    </div>-->
-<!--                    <div class="layui-input-inline" style="width:80px">-->
-<!--                        <a class="layui-btn"  lay-filter="search" id="search" type="submit" ><i class="layui-icon">&#xe615;</i></a>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </div> -->
-<!--            </form>-->
-            <xblock>
-                <button class="layui-btn" onclick="ruku('物资入库','/addMaterial','4','' ,'450' )" style="background: goldenrod">
-                    <i class="layui-icon">&#xe650;</i>物资入库管理</button>
-                <a class="layui-btn" href="/ruWarehouse"style="background: brown">刷新</a>
-                <span class="x-right">
-                     共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
-                    &nbsp;条
-                </span>
-
-            </xblock>
-            <table class="layui-table">
-                <thead>
-                    <tr>
-                        <th>
-                            物资编号
-                        </th>
-                        <th>
-                            物资名称
-                        </th>
-                        <th>
-                            物资类别
-                        </th>
-                        <th>
-                            数量(单位/台)
-                        </th>
-                        <th>
-                            状态
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="checkOne">
-                    <tr th:each="material:${pageInfo.list}">
-                        <td th:text="${material.get('mId')}" id="mId">
-                        </td>
-                        <td th:text="${material.get('mName')}">
-                        </td>
-                        <td th:text="${material.get('mTypeDesc')}">
-                        </td>
-                        <td th:text="${material.get('mNumber')}">
-                        </td>
-                        <td th:text="${material.get('mStateName')}">
-                        </td>
-                        <td th:text="${material.get('mState')}" style="display: none">
-                    </tr>
-                </tbody>
-            </table>
-              <div class="page">
-                  <ul class="pagination">
-                      <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
-                      <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
-                      <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
-                  </ul>
-              </div>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                <legend>新增公告</legend>
+            </fieldset>
+            <form class="">
+                <div class="layui-form-item">
+                    <label for="noticeId" class="layui-form-label">
+                        公告编号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="noticeId" name="username" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="noticeDesc" class="layui-form-label">
+                        公告描述
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="noticeDesc" name="username" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="save" class="layui-form-label">
+                    </label>
+                    <button  class="layui-btn" id="save" type="button">
+                        新增公告
+                    </button>
+                </div>
+            </form>
             <!-- 右侧内容框架，更改从这里结束 -->
-          </div>
         </div>
-        <!-- 右侧主体结束 -->
     </div>
-    <!-- 中部结束 -->
-    <!-- 底部开始 -->
-    <div class="footer">
-        <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
-    </div>
-    <!-- 底部结束 -->
-    <!-- 背景切换开始 -->
-    <div class="bg-changer">
-        <div class="swiper-container changer-list">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
-                <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
-                <div class="swiper-slide"><span class="reset">初始化</span></div>
-            </div>
+    <!-- 右侧主体结束 -->
+</div>
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+</div>
+<!-- 底部结束 -->
+<!-- 背景切换开始 -->
+<div class="bg-changer">
+    <div class="swiper-container changer-list">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide"><img class="item" src="./images/a.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/b.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/c.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/d.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/e.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/f.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/g.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/h.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/i.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/j.jpg" alt=""></div>
+            <div class="swiper-slide"><img class="item" src="./images/k.jpg" alt=""></div>
+            <div class="swiper-slide"><span class="reset">初始化</span></div>
         </div>
-        <div class="bg-out"></div>
-        <div id="changer-set"><i class="iconfont">&#xe696;</i></div>   
     </div>
-    <!-- 背景切换结束 -->
-    <!-- 页面动态效果 -->
-    <script>
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-    //入库管理
-    function ruku(title,url,id,w,h) {
-        x_admin_show(title,url,w,h);
-    }
-    //----------------------------------------------------------------------------------------------------------------------------------------------------------------
-        //百度统计可去掉
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-          var s = document.getElementsByTagName("script")[0]; 
-          s.parentNode.insertBefore(hm, s);
-        })();
-    </script>
+    <div class="bg-out"></div>
+    <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
+</div>
+<!-- 背景切换结束 -->
+<!-- 页面动态效果 -->
+<script>
+    $(document).ready(function () {
+        $("#save").click(function () {
+            //获取信息
+            var noticeId = document.getElementById("noticeId").value;
+            var noticeDesc = document.getElementById("noticeDesc").value;
+            $.ajax({
+                type:"post",
+                url:"/addNoticeInfo",
+                data: {
+                    noticeId,
+                    noticeDesc
+                },
+                success:function (data) {
+                    if(data == "success"){
+                        layer.msg("新增成功！");
+                        setTimeout(' window.location.href="/queryNoticeList";',3000);
+
+                    }else if(data == "fail"){
+                        layer.msg("新增失败！系统异常")
+                    }
+                },
+                error:function(res){
+                    console.log(res)
+                }
+            })
+        })
+    });
+
+
+    //百度统计可去掉
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
 <style>
-    ul.pagination {
-        display: inline-block;
-        padding: 0;
-        margin: 0;
-    }
-
-    ul.pagination li {display: inline;}
-
-    ul.pagination li a {
-        color: black;
-        float: left;
-        padding: 8px 16px;
-        text-decoration: none;
-        transition: background-color .3s;
-    }
-
-    ul.pagination li a.active {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
 </style>
 </body>
 </html>

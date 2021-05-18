@@ -307,4 +307,35 @@ public interface LoginMapper {
      * 查询超管电话
      */
     Map<String,Object> queryPhone();
+
+    /**
+     * 查询公告列表
+     */
+    List<Map<String,Object>> queryNoticeList(String spare);
+
+    /**
+     * 新增公告
+     * @param param
+     * @return
+     */
+    int addNotice(Map<String,Object> param);
+
+    /**
+     * 查询可发布的公告
+     * @return
+     */
+    List<Map<String,Object>> queryNoticeY(String spare);
+
+    /**
+     * 发布公告
+     * @param noticeIdList
+     * @return
+     */
+    int updateNoticeById(@Param("noticeIdList") String[] noticeIdList);
+
+    /**
+     * 更新订单的数据 日期
+     *
+     */
+    int updateOrderTime(String date);
 }

@@ -17,7 +17,7 @@
 <body>
 <!-- 顶部开始 -->
 <div class="container">
-    <div class="logo"><a href="/index" style="color: whitesmoke">连锁洗衣店管理系统</a></div>
+    <div class="logo"><a href="/index">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
 
@@ -49,13 +49,13 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" >
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? true:false">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu">
+                    <ul class="sub-menu opened">
                         <li>
                             <a href="/queryUserList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -136,17 +136,21 @@
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
-                        <li>
-                            <a href="/notice">
+                    <ul class="sub-menu" >
+                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
-                                轮播展示
+                                发布公告
                             </a>
                         </li>
-                    </ul>
-                    <ul class="sub-menu opened" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false ">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/addNotice">
+                                <i class="iconfont">&#xe6a7;</i>
+                                新增公告
+                            </a>
+                        </li>
                         <li>
-                            <a href="/noticePT">
+                            <a href="/notice">
                                 <i class="iconfont">&#xe6a7;</i>
                                 轮播展示
                             </a>
@@ -168,6 +172,27 @@
                         </li>
                     </ul>
                 </li>
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? false:true">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        个人信息管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu opened">
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -177,27 +202,78 @@
     <div class="page-content">
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: wheat;background:#2F4056">
-                温馨提示：系统只对重要事件予以公告展示
-            </blockquote>
-            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
-                <legend>公告轮播</legend>
+            <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+                <legend>个人信息</legend>
             </fieldset>
-            <div class="layui-carousel" id="test2" style="margin-top: 15px;">
-                <div carousel-item="lb">
-                    <div style="background:#2F4056" th:each="notice:${noticeInfo}">
-                        <div style="margin-top: 100px;margin-left: 100px;margin-right: 50px">
-                            <div style="padding-bottom: 50px;padding-left: 20px;padding-right: 20px">
-                                <span style="color:wheat;font-size: 25px">
-                                    <span th:text="${notice.get('nDesc')}"></span>
-                                     <span th:text="${notice.get('number')}" style="color:red;font-size: 30px"></span>
-                                     <span style="color:wheat;font-size: 25px">个</span>
-                                </span>
-                            </div>
-                        </div>
+            <form class=" layui-form-pane">
+                <div class="layui-form-item ">
+                    <label class="layui-form-label ">用户名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userId" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_id')}" readonly="readonly" id="userId">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">注：用户名唯一且不可变更！</div>
+                </div>
+                <div class="layui-form-item  layui-inline">
+                    <label class="layui-form-label">姓名</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userName" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}" id="userName">
                     </div>
                 </div>
-            </div><!-- 右侧内容框架，更改从这里结束 -->
+                <div class="layui-form-item layui-inline ">
+                    <label class="layui-form-label">性别</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userSex" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_sex')}" id="userSex">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">手机号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="phone" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('phone')}" id="phone">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">年龄</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userAge" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_age')}" id="userAge">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">加入时间</label>
+                    <div class="layui-input-inline" >
+                        <input type="text" name="time" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('time')}" id="time" onclick="layui.laydate({elem: this})">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">注：yyyy-MM-dd形式，其他形式将保存不成功</div>
+                </div>
+
+
+                <div class="layui-form-item " style="display: none">
+                    <label class="layui-form-label">洗衣店Id</label>
+                    <div class="layui-input-inline">
+                        <input type="laundryId" name="laundryId" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('laundry_id')}" id="laundryId">
+                    </div>
+                </div>
+                <div class="layui-form-item ">
+                    <label class="layui-form-label">所属洗衣店</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="laundryName" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('laundry_name')}" id="laundryName" readonly>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">注：您没有权限更改自己所在的洗衣店！</div>
+                </div>
+                <div class="layui-form-item layui-inline">
+                    <label class="layui-form-label">角色</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userType" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_type')}" id="userType" readonly="readonly">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">注：您没有权限更改自己的角色类型！</div>
+                </div>
+                <div class="layui-form-item ">
+                    <button class="layui-btn" id="update" type="button">修改</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <a class="layui-btn"  lay-filter="ref" href="/userInfo" style="background: saddlebrown">刷新</a>
+                </div>
+            </form>
+            <!-- 右侧内容框架，更改从这里结束 -->
         </div>
     </div>
     <!-- 右侧主体结束 -->
@@ -230,76 +306,52 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <!-- 背景切换结束 -->
-<script src="../js/layui.js"></script>
-<link rel="stylesheet" href="../css/layui.css" media="all">
+<!-- 页面动态效果 -->
 <script>
-    layui.use(['carousel', 'form'], function(){
-        var carousel = layui.carousel
-            ,form = layui.form;
-
-        //改变下时间间隔、动画类型、高度
-        carousel.render({
-            elem: '#test2'
-            ,interval: 2000
-            ,anim: 'fade'
-            ,width: '750px'
-            ,height:'300px'
-            // ,height: '120px'
-        });
-
-        //设定各种参数
-        var ins3 = carousel.render({
-            elem: '#test3'
-        });
-        //图片轮播
-        carousel.render({
-            elem: '#test10'
-            ,width: '778px'
-            ,height: '440px'
-            ,interval: 5000
-        });
-
-        //事件
-        carousel.on('change(test4)', function(res){
-            console.log(res)
-        });
-
-        var $ = layui.$, active = {
-            set: function(othis){
-                var THIS = 'layui-bg-normal'
-                    ,key = othis.data('key')
-                    ,options = {};
-
-                othis.css('background-color', '#5FB878').siblings().removeAttr('style');
-                options[key] = othis.data('value');
-                ins3.reload(options);
-            }
-        };
-
-        //监听开关
-        form.on('switch(autoplay)', function(){
-            ins3.reload({
-                autoplay: this.checked
-            });
-        });
-
-        $('.demoSet').on('keyup', function(){
-            var value = this.value
-                ,options = {};
-            if(!/^\d+$/.test(value)) return;
-
-            options[this.name] = value;
-            ins3.reload(options);
-        });
-
-        //其它示例
-        $('.demoTest .layui-btn').on('click', function(){
-            var othis = $(this), type = othis.data('type');
-            active[type] ? active[type].call(this, othis) : '';
-        });
+    //修改个人信息
+    $(document).ready(function () {
+        $("#update").click(function () {
+            //获取信息
+            var userId = document.getElementById("userId").value;
+            var userName = document.getElementById("userName").value;
+            var time = document.getElementById("time").value;
+            var userAge = document.getElementById("userAge").value;
+            var userSex = document.getElementById("userSex").value;
+            var userType = document.getElementById("userType").value;
+            var laundryName = document.getElementById("laundryName").value;
+            var laundryId = document.getElementById("laundryId").value;
+            var phone = document.getElementById("phone").value;
+            // alert(time);
+            $.ajax({
+                type:"post",
+                url:"/updateUserInfo",
+                data: {
+                    userId     ,
+                    userName   ,
+                    time       ,
+                    userAge    ,
+                    userSex    ,
+                    userType   ,
+                    laundryName,
+                    laundryId  ,
+                    phone
+                },
+                success:function (data) {
+                    if(data == "success"){
+                        layer.msg("修改成功！请点击刷新按钮");
+                        // window.location.href = "settleIn";
+                    }else if(data == "fail"){
+                        layer.msg("修改失败！系统异常")
+                    }
+                },
+                error:function(res){
+                    console.log(res)
+                }
+            })
+        })
     });
-</script>
-<script>
+
+
     //百度统计可去掉
     var _hmt = _hmt || [];
     (function() {
@@ -309,5 +361,7 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
+<style>
+</style>
 </body>
 </html>

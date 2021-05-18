@@ -136,6 +136,18 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                     <ul class="sub-menu" >
+                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/queryNoticeList">
+                                <i class="iconfont">&#xe6a7;</i>
+                                发布公告
+                            </a>
+                        </li>
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                            <a href="/addNotice">
+                                <i class="iconfont">&#xe6a7;</i>
+                                新增公告
+                            </a>
+                        </li>
                         <li>
                             <a href="/notice">
                                 <i class="iconfont">&#xe6a7;</i>

@@ -494,7 +494,7 @@
         </foreach>
         and state_id = 1
     </update>
-<!--    查询公告    -->
+<!--    查询公告（动态数字==不可变更）    -->
     <select id="queryNoticeInfo" resultType="java.util.Map">
         SELECT
             c.nDesc,
@@ -523,6 +523,11 @@
             ) a
                 LEFT JOIN ( SELECT * FROM ( SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info ) b ) c ON a.nId = c.nId
     </select>
+<!--    查询其他可发布的公告  -->
+    <select id="queryNoticeY" resultType="java.util.Map">
+        select notice_id as noticeId,notice_desc as noticeDesc from notice_info where
+        spare = #{spare} and note = "Y" and notice_state_id = 1
+    </select>
 <!--    查询普通管理员/普通用户公告  -->
     <select id="queryNoticeInfoPT" resultType="java.util.Map">
         SELECT
@@ -546,9 +551,8 @@
                 WHERE
                     order_time =  #{date}
                   AND laundry_id =  #{laundryId}
-                  AND state_id = 1
             ) t1
-                LEFT JOIN (SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info WHERE spare = "1" ) t2 ON t1.nId = t2.nId
+                LEFT JOIN (SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info WHERE spare = "普通管理员" ) t2 ON t1.nId = t2.nId
     </select>
 <!--    升级普通用户为店长   -->
     <select id="upgradeUser" resultType="java.util.Map">
@@ -607,4 +611,27 @@
     <select id="queryPhone" resultType="java.util.Map">
         select phone as cgPhone from user1 where user_type = "超级管理员" and evaluate = "1"
     </select>
+<!--    查询公告列表  -->
+    <select id="queryNoticeList" resultType="java.util.Map">
+        select n.notice_id as noticeId,n.notice_desc as noticeDesc,n.spare,n.notice_state_id as stateId, notice_state_name as stateName
+        from notice_info n left join notice_state s
+        on n.notice_state_id = s.notice_state_id where n.spare = #{spare} order by n.notice_id
+    </select>
+<!--    添加公告    -->
+    <insert id="addNotice" >
+        insert into notice_info values(#{noticeId},#{noticeDesc},#{spare},0,'Y');
+    </insert>
+
+<!--  发布公告  -->
+    <update id="updateNoticeById">
+        update notice_info set notice_state_id = notice_state_id + 1
+        where notice_id in
+        <foreach collection="noticeIdList" item="noticeId" open="(" close=")" separator=",">
+            #{noticeId}
+        </foreach>
+    </update>
+<!--    更新订单表日期数据   -->
+    <update id="updateOrderTime">
+        UPDATE `order` SET  `ORDER_TIME` = #{date}
+    </update>
 </mapper>
