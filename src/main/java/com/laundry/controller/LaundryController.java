@@ -81,6 +81,12 @@ public class LaundryController {
         if(CommonUtils.isEmpty(laundryInfoList)){
             laundryInfoList = new ArrayList<>();
         }
+        laundryInfoList.forEach(map->{
+            //格式化时间
+            String sqtime = String.valueOf(map.get("sqtime"));
+            String formatSqtime = CommonUtils.dateTransformation(sqtime);
+            map.put("sqtime",formatSqtime);
+        });
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(laundryInfoList);
         System.out.println(laundryInfoList);
         model.addAttribute("pageInfo",pageInfo);
@@ -99,6 +105,12 @@ public class LaundryController {
         getUrlOrImage(model,uId);
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> notSetInLaundryInfo = loginService.queryNotSetInLaundryInfo();
+        notSetInLaundryInfo.forEach(map->{
+            //格式化时间
+            String sqtime = String.valueOf(map.get("sqtime"));
+            String formatSqtime = CommonUtils.dateTransformation(sqtime);
+            map.put("sqtime",formatSqtime);
+        });
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(notSetInLaundryInfo);
         model.addAttribute("pageInfo",pageInfo);
         return "settleIn";

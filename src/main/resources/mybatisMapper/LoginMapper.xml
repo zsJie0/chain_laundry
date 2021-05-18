@@ -198,10 +198,9 @@
             ) a
             LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
             WHERE
-            a.state_name = '未加盟'
-	        OR a.state_name = '审核中'
-            AND b.user_type = '普通管理员'
-        ORDER BY
+              b.user_type = '普通管理员'
+              AND ( a.state_name = '未加盟' OR a.state_name = '审核中' )
+              ORDER BY
             a.laundry_id
     </select>
 <!--  定位管理  -->
