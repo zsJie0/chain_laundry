@@ -216,6 +216,8 @@
             <xblock>
                 <a class="layui-btn layui-btn-danger" id="fb" style="background-color: sandybrown">
                     <i class="layui-icon">&#xe650;</i>发布公告</a>
+                <a class="layui-btn layui-btn-danger" id="delete" style="background-color: sienna">
+                    <i class="layui-icon">&#xe650;</i>删除公告</a>
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条
@@ -310,6 +312,20 @@
             });
             noticeIdList= noticeIdList.filter((x) => x !== 'on');
             window.location.href = "updateNotice?noticeIdList="+noticeIdList;
+        }
+    });
+    //添加点击事件------------------------------------------------------------------------------------------------------------------------------------------------
+    $("#delete").click(function () {
+        var noticeIdNum = $("input[type='checkbox']:checked").length;
+        if (noticeIdNum <= 0) {
+            layer.alert("请选择你要删除的公告");
+        } else {
+            var noticeIdList = new Array();
+            $("input[type='checkbox']:checked").each(function () {
+                noticeIdList.push($(this).val());
+            });
+            noticeIdList= noticeIdList.filter((x) => x !== 'on');
+            window.location.href = "deleteNotice?noticeIdList="+noticeIdList;
         }
     });
     //-----复选框全选------------------------------------------------------------------------------------------------------------------------------------------------------

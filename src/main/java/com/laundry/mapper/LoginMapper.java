@@ -334,6 +334,13 @@ public interface LoginMapper {
     int updateNoticeById(@Param("noticeIdList") String[] noticeIdList);
 
     /**
+     * 发布公告
+     * @param noticeIdList
+     * @return
+     */
+    int deleteNoticeById(@Param("noticeIdList") String[] noticeIdList);
+
+    /**
      * 更新订单的数据 日期
      *
      */

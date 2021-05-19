@@ -175,6 +175,9 @@ public class LaundryController {
             PageHelper.startPage(page,pageSize);
             //主页显示
             List<Map<String, Object>> showList = loginService.queryIndexShow();
+            showList.forEach(map->{
+                CommonUtils.formatNumber(map, "TURNOVER");
+            });
             PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(showList);
             model.addAttribute("pageInfo", pageInfo);
         }else {
@@ -186,6 +189,8 @@ public class LaundryController {
             if(CommonUtils.isEmpty(showList)){
                 showList = new HashMap();
             }
+            CommonUtils.formatNumber(showList, "clothesCount");
+            CommonUtils.formatNumber(showList, "orderCount");
             model.addAttribute("showList", showList);
             return "indexPT";
         }
@@ -296,6 +301,11 @@ public class LaundryController {
             if(CommonUtils.isEmpty(showList)){
                 showList = new ArrayList<>();
             }
+            //格式化数据信息
+            showList.forEach(map->{
+                //格式化
+                CommonUtils.formatNumber(map, "TURNOVER");
+            });
             PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(showList);
             model.addAttribute("pageInfo", pageInfo);
         }else {
@@ -307,6 +317,8 @@ public class LaundryController {
             if(CommonUtils.isEmpty(showList)){
                 showList = new HashMap();
             }
+            CommonUtils.formatNumber(showList, "clothesCount");
+            CommonUtils.formatNumber(showList, "orderCount");
             model.addAttribute("showList", showList);
             return "indexPT";
         }
@@ -783,10 +795,20 @@ public class LaundryController {
      */
     @RequestMapping("/updateNotice")
     public String updateNoticeById(String[] noticeIdList){
-        System.out.println(Arrays.asList(noticeIdList));
         loginMapper.updateNoticeById(noticeIdList);
         return "redirect:queryNoticeList";
     }
+
+    /**
+     * 删除公告
+     * @return
+     */
+    @RequestMapping("/deleteNotice")
+    public String deleteNotice(String[] noticeIdList){
+        loginMapper.deleteNoticeById(noticeIdList);
+        return "redirect:queryNoticeList";
+    }
+
 
     /**
      * 订单管理页面
@@ -849,38 +871,17 @@ public class LaundryController {
     }
 
 
-    /**
-     * 普通用户/管理员的公告管理
-     * @return
-     */
-//    @RequestMapping("/noticePT")
-//    public String noticePT(Model model){
-//        getUserInfo(model);
-//        getUrlOrImage(model,uId);
-//        //查询公告
-//        List<Map<String, Object>> noticeInfo = loginMapper.queryNoticeInfo();
-//        DecimalFormat df = new DecimalFormat("###,###,###,##0");
-//        //格式化数值
-//        noticeInfo.forEach(map->{
-//            String number = String.valueOf(map.get("number"));
-//            BigDecimal bigDecimal = new BigDecimal(number);
-//            String format = df.format(bigDecimal);
-//            map.put("number",format);
-//        });
-//        model.addAttribute("noticeInfo",noticeInfo);
-//        return "notice";
-//    }
 
     /**
      * 查询公告列表
      * @return
      */
     @RequestMapping("/queryNoticeList")
-    public String queryNoticeList(Model model,
-                                  @RequestParam(required = false, defaultValue = "1") int page,
-                                  @RequestParam(required = false, defaultValue = "3") int pageSize){
+    public String queryNoticeList(Model model,@RequestParam(required = false, defaultValue = "1") int page,
+                                  @RequestParam(required = false, defaultValue = "5") int pageSize){
         getUserInfo(model);
         getUrlOrImage(model,uId);
+        //分页
         PageHelper.startPage(page,pageSize);
         List<Map<String, Object>> noticeList = loginMapper.queryNoticeList(getUserType());
         PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(noticeList);

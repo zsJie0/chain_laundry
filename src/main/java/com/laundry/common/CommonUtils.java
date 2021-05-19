@@ -439,4 +439,17 @@ public final class CommonUtils {
 
         return format;
     }
+
+    /**
+     * 格式化数据
+     * @return
+     */
+    public static Map<String,Object> formatNumber(Map<String,Object> formatMap,String valueName ){
+        DecimalFormat df = new DecimalFormat("###,###,###,##0");
+        String number = String.valueOf(formatMap.get(valueName));
+        BigDecimal bigDecimal = new BigDecimal(number);
+        String format = df.format(bigDecimal);
+        formatMap.put(valueName,format);
+        return formatMap;
+    }
 }
