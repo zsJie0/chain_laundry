@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ChainLaundry-登入</title>
+    <title>ChainLaundry-前台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./css/font.css">
@@ -12,41 +12,60 @@
     <script type="text/javascript" src="https://cdn.bootcss.com/Swiper/3.4.2/js/swiper.jquery.min.js"></script>
     <script src="./lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="./js/xadmin.js"></script>
+    <style>
 
+        .formItme{
+            width: 49%;
+            display: inline-block;
+        }
+        .login-box{
+            width: 310px;
+            height: 300px;
+            padding: 20px 15px 15px;
+            background-color: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255,255,255, 0.3);
+            margin: 0 auto;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="logo"><a href="./index.html">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
-        <li class="layui-nav-item"><a href="/queryClothesType">前台首页</a></li>
+        <li class="layui-nav-item"><a href="/login">后台登录</a></li>
     </ul>
 </div>
-<div class="login-logo"><h1>ChainLaundry</h1></div>
-<div class="login-box">
+<div class="login-logo"><h1>请选择</h1></div>
+<div class="login-box" style="width: 520px; padding-bottom: 50px">
+    <div>
     <form class="layui-form layui-form-pane">
-        <h3>登录你的帐号</h3>
-        <label class="login-title" >帐号</label>
         <div class="layui-form-item">
-            <label class="layui-form-label login-form"><i class="iconfont">&#xe6b8;</i></label>
-            <div class="layui-input-inline login-inline">
-                <input type="text" id="userId" name="userId" lay-verify="required" placeholder="请输入你的帐号" autocomplete="on" class="layui-input">
+            <label class="layui-form-label">支付方式</label>
+            <div class="layui-input-block">
+                <select name="method" class="layui-select" id="method">
+                    <option>微信</option>
+                    <option>支付宝</option>
+                </select>
             </div>
         </div>
-        <label class="login-title" >密码</label>
         <div class="layui-form-item">
-            <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>
-            <div class="layui-input-inline login-inline">
-                <input type="password" id="userPwd" name="userPwd" lay-verify="required" placeholder="请输入你的密码" autocomplete="on" class="layui-input">
+            <label class="layui-form-label">洗衣店</label>
+            <div class="layui-input-block">
+                <input type="radio" th:each="p:${position}" name="position" th:value="${p.get('id')}" th:title="${p.get('name')}" id="laundryId">
             </div>
         </div>
-        <div class="form-actions">
-            <a class="btn btn-warning pull-right" lay-submit lay-filter="login" type="button" id="login">登录</a>
-            <div class="forgot">
-                <a href="/queryAllLaundryInfo" class="forgot" id="register">没有账号?立即注册</a>
+        <div class="layui-form-item">
+            <label class="layui-form-label">应付金额</label>
+            <div class="layui-input-block">
+                <input type="text" id="money"  class="layui-input" onclick="code()">
             </div>
         </div>
     </form>
+    </div>
+    <div style="text-align: center">
+        <a class="btn btn-warning pull-right" lay-submit lay-filter="xd" type="button" id="xd">下单</a>
+    </div>
 </div>
 <div class="bg-changer">
     <div class="swiper-container changer-list">
@@ -69,35 +88,45 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <script>
-    <!-- 登录-->
-    $(document).ready(function () {
-        $("#login").click(function () {
-            var userId = document.getElementById("userId").value;
-            var userPwd = document.getElementById("userPwd").value;
-            $.ajax({
-                type: "post",
-                url: "queryUserByIdAndPwd",
-                data: {
-                    userId,
-                    userPwd,
-                },
-                success: function (data) {
-                    if (data == "success") {
-                        // layer.msg('登录成功！');
-                        window.location.href = "queryUserById/"+userId;
-                    } else if (data == "fail") {
-                        layer.msg('登录失败,请检查用户名或密码！');
-                    }else {
+    function code(){
+        var NUM = "";
+        for(var i=10;i<=50;i++){
+            NUM  = Math.floor(Math.random()*50+10);
+        }
+        document.getElementById("money").value = NUM;
+    }
 
+        <!-- 注册 -->
+    $(document).ready(function () {
+        $("#xd").click(function () {
+            var method = document.getElementById("method").value;
+            var laundryId = document.getElementById("laundryId").value;
+            var money = document.getElementById("money").value;
+            $.ajax({
+                type:"post",
+                url:"/orderLastTep",
+                data: {
+                    method  ,
+                    laundryId,
+                    money
+                },
+                success:function (data) {
+                    if(data == "success"){
+                        layer.msg("下单成功！三秒后将下单系统");
+                        setTimeout('window.location.href="login"',3000)
+                        // window.location.href = "login";
+                    }else if(data == "fail"){
+                        layer.msg("系统异常，下单失败！")
+                    }else if(data == "exist"){
+                        layer.msg("注册失败！系统异常")
                     }
                 },
                 error:function(res){
                     console.log(res)
                 }
             })
-        });
-    })
-
+        })
+    });
 </script>
 <script>
     //百度统计可去掉
@@ -109,10 +138,5 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
-<style>
-    #register:hover {
-        color: #eea236;
-    }
-</style>
 </body>
 </html>

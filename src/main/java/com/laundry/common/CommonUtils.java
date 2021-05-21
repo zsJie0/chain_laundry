@@ -66,10 +66,8 @@ public final class CommonUtils {
      */
     public static final String POINT = ".";
 
-    /**
-     * 初始出库物资
-     */
-    public static final int START_NUMBER = 0;
+    public static  Map<String,Object> PARAM_MAP = null;
+    public static  List<Map<String,Object>> POSITION_MAP = null;
 
 
 

@@ -345,4 +345,21 @@ public interface LoginMapper {
      *
      */
     int updateOrderTime(String date);
+
+    /**
+     * 查看衣物类型
+     * @return
+     */
+    List<Map<String,Object>> queryClothesType();
+
+    /**
+     * 查询下单人位置信息
+     * @return
+     */
+    List<Map<String,Object>> queryPositionQT();
+
+    /**
+     * 添加订单
+     */
+    int addOrder(Map<String,Object> param);
 }

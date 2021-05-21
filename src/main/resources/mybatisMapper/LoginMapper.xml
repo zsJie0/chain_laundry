@@ -643,4 +643,16 @@
     <update id="updateOrderTime">
         UPDATE `order` SET  `ORDER_TIME` = #{date}
     </update>
+<!--    查看衣物类型  -->
+    <select id="queryClothesType" resultType="java.util.Map">
+        select clothes_type_id as typeId ,clothes_type_name as typeName from clothes_type
+    </select>
+<!--    查询位置信息  -->
+    <select id="queryPositionQT" resultType="java.util.Map">
+        select DISTINCT LAUNDRY_POSITION as position  from laundry
+    </select>
+<!--    添加订单    -->
+    <insert id="addOrder">
+        insert into `order` values(#{orderId},#{orderName},#{user},#{phone},#{time},#{address},#{note},#{method},#{money},#{type},0,#{laundryId},#{number});
+    </insert>
 </mapper>

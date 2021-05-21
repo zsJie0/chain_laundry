@@ -954,6 +954,79 @@ public class LaundryController {
     }
 
     /**
+     * 前台首页
+     * @return
+     */
+    @RequestMapping("/indexQT")
+    public String indexQT(){
+        return "reception";
+    }
+
+    /**
+     * 查看衣物类型
+     * @return
+     */
+    @RequestMapping("/queryClothesType")
+    public String queryClothesType(Model model){
+        List<Map<String, Object>> clothesType = loginMapper.queryClothesType();
+        //查询洗衣店信息
+        List<Map<String, Object>> laundryList = loginMapper.queryPositionQT();
+        model.addAttribute("laundryList",laundryList);
+        model.addAttribute("clothesType",clothesType);
+        return "reception";
+    }
+
+    /**
+     * 开始下单
+     * @return
+     */
+    @RequestMapping("/order")
+    @ResponseBody
+    public String order(@RequestParam Map<String,Object> param){
+        //把值存到PARAM集合里
+        CommonUtils.PARAM_MAP = param;
+        //查询洗衣店
+        List<Map<String, Object>> position = loginMapper.queryLaundryByPosition(String.valueOf(param.get("address")));
+        if(!CommonUtils.isEmpty(position)){
+            return "success";
+        }
+        return "fail";
+    }
+
+    /**
+     * 开始下单
+     * @return
+     */
+    @RequestMapping("/orderPosition")
+    public String order(@RequestParam("address") String address,Model model){
+        List<Map<String, Object>> position = loginMapper.queryLaundryByPosition(address);
+        model.addAttribute("position",position);
+        if(!CommonUtils.isEmpty(position)){
+            return "laundryName";
+        }
+        return "";
+    }
+
+    /**
+     * 开始下下单单
+     * @return
+     */
+    @RequestMapping("/orderLastTep")
+    @ResponseBody
+    public String orderLastTep(@RequestParam Map<String,Object> param){
+        CommonUtils.PARAM_MAP.putAll(param);
+        String time = String.valueOf(CommonUtils.PARAM_MAP.get("time"));
+        String formatTime = CommonUtils.dateTransformation2(time);
+        CommonUtils.PARAM_MAP.put("time",formatTime);
+        //插入
+        int i = loginMapper.addOrder(CommonUtils.PARAM_MAP);
+        if(i>0){
+            return "success";
+        }
+        return "fail";
+    }
+
+    /**
      * 查询跳转连接/头像
      */
 

@@ -29,6 +29,13 @@
     </style>
 </head>
 <body>
+<div class="container">
+    <div class="logo"><a href="./index.html">连锁洗衣店管理系统</a></div>
+    <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item"><a href="/queryClothesType">前台首页</a></li>
+    </ul>
+</div>
 <div class="login-logo"><h1>ChainLaundry</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <form class="layui-form layui-form-pane">
@@ -65,10 +72,7 @@
             <label class="login-title" >年龄</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <select name="userAge" class="layui-select" id="userAge" lay-verify="number">
-                        <option selected="selected">请选择</option>
-                        <option th:each="userAge:${ageList}" th:value="${userAge.getValue()}" th:text="${userAge.getValue()}"></option>
-                    </select>
+                    <input type="number" id="userAge" name="userName" lay-verify="required" placeholder="请输入你的年龄" autocomplete="on" class="layui-input">
                 </div>
             </div>
         </div>
@@ -144,6 +148,9 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+    });
     <!-- 注册 -->
     $(document).ready(function () {
         $("#register").click(function () {
