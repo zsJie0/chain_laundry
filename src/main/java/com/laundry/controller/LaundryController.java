@@ -800,6 +800,16 @@ public class LaundryController {
     }
 
     /**
+     * 取消发布公告
+     * @return
+     */
+    @RequestMapping("/updateNoticeNo")
+    public String updateNoticeByIdNo(String[] noticeIdList){
+        loginMapper.updateNoticeByIdNo(noticeIdList);
+        return "redirect:queryNoticeList";
+    }
+
+    /**
      * 删除公告
      * @return
      */

@@ -630,6 +630,14 @@
             #{noticeId}
         </foreach>
     </update>
+    <!--  取消发布公告  -->
+    <update id="updateNoticeByIdNo">
+        update notice_info set notice_state_id = notice_state_id - 1
+        where notice_id in
+        <foreach collection="noticeIdList" item="noticeId" open="(" close=")" separator=",">
+            #{noticeId}
+        </foreach>
+    </update>
 
 <!--  删除公告  -->
     <delete id="deleteNoticeById">
