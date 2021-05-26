@@ -30,7 +30,7 @@
 </head>
 <body>
 <div class="container">
-    <div class="logo"><a href="./index.html">连锁洗衣店管理系统</a></div>
+    <div class="logo"><a href="/queryAllLaundryInfo">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item"><a href="/login">后台登录</a></li>
@@ -39,43 +39,42 @@
 <div class="login-logo"><h1>ChainLaundry下单平台</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <div style="padding-left: 115px">
-
     <form class="layui-form layui-form-pane">
-        <div class="layui-form-item">
-            <label class="layui-form-label">订单编号</label>
+        <div class="login-title">
+            <label class="layui-form-label login-inline">订单编号</label>
             <div class="layui-input-inline">
-                <input type="text" name="orderId" lay-verify="required"  autocomplete="on" class="layui-input" id="orderId">
+                <input type="text" name="orderId" lay-verify="required"  autocomplete="on" class="layui-input" id="orderId" required="required">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">订单名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="orderName" lay-verify="required" autocomplete="on" class="layui-input" id="orderName">
+                <input type="text" name="orderName" lay-verify="required" autocomplete="on" class="layui-input" id="orderName" required>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">订单下单人</label>
             <div class="layui-input-inline">
-                <input type="text" name="user" lay-verify="required" autocomplete="on" class="layui-input" id="user">
+                <input type="text" name="user" lay-verify="required" autocomplete="on" class="layui-input" id="user" required>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
-                <input type="text" name="phone" lay-verify="required"  autocomplete="on" class="layui-input" id="phone">
+                <input type="text" name="phone" lay-verify="required"  autocomplete="on" class="layui-input" id="phone" required>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">下单时间</label>
             <div class="layui-input-inline">
                 <input type="text" name="time" lay-verify="required" autocomplete="on" class="layui-input" id="time" placeholder="yyyy-MM-dd"
-                onclick="layui.laydate({elem:this})">
+                onclick="layui.laydate({elem:this})" required>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">下单地址</label>
             <div class="layui-input-inline">
-                <select name="address" class="layui-select" id="address">
+                <select name="address" class="layui-select" id="address" required>
                     <option th:each="laundry : ${laundryList}" th:value="${laundry.get('position')}" th:text="${laundry.get('position') }"></option>
                 </select>
             </div>
@@ -89,7 +88,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">衣物类型</label>
             <div class="layui-input-inline">
-                <select name="type" class="layui-select" id="type">
+                <select name="type" class="layui-select" id="type" required>
                     <option th:each="type : ${clothesType}" th:value="${type.get('typeId')}" th:text="${type.get('typeName') }"></option>
                 </select>
             </div>
@@ -97,14 +96,17 @@
         <div class="layui-form-item">
             <label class="layui-form-label">衣物量</label>
             <div class="layui-input-inline">
-                <input type="number" name="number" lay-verify="required" autocomplete="on" class="layui-input" id="number">
+                <input type="number" name="number" lay-verify="required" autocomplete="on" class="layui-input" id="number" required>
             </div>
+        </div>
+        <div style="padding-left: 75px">
+            <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>
         </div>
     </form>
     </div>
-    <div style="text-align: center">
-        <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>
-    </div>
+<!--    <div style="text-align: center">-->
+<!--        <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>-->
+<!--    </div>-->
 </div>
 <div class="bg-changer">
     <div class="swiper-container changer-list">
@@ -161,10 +163,10 @@
                 success:function (data) {
                     if(data == "success"){
                      window.location.href = "orderPosition?address="+address;
-                    }else if(data == "exist"){
-                        layer.msg("注册失败！该账号已存在！")
-                    }else if(data == "exist"){
-                        layer.msg("注册失败！系统异常")
+                    }else if(data == "fail"){
+                        layer.msg("系统异常！")
+                    }else {
+
                     }
                 },
                 error:function(res){

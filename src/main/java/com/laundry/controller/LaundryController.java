@@ -993,6 +993,10 @@ public class LaundryController {
     @RequestMapping("/order")
     @ResponseBody
     public String order(@RequestParam Map<String,Object> param){
+        if("".equals(param.get("orderId")) ||"".equals(param.get("orderName")) ||"".equals(param.get("user"))
+        ||"".equals(param.get("phone")) ||"".equals(param.get("time")) ||"".equals(param.get("note")) ||"".equals(param.get("number"))){
+            return "empty";
+        }
         //把值存到PARAM集合里
         CommonUtils.PARAM_MAP = param;
         //查询洗衣店
