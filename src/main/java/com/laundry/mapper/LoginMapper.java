@@ -33,6 +33,13 @@ public interface LoginMapper {
     int addUserInfo(Map<String,Object> param);
 
     /**
+     * 注册下单人
+     * @param param
+     * @return
+     */
+    int addUserInfoXD(Map<String,Object> param);
+
+    /**
      * 判断用户是否存在
      * @param param
      * @return
@@ -45,6 +52,13 @@ public interface LoginMapper {
      * @return
      */
     Map<String,Object> queryUserById(String userId);
+
+    /**
+     * 查询下单人信息
+     * @param userId
+     * @return
+     */
+    Map<String,Object> queryUserByIdPT(String userId);
 
     /**
      * 根据id查询洗衣店信息
@@ -369,4 +383,15 @@ public interface LoginMapper {
      * 添加订单
      */
     int addOrder(Map<String,Object> param);
+
+    /**
+     * 查询订单信息
+     */
+    List<Map<String,Object>> queryOrderByUserId(String userId);
+
+    /**
+     * 修改订单信息
+     * @return
+     */
+    int updateOrderById(Map<String,Object> param);
 }

@@ -40,6 +40,23 @@ public class LaundryController {
     }
 
     /**
+     * 注册第一步
+     * @return
+     */
+    @RequestMapping("/registerFistStep")
+    public String registerFistStep(){
+        return "firstRegister";
+    }
+
+    /**
+     * 注册下单人
+     * @return
+     */
+    @RequestMapping("/registerXD")
+    public String registerXD(){
+        return "registerXD";
+    }
+    /**
      * 注册
      * @return
      */
@@ -47,7 +64,6 @@ public class LaundryController {
     public String register(){
         return "register";
     }
-
 
     /**
      * 处理
@@ -183,13 +199,15 @@ public class LaundryController {
         }else {
             //主页显示
             Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
-            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
-                showList.put("clothesCount","-");
-            }
             if(CommonUtils.isEmpty(showList)){
                 showList = new HashMap();
             }
-            CommonUtils.formatNumber(showList, "clothesCount");
+            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
+                showList.put("clothesCount","-");
+            }else {
+                CommonUtils.formatNumber(showList, "clothesCount");
+            }
+
             CommonUtils.formatNumber(showList, "orderCount");
             model.addAttribute("showList", showList);
             return "indexPT";
@@ -230,6 +248,35 @@ public class LaundryController {
     }
 
     /**
+     * 注册下单人
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addUserInfoXD")
+    public String addUserInfoXD(@RequestParam Map<String,Object> param){
+        //存储用户信息
+        CommonUtils.USER_MAP = param;
+        String date = String.valueOf(param.get("time"));
+        String formatDate = CommonUtils.dateTransformation2(date);
+        param.put("time", formatDate);
+        System.out.println("addUserInfo"+param);
+        //判断该账号是否存在
+        if(!CommonUtils.isEmpty(loginMapper.isExist(param))){
+            return "exist";
+        }
+            //判断必填字段是否为空
+            if(!(CommonUtils.isEmpty(param.get("userId")) || CommonUtils.isEmpty(param.get("userPwd")) || CommonUtils.isEmpty(param.get("userName")))){
+                int i = loginMapper.addUserInfoXD(param);
+                if(i>0){
+                    return "success";
+                }else {
+                    return "fail";
+                }
+            }
+         return "empty";
+    }
+
+    /**
      * 根据id和pwd查询用户
      * @param map
      * @return
@@ -258,9 +305,6 @@ public class LaundryController {
     @RequestMapping("/queryAllLaundryInfo")
     public String queryAllLaundryInfo(Model model){
         List<Map<String, Object>> laundryInfoList = loginService.queryAllLaundryInfo();
-//        for(Map<String,Object> laundryMap : laundryInfoList){
-//            System.out.println(laundryMap);
-//        }
         model.addAttribute("laundryInfoList",laundryInfoList);
         //年龄段
         Map<String,Integer> ageMap = new HashMap<>();
@@ -287,7 +331,7 @@ public class LaundryController {
         getUserInfo(model);
         getUrlOrImage(model,userId);
         //更新Order表数据 日期
-        loginMapper.updateOrderTime(CommonUtils.currentTime());
+//        loginMapper.updateOrderTime(CommonUtils.currentTime());
         Map<String, Object> userMap = loginMapper.queryUserById(userId);
         //总营业额
         Map<String, Object> queryTurnoverMap = loginMapper.queryTurnover();
@@ -311,13 +355,14 @@ public class LaundryController {
         }else {
             //主页显示
             Map<String,Object> showList = loginMapper.queryIndexShowPT(String.valueOf(userMap.get("laundry_id")));
-            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
-                showList.put("clothesCount","-");
-            }
             if(CommonUtils.isEmpty(showList)){
                 showList = new HashMap();
             }
-            CommonUtils.formatNumber(showList, "clothesCount");
+            if(CommonUtils.isEmpty(showList.get("clothesCount"))){
+                showList.put("clothesCount","-");
+            }else {
+                CommonUtils.formatNumber(showList, "clothesCount");
+            }
             CommonUtils.formatNumber(showList, "orderCount");
             model.addAttribute("showList", showList);
             return "indexPT";
@@ -978,11 +1023,29 @@ public class LaundryController {
      */
     @RequestMapping("/queryClothesType")
     public String queryClothesType(Model model){
+        Map<String, Object> userMap = CommonUtils.USER_MAP;
         List<Map<String, Object>> clothesType = loginMapper.queryClothesType();
         //查询洗衣店信息
         List<Map<String, Object>> laundryList = loginMapper.queryPositionQT();
         model.addAttribute("laundryList",laundryList);
         model.addAttribute("clothesType",clothesType);
+        model.addAttribute("userMap",userMap);
+        return "reception";
+    }
+
+    /**
+     * 查看衣物类型
+     * @return
+     */
+    @RequestMapping("/queryClothesTypeAgain")
+    public String queryClothesTypeAgain(Model model,@RequestParam("userId") String userId){
+        Map<String, Object> userMap  = loginMapper.queryUserByIdPT(userId);
+        List<Map<String, Object>> clothesType = loginMapper.queryClothesType();
+        //查询洗衣店信息
+        List<Map<String, Object>> laundryList = loginMapper.queryPositionQT();
+        model.addAttribute("laundryList",laundryList);
+        model.addAttribute("clothesType",clothesType);
+        model.addAttribute("userMap",userMap);
         return "reception";
     }
 
@@ -1038,6 +1101,54 @@ public class LaundryController {
             return "success";
         }
         return "fail";
+    }
+
+
+    /**
+     * 个人订单列表
+     * @param userId
+     * @param model
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping("/orderShow")
+    public String orderShow(@RequestParam("userId") String userId,Model model,
+                                        @RequestParam(required = false, defaultValue = "1") int page,
+                                         @RequestParam(required = false, defaultValue = "5") int pageSize){
+        //查询用户是否是下单人
+        Map<String, Object> userTypeMap = loginMapper.queryUserById(userId);
+        if("普通用户".equals(userTypeMap.get("user_type"))){
+            PageHelper.startPage(page,pageSize);
+            //根据用户id查询订单信息
+            List<Map<String, Object>> orderList = loginMapper.queryOrderByUserId(userId);
+            orderList.forEach(map->{
+                String orderTime = String.valueOf(map.get("ORDER_TIME"));
+                String dateTransformation = CommonUtils.dateTransformation(orderTime);
+                map.put("ORDER_TIME",dateTransformation);
+            });
+            PageInfo<Map<String,Object>> pageInfo = new PageInfo<>(orderList);
+            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("userMap",userTypeMap);
+            return "receptionShow";
+        }else {
+            return "";
+        }
+    }
+
+    /**
+     * 修改订单信息
+     * @return
+     */
+    @RequestMapping("/updateOrderInfo")
+    @ResponseBody
+    public String updateOrderInfo(@RequestParam Map<String,Object> param){
+        int i = loginMapper.updateOrderById(param);
+        if(i>0){
+            return "success";
+        }else {
+            return "fail";
+        }
     }
 
     /**

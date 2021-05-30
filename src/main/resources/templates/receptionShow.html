@@ -20,7 +20,7 @@
         }
         .login-box{
             width: 310px;
-            height: 300px;
+            height: 480px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255,255,255, 0.3);
@@ -30,43 +30,58 @@
 </head>
 <body>
 <div class="container">
-    <div class="logo"><a href="./index.html">连锁洗衣店管理系统</a></div>
+    <div class="logo"><a href="">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item"><a href="/login">登录首页</a></li>
     </ul>
 </div>
-<div class="login-logo"><h1>请选择</h1></div>
-<div class="login-box" style="width: 520px; padding-bottom: 50px">
-    <div>
-    <form class="layui-form layui-form-pane">
-        <div class="layui-form-item">
-            <label class="layui-form-label">支付方式</label>
-            <div class="layui-input-block">
-                <select name="method" class="layui-select" id="method">
-                    <option>微信</option>
-                    <option>支付宝</option>
-                </select>
+<div class="login-logo"><h1>订单のSHOW</h1></div>
+        <table class="layui-table" >
+            <thead>
+            <tr>
+                <th>订单编号</th>
+                <th>订单名称</th>
+                <th>下单人</th>
+                <th>联系方式</th>
+                <th>下单时间</th>
+                <th>下单地址</th>
+                <th>备注</th>
+                <th>总计</th>
+                <th>衣物数量</th>
+                <th>订单状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order:${pageInfo.list}">
+                <td th:text="${order.get('ORDER_ID')}"></td>
+                <td th:text="${order.get('ORDER_NAME')}"></td>
+                <td th:text="${userMap.get('user_name')}" th:value="${userMap.get('user_id')}"></td>
+                <td th:text="${order.get('ORDER_USER_PHONE')}"></td>
+                <td th:text="${order.get('ORDER_TIME')}"></td>
+                <td th:text="${order.get('ORDER_USER_ADDRESS')}"></td>
+                <td th:text="${order.get('NOTE')}"></td>
+                <td th:text="${order.get('TOTAL')}"></td>
+                <td th:text="${order.get('NUMBER')}"></td>
+                <td th:text="${order.get('state_name')}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+    <input type="text" name="user" lay-verify="required"  class="layui-input" id="user" readonly th:value="${userMap.get('user_id')}" style="display: none">
+
+
+            <div class="page">
+                <ul class="pagination">
+                    <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
+                    <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                    <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">洗衣店</label>
-            <div class="layui-input-block">
-                <input type="radio" th:each="p:${position}" name="position" th:value="${p.get('id')}" th:title="${p.get('name')}" id="laundryId">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">应付金额</label>
-            <div class="layui-input-block">
-                <input type="text" id="money"  class="layui-input" onclick="code()">
-            </div>
-        </div>
-    </form>
-    </div>
+
     <div style="text-align: center">
-        <a class="btn btn-warning pull-right" lay-submit lay-filter="xd" type="button" id="xd">下单</a>
+        <a class="btn btn-warning pull-right" lay-submit lay-filter="again" type="button" id="again">再来一单</a>
     </div>
-</div>
 <div class="bg-changer">
     <div class="swiper-container changer-list">
         <div class="swiper-wrapper">
@@ -87,45 +102,13 @@
     <div class="bg-out"></div>
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
-<script>
-    function code(){
-        var NUM = "";
-        for(var i=10;i<=50;i++){
-            NUM  = Math.floor(Math.random()*50+10);
-        }
-        document.getElementById("money").value = NUM;
-    }
 
-        <!-- 注册 -->
+<script>
     $(document).ready(function () {
-        $("#xd").click(function () {
-            var method = document.getElementById("method").value;
-            var laundryId = document.getElementById("laundryId").value;
-            var money = document.getElementById("money").value;
-            $.ajax({
-                type:"post",
-                url:"/orderLastTep",
-                data: {
-                    method  ,
-                    laundryId,
-                    money
-                },
-                success:function (data) {
-                    if(data == "success"){
-                        layer.msg("下单成功！三秒后将离开下单系统");
-                        setTimeout('window.location.href="login"',3000)
-                        // window.location.href = "login";
-                    }else if(data == "fail"){
-                        layer.msg("系统异常，下单失败！")
-                    }else if(data == "exist"){
-                        layer.msg("注册失败！系统异常")
-                    }
-                },
-                error:function(res){
-                    console.log(res)
-                }
-            })
-        })
+        $("#again").click(function () {
+            var user = document.getElementById("user").value;
+            window.location.href = "queryClothesTypeAgain?userId=" + user;
+        });
     });
 </script>
 <script>
@@ -138,5 +121,29 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
+<style>
+    ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {display: inline;}
+
+    ul.pagination li a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+    }
+
+    ul.pagination li a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+</style>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ChainLaundry-注册</title>
+    <title>ChainLaundry-下单人注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="./css/font.css">
@@ -20,7 +20,7 @@
         }
         .login-box{
             width: 310px;
-            height: 422px;
+            height: 350px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255,255,255, 0.3);
@@ -33,14 +33,14 @@
     <div class="logo"><a href="">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
-        <li class="layui-nav-item"><a href="/queryClothesType">前台首页</a></li>
+        <li class="layui-nav-item"><a href="/login">登录首页</a></li>
     </ul>
 </div>
-<div class="login-logo"><h1>ChainLaundry</h1></div>
+<div class="login-logo"><h1>ChainLaundry注册第二步</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <form class="layui-form layui-form-pane">
 
-        <h3 style="padding-left: 190px;color: #eea236 " >注册你的账号</h3>
+        <h3 style="padding-left: 190px;color: #eea236 " >下单人注册</h3>
         <div class="formItme">
             <label class="login-title" >账号</label>
             <div class="layui-form-item">
@@ -69,34 +69,12 @@
         </div>
 
         <div class="formItme">
-            <label class="login-title" >年龄</label>
-            <div class="layui-form-item">
-                <div class="layui-input-inline login-inline">
-                    <input type="number" id="userAge" name="userName" lay-verify="required" placeholder="请输入你的年龄" autocomplete="on" class="layui-input">
-                </div>
-            </div>
-        </div>
-
-        <div class="formItme">
             <label class="login-title" >性别</label>
             <div class="layui-form-item">
-<!--                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>-->
                 <div class="layui-input-inline login-inline">
                     <select name="userSex" class="layui-select" id="userSex">
                         <option>男</option>
                         <option>女</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="formItme">
-            <label class="login-title" >所属洗衣店</label>
-            <div class="layui-form-item">
-<!--                <label class="layui-form-label login-form"><i class="iconfont">&#xe82b;</i></label>-->
-                <div class="layui-input-inline login-inline">
-                    <select name="laundry" class="layui-select" id="laundryId">
-                        <option th:each="laundryMap : ${laundryInfoList}" th:value="${laundryMap.get('laundry_id')}" th:text="${laundryMap.get('laundry_name') }"></option>
                     </select>
                 </div>
             </div>
@@ -112,7 +90,7 @@
         </div>
 
         <div class="formItme">
-            <label class="login-title" >加入连锁店时间</label>
+            <label class="login-title" >注册日期</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
                     <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="on" class="layui-input" onclick="layui.laydate({elem: this})">
@@ -155,28 +133,24 @@
             var userId = document.getElementById("userId").value;
             var userPwd = document.getElementById("userPwd").value;
             var userName = document.getElementById("userName").value;
-            var userAge = document.getElementById("userAge").value;
             var userSex = document.getElementById("userSex").value;
-            var laundryId = document.getElementById("laundryId").value;
             var phone = document.getElementById("userPhone").value;
             var time = document.getElementById("date").value;
             $.ajax({
                 type:"post",
-                url:"addUserInfo",
+                url:"addUserInfoXD",
                 data: {
                     userId,
                     userPwd,
                     userName,
-                    userAge,
                     userSex,
-                    laundryId,
                     phone,
                     time
                 },
                 success:function (data) {
                     if(data == "success"){
-                        layer.msg("注册成功！");
-                         setTimeout('window.location.href = "login";',3000);
+                        layer.msg("注册成功！系统将在三秒后跳转到下单平台");
+                       setTimeout('window.location.href = "queryClothesType";',3000);
                     }else if(data == "exist"){
                         layer.msg("注册失败！该账号已存在！")
                     }else if(data == "exist"){

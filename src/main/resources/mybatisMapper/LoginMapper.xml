@@ -28,6 +28,12 @@
         VALUES
         (#{userId},#{userName},#{userPwd},#{userAge},#{userSex},'普通员工',#{laundryId},'3','PY',#{phone},#{time},null )
     </insert>
+    <!--    注册(添加)下单人-->
+    <insert id="addUserInfoXD" parameterType="java.util.Map">
+        INSERT INTO user1
+        VALUES
+        (#{userId},#{userName},#{userPwd},null,#{userSex},'普通用户',null,null,'PY',#{phone},#{time},null )
+    </insert>
 <!--    根据ID删除用户信息  -->
     <delete id="deleteUserInfoById">
         delete from user1 where user_id = #{userId}
@@ -83,7 +89,13 @@
             LEFT JOIN laundry l ON u.laundry_id = l.laundry_id
             where user_id = #{userId}
     </select>
-
+    <!--    根据id查询用户信息 (下单人) -->
+    <select id="queryUserByIdPT" resultType="java.util.Map">
+        SELECT user_id as userId,
+            user_name as userName,
+            phone
+        FROM user1  where user_id = #{userId}
+    </select>
 <!--    根据洗衣店id查询洗衣店-->
     <select id="queryLaundryById" resultType="java.util.Map">
         SELECT
@@ -122,10 +134,9 @@
         FROM
             (
                 SELECT
-                    sum( c.CLOTHES_TYPE_NUMBER ) AS clothesCount
+                    sum(NUMBER) AS clothesCount
                 FROM
-                    `order` o
-                        LEFT JOIN clothes_type c ON o.CLOTHES_TYPE_ID = c.CLOTHES_TYPE_ID
+                    `order`
                 WHERE
                     LAUNDRY_ID = #{laundryId}
             ) t1,
@@ -663,4 +674,12 @@
     <insert id="addOrder">
         insert into `order` values(#{orderId},#{orderName},#{user},#{phone},#{time},#{address},#{note},#{method},#{money},#{type},0,#{laundryId},#{number});
     </insert>
+<!--    查看订单信息  -->
+    <select id="queryOrderByUserId" resultType="java.util.Map">
+        SELECT * FROM `order` o left join order_state os on o.STATE_ID = os.state_id where ORDER_USER =  #{userId}
+    </select>
+<!--    修改订单信息  -->
+    <update id="updateOrderById">
+       update `order` set order_user_phone=#{phone},order_user=#{userName},order_user_address=#{address},note=#{note} where order_id = #{orderId}
+    </update>
 </mapper>

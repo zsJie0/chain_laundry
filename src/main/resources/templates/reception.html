@@ -33,7 +33,7 @@
     <div class="logo"><a href="/queryAllLaundryInfo">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
-        <li class="layui-nav-item"><a href="/login">后台登录</a></li>
+                <li class="layui-nav-item"><a href="/login">登录首页</a></li>
     </ul>
 </div>
 <div class="login-logo"><h1>ChainLaundry下单平台</h1></div>
@@ -55,13 +55,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label">订单下单人</label>
             <div class="layui-input-inline">
-                <input type="text" name="user" lay-verify="required" autocomplete="on" class="layui-input" id="user" required>
+                <input type="text" name="user" lay-verify="required"  class="layui-input" id="userName" readonly  th:value="${userMap.get('userName')}">
+                <input type="text" name="user" lay-verify="required"  class="layui-input" id="user" readonly th:value="${userMap.get('userId')}" style="display: none">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">联系方式</label>
             <div class="layui-input-inline">
-                <input type="text" name="phone" lay-verify="required"  autocomplete="on" class="layui-input" id="phone" required>
+                <input type="text" name="phone" lay-verify="required"   class="layui-input" id="phone" readonly th:value="${userMap.get('phone')}">
             </div>
         </div>
         <div class="layui-form-item">
@@ -99,14 +100,12 @@
                 <input type="number" name="number" lay-verify="required" autocomplete="on" class="layui-input" id="number" required>
             </div>
         </div>
-        <div style="padding-left: 75px">
-            <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>
-        </div>
     </form>
     </div>
-<!--    <div style="text-align: center">-->
-<!--        <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>-->
-<!--    </div>-->
+    <div style="text-align: center">
+        <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>
+    </div>
+
 </div>
 <div class="bg-changer">
     <div class="swiper-container changer-list">

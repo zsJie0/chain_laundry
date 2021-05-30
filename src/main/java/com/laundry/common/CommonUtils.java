@@ -67,7 +67,7 @@ public final class CommonUtils {
     public static final String POINT = ".";
 
     public static  Map<String,Object> PARAM_MAP = null;
-    public static  List<Map<String,Object>> POSITION_MAP = null;
+    public static  Map<String,Object> USER_MAP = null;
 
 
 

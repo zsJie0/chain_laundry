@@ -172,7 +172,27 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="list" th:hidden="${userMap.get('user_type')} == '普通员工'? false:true">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        个人信息管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu ">
+                        <li>
+                            <a href="/userInfo">
+                                <i class="iconfont">&#xe6a7;</i>
+                                个人信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/updatePwd">
+                                <i class="iconfont">&#xe6a7;</i>
+                                修改密码
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
@@ -199,10 +219,10 @@
                 </div> 
             </form>
             <xblock>
-                <button class="layui-btn layui-btn-danger" id="handle" style="background-color: brown">
+                <button class="layui-btn layui-btn-danger" id="handle" style="background-color: darkseagreen">
                     <i class="layui-icon">&#xe650;</i>批量处理</button>
-                <a class="layui-btn layui-btn-danger" href="/queryOrderInfo" style="background-color: sandybrown">
-                    <i class="layui-icon">&#xe650;</i>刷新</a>
+<!--                <a class="layui-btn layui-btn-danger" href="/queryOrderInfo" style="background-color: sandybrown">-->
+<!--                    <i class="layui-icon">&#xe650;</i>刷新</a>-->
                 <span class="x-right">
                      共有数据：<span style="color: #dddddd" th:text="${pageInfo.total}"></span>
                     &nbsp;条

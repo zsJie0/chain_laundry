@@ -20,7 +20,7 @@
         }
         .login-box{
             width: 310px;
-            height: 300px;
+            height: 250px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255,255,255, 0.3);
@@ -36,35 +36,23 @@
         <li class="layui-nav-item"><a href="/login">登录首页</a></li>
     </ul>
 </div>
-<div class="login-logo"><h1>请选择</h1></div>
+<div class="login-logo"><h1>ChainLaundry注册第一步</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <div>
     <form class="layui-form layui-form-pane">
         <div class="layui-form-item">
-            <label class="layui-form-label">支付方式</label>
+            <label class="layui-form-label">身份选择</label>
             <div class="layui-input-block">
                 <select name="method" class="layui-select" id="method">
-                    <option>微信</option>
-                    <option>支付宝</option>
+                    <option>我是用户</option>
+                    <option>我是员工</option>
                 </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">洗衣店</label>
-            <div class="layui-input-block">
-                <input type="radio" th:each="p:${position}" name="position" th:value="${p.get('id')}" th:title="${p.get('name')}" id="laundryId">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">应付金额</label>
-            <div class="layui-input-block">
-                <input type="text" id="money"  class="layui-input" onclick="code()">
             </div>
         </div>
     </form>
     </div>
     <div style="text-align: center">
-        <a class="btn btn-warning pull-right" lay-submit lay-filter="xd" type="button" id="xd">下单</a>
+        <a class="btn btn-warning pull-right" lay-submit lay-filter="nextStep" type="button" id="nextStep">下一步</a>
     </div>
 </div>
 <div class="bg-changer">
@@ -98,33 +86,14 @@
 
         <!-- 注册 -->
     $(document).ready(function () {
-        $("#xd").click(function () {
+        $("#nextStep").click(function () {
             var method = document.getElementById("method").value;
-            var laundryId = document.getElementById("laundryId").value;
-            var money = document.getElementById("money").value;
-            $.ajax({
-                type:"post",
-                url:"/orderLastTep",
-                data: {
-                    method  ,
-                    laundryId,
-                    money
-                },
-                success:function (data) {
-                    if(data == "success"){
-                        layer.msg("下单成功！三秒后将离开下单系统");
-                        setTimeout('window.location.href="login"',3000)
-                        // window.location.href = "login";
-                    }else if(data == "fail"){
-                        layer.msg("系统异常，下单失败！")
-                    }else if(data == "exist"){
-                        layer.msg("注册失败！系统异常")
-                    }
-                },
-                error:function(res){
-                    console.log(res)
-                }
-            })
+            if(method == "我是员工"){
+                window.location.href="/queryAllLaundryInfo"
+            }else {
+                window.location.href="/registerXD"
+            }
+
         })
     });
 </script>
