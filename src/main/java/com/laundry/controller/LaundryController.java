@@ -241,8 +241,6 @@ public class LaundryController {
                     return "fail";
                 }
             }
-
-
         }
         return "empty";
     }
@@ -1116,6 +1114,13 @@ public class LaundryController {
     public String orderShow(@RequestParam("userId") String userId,Model model,
                                         @RequestParam(required = false, defaultValue = "1") int page,
                                          @RequestParam(required = false, defaultValue = "5") int pageSize){
+        //判断用户是否存在
+        Map<String,Object> param = new HashMap<>();
+        param.put("userId",userId);
+        Map<String, Object> existMap = loginMapper.isExist(param);
+        if(CommonUtils.isEmpty(existMap)){
+            return "login";
+        }
         //查询用户是否是下单人
         Map<String, Object> userTypeMap = loginMapper.queryUserById(userId);
         if("普通用户".equals(userTypeMap.get("user_type"))){
@@ -1132,7 +1137,7 @@ public class LaundryController {
             model.addAttribute("userMap",userTypeMap);
             return "receptionShow";
         }else {
-            return "";
+            return "login";
         }
     }
 
