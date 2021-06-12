@@ -68,6 +68,7 @@
             LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
         WHERE
             b.user_type = '普通管理员'
+            and  a.state = 2
             ORDER BY a.laundry_id
     </select>
 <!--    根据id查询用户信息  -->
@@ -125,6 +126,7 @@
     FROM
         laundry l
         LEFT JOIN ( SELECT count( LAUNDRY_ID ) AS "numberOfUser", LAUNDRY_ID AS "laundry_id" FROM user1 GROUP BY LAUNDRY_ID ) u ON u.laundry_id = l.LAUNDRY_ID
+        where l.state = 2
     </select>
 <!--    主页 普通管理员/普通用户的show  -->
     <select id="queryIndexShowPT" resultType="java.util.Map">

@@ -35,7 +35,7 @@
                          数量最大值
                       </label>
                       <div class="layui-input-inline">
-                          <input type="number" id="maxNumber" name="maxNumber"  class="layui-input" th:value="${max}" readonly>
+                          <input type="number" id="maxNumber" name="maxNumber"  class="layui-input" th:value="${max}" readonly >
                       </div>
                   </div>
                   <div class="layui-form-item">
@@ -43,7 +43,7 @@
                           数量最小值
                       </label>
                       <div class="layui-input-inline">
-                          <input type="number" id="minNumber" name="minNumber"  class="layui-input" th:value="${min}" readonly>
+                          <input type="number" id="minNumber" name="minNumber"  class="layui-input" th:value="${min}" readonly >
                       </div>
                   </div>
                   <div class="layui-form-item">
@@ -74,24 +74,29 @@
         //处理
         $(document).ready(function () {
             $("#chuku").click(function () {
+                var minNumber = document.getElementById("minNumber").value;
                 var selectNumber = document.getElementById("selectNumber").value;
-                $.ajax({
-                    type:"post",
-                    url:"/chuK",
-                    data: {
-                        selectNumber
-                    },
-                    success:function (data) {
-                        if(data == "success"){
-                            layer.msg("出库成功！");
-                        }else if(data == "fail"){
-                            layer.msg("入库失败！系统异常")
+                if(selectNumber > minNumber){
+                    layer.msg("出库物资数量不能多于物资最小值！")
+                }else {
+                    $.ajax({
+                        type:"post",
+                        url:"/chuK",
+                        data: {
+                            selectNumber
+                        },
+                        success:function (data) {
+                            if(data == "success"){
+                                layer.msg("出库成功！");
+                            }else if(data == "fail"){
+                                layer.msg("入库失败！系统异常")
+                            }
+                        },
+                        error:function(res){
+                            console.log(res)
                         }
-                    },
-                    error:function(res){
-                        console.log(res)
-                    }
-                })
+                    })
+                }
             })
         });
 
