@@ -144,34 +144,42 @@
             var address = document.getElementById("address").value;
             var note = document.getElementById("note").value;
             var type = document.getElementById("type").value;
-            var number = document.getElementById("number").value;
-            $.ajax({
-                type:"post",
-                url:"order",
-                data: {
-                    orderId  ,
-                    orderName,
-                    user     ,
-                    phone    ,
-                    time     ,
-                    address  ,
-                    note     ,
-                    type     ,
-                    number
-                },
-                success:function (data) {
-                    if(data == "success"){
-                     window.location.href = "orderPosition?address="+address;
-                    }else if(data == "fail"){
-                        layer.msg("系统异常！")
-                    }else {
+            var number = document.getElementById("number").value
+            // if(orderId == null || orderName == null || number == null ||
+            //     orderId == "" || orderName == "" || number == ""){
+            //     layer.msg("请完整的填写完订单信息！")
+            // }else {
+                $.ajax({
+                    type:"post",
+                    url:"order",
+                    data: {
+                        orderId  ,
+                        orderName,
+                        user     ,
+                        phone    ,
+                        time     ,
+                        address  ,
+                        note     ,
+                        type     ,
+                        number
+                    },
+                    success:function (data) {
+                        if(data == "success"){
+                            window.location.href = "orderPosition?address="+address;
+                        }else if(data == "fail"){
+                            layer.msg("系统异常！")
+                        }else if(data == "empty"){
+                            layer.msg("请完整的填写完订单信息!")
+                        }else {
 
+                        }
+                    },
+                    error:function(res){
+                        console.log(res)
                     }
-                },
-                error:function(res){
-                    console.log(res)
-                }
-            })
+                })
+            // }
+
         })
     });
 </script>
