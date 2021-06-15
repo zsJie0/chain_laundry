@@ -64,11 +64,11 @@
             FROM
                 laundry l
                 LEFT JOIN state_info s ON l.STATE = s.STATE
+                where l.state = 2
             ) a
             LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
         WHERE
             b.user_type = '普通管理员'
-            and  a.state = 2
             ORDER BY a.laundry_id
     </select>
 <!--    根据id查询用户信息  -->
@@ -218,11 +218,11 @@
     </select>
 <!--  定位管理  -->
     <select id="queryPosition" resultType="java.util.Map">
-        select LAUNDRY_POSITION as position,count(*) as count from laundry  GROUP BY LAUNDRY_POSITION
+        select LAUNDRY_POSITION as position,count(*) as count from laundry where state = 2 GROUP BY LAUNDRY_POSITION
     </select>
 <!--  某位置下的连锁店信息列表  -->
     <select id="queryLaundryByPosition" resultType="java.util.Map">
-        select laundry_Id id,laundry_name name,credit,turnover,LAUNDRY_POSITION as position from laundry where LAUNDRY_POSITION = #{position}
+        select laundry_Id id,laundry_name name,credit,turnover,LAUNDRY_POSITION as position from laundry where state = 2  and  LAUNDRY_POSITION = #{position}
     </select>
 <!--    根据ID申请处理跟审核处理   -->
     <update id="updateStateByLaundryId" parameterType="String">
