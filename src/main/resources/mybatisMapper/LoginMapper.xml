@@ -53,6 +53,7 @@
         FROM
             (
             SELECT
+                DISTINCT
                 l.laundry_id,
                 l.laundry_name,
                 l.laundry_position,
