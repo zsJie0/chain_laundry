@@ -66,9 +66,8 @@ public final class CommonUtils {
      */
     public static final String POINT = ".";
 
-    public static  Map<String,Object> PARAM_MAP = null;
-    public static  Map<String,Object> USER_MAP = null;
-
+    public static Map<String, Object> PARAM_MAP = null;
+    public static Map<String, Object> USER_MAP = null;
 
 
     /**
@@ -298,8 +297,6 @@ public final class CommonUtils {
     }
 
 
-
-
     /**
      * 从List<Map<>>中取一个字段数据，放在list中返回
      *
@@ -342,7 +339,7 @@ public final class CommonUtils {
      * yyyyMMdd -- yyyy-MM-dd
      */
     public static String dateTransformation(String date) {
-        if(isEmpty(date)){
+        if (isEmpty(date)) {
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -362,7 +359,7 @@ public final class CommonUtils {
      * yyyy-MM-dd -> yyyyMMdd
      */
     public static String dateTransformation2(String date) {
-        if(isEmpty(date)){
+        if (isEmpty(date)) {
             return null;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -379,16 +376,17 @@ public final class CommonUtils {
 
     /**
      * 类型转换(List<String> ---> List<Integer>)
+     *
      * @param StringList 要进行转换的list集合
      * @return
      */
-    public static List<Integer> parseIntegersList(List<String> StringList){
+    public static List<Integer> parseIntegersList(List<String> StringList) {
         List<Integer> IntegersList = new ArrayList<>();
         //遍历String的list
-        for(String data : StringList){
-            if(CommonUtils.isEmpty(data)){
+        for (String data : StringList) {
+            if (CommonUtils.isEmpty(data)) {
                 break;
-            }else {
+            } else {
                 //类型转换
                 Integer iData = Integer.parseInt(data);
                 IntegersList.add(iData);
@@ -399,23 +397,24 @@ public final class CommonUtils {
 
     /**
      * 删除字符串数组中指定值 / 删除数组中的元素包含指定值
-     * @param str 要进行操作的字符串
+     *
+     * @param str     要进行操作的字符串
      * @param element 要删除的元素
      * @return result 返回的结果
      */
-    public static String[] deleteElement(String[] str,String element){
+    public static String[] deleteElement(String[] str, String element) {
         String[] result = null;
         //如果数组不为空
-        if(!isEmpty(str)){
+        if (!isEmpty(str)) {
             //将字符串数组转换成list集合
             List<String> asList = Arrays.asList(str);
             //迭代器实现类不支持remove()删除，多一步转化
 //            list.remove(element);
             Iterator<String> it = asList.iterator();
-            while (it.hasNext()){
+            while (it.hasNext()) {
                 String next = it.next();
                 //返回指定字符在字符串中第一次出现处的索引，如果字符串没有这样的字符，则返回-1
-                if(!(next.indexOf(element) == -1)){
+                if (!(next.indexOf(element) == -1)) {
                     it.remove();
                 }
             }
@@ -428,9 +427,10 @@ public final class CommonUtils {
 
     /**
      * 获取当前日期（yyyyMMdd形式）
+     *
      * @return
      */
-    public static String currentTime(){
+    public static String currentTime() {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
         String format = sdf.format(date);
@@ -440,14 +440,15 @@ public final class CommonUtils {
 
     /**
      * 格式化数据
+     *
      * @return
      */
-    public static Map<String,Object> formatNumber(Map<String,Object> formatMap,String valueName ){
+    public static Map<String, Object> formatNumber(Map<String, Object> formatMap, String valueName) {
         DecimalFormat df = new DecimalFormat("###,###,###,##0");
         String number = String.valueOf(formatMap.get(valueName));
         BigDecimal bigDecimal = new BigDecimal(number);
         String format = df.format(bigDecimal);
-        formatMap.put(valueName,format);
+        formatMap.put(valueName, format);
         return formatMap;
     }
 }

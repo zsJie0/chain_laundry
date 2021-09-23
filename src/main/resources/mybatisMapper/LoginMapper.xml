@@ -3,26 +3,26 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.laundry.mapper.LoginMapper">
-<!--    根据账号与密码查询用户-->
+    <!--    根据账号与密码查询用户-->
     <select id="queryUserByIdAndPwd" resultType="java.util.Map">
         SELECT user_id,user_name,time,user_age,user_sex,user_type,phone
         FROM `user1` WHERE USER_ID = #{userId} AND USER_PWD = #{userPwd}
     </select>
-<!--    查询用户是否存在-->
+    <!--    查询用户是否存在-->
     <select id="isExist" resultType="java.util.Map">
         select user_id,user_name,time,user_age,user_sex,user_type,phone
         from user1 where user_id = #{userId}
     </select>
-<!--    查询全部用户  -->
+    <!--    查询全部用户  -->
     <select id="queryAllUser" resultType="java.util.Map">
         select user_id,user_name,time,user_age,user_sex,user_type,phone from user1
     </select>
-<!--    根据Id更新用户信息  -->
+    <!--    根据Id更新用户信息  -->
     <update id="updateUserInfoById" parameterType="java.util.Map">
         update user1 set user_name = #{userName},user_age = #{userAge},user_sex =#{userSex},
         user_type = #{userType},laundry_id = #{laundryId} ,time=#{time},phone=#{phone} where user_id = #{userId}
     </update>
-<!--    注册(添加)用户信息-->
+    <!--    注册(添加)用户信息-->
     <insert id="addUserInfo" parameterType="java.util.Map">
         INSERT INTO user1
         VALUES
@@ -34,139 +34,140 @@
         VALUES
         (#{userId},#{userName},#{userPwd},null,#{userSex},'普通用户',null,null,'PY',#{phone},#{time},null )
     </insert>
-<!--    根据ID删除用户信息  -->
+    <!--    根据ID删除用户信息  -->
     <delete id="deleteUserInfoById">
         delete from user1 where user_id = #{userId}
     </delete>
-<!--    查询洗衣店信息 -->
+    <!--    查询洗衣店信息 -->
     <select id="queryAllLaundryInfo" resultType="java.util.Map">
         SELECT
-            a.laundry_id,
-            a.laundry_name,
-            a.laundry_position,
-            a.turnover,
-            a.credit,
-            a.sqtime,
-            a.state_name,
-            b.user_name,
-            b.phone
+        a.laundry_id,
+        a.laundry_name,
+        a.laundry_position,
+        a.turnover,
+        a.credit,
+        a.sqtime,
+        a.state_name,
+        b.user_name,
+        b.phone
         FROM
-            (
-            SELECT
-                DISTINCT
-                l.laundry_id,
-                l.laundry_name,
-                l.laundry_position,
-                l.credit,
-                l.turnover,
-                l.sqtime,
-                l.state,
-                s.state_name
-            FROM
-                laundry l
-                LEFT JOIN state_info s ON l.STATE = s.STATE
-                where l.state = 2
-            ) a
-            LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
+        (
+        SELECT
+        DISTINCT
+        l.laundry_id,
+        l.laundry_name,
+        l.laundry_position,
+        l.credit,
+        l.turnover,
+        l.sqtime,
+        l.state,
+        s.state_name
+        FROM
+        laundry l
+        LEFT JOIN state_info s ON l.STATE = s.STATE
+        where l.state = 2
+        ) a
+        LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
         WHERE
-            b.user_type = '普通管理员'
-            ORDER BY a.laundry_id
+        b.user_type = '普通管理员'
+        ORDER BY a.laundry_id
     </select>
-<!--    根据id查询用户信息  -->
+    <!--    根据id查询用户信息  -->
     <select id="queryUserById" resultType="java.util.Map">
         SELECT
-            u.user_id,
-            u.user_name,
-            u.time,
-            u.phone,
-            u.user_age,
-            u.user_sex,
-            u.user_type,
-            u.laundry_id,
-            u.evaluate,
-            l.laundry_name,
-            l.laundry_position
+        u.user_id,
+        u.user_name,
+        u.time,
+        u.phone,
+        u.user_age,
+        u.user_sex,
+        u.user_type,
+        u.laundry_id,
+        u.evaluate,
+        l.laundry_name,
+        l.laundry_position
         FROM
-            user1 u
-            LEFT JOIN laundry l ON u.laundry_id = l.laundry_id
-            where user_id = #{userId}
+        user1 u
+        LEFT JOIN laundry l ON u.laundry_id = l.laundry_id
+        where user_id = #{userId}
     </select>
     <!--    根据id查询用户信息 (下单人) -->
     <select id="queryUserByIdPT" resultType="java.util.Map">
         SELECT user_id as userId,
-            user_name as userName,
-            phone
-        FROM user1  where user_id = #{userId}
+        user_name as userName,
+        phone
+        FROM user1 where user_id = #{userId}
     </select>
-<!--    根据洗衣店id查询洗衣店-->
+    <!--    根据洗衣店id查询洗衣店-->
     <select id="queryLaundryById" resultType="java.util.Map">
         SELECT
-            l.laundry_id,
-            laundry_name,
-            l.laundry_position,
-            l.credit,
-            l.turnover,
-            l.sqtime,
-            l.state,
-            s.state_name
+        l.laundry_id,
+        laundry_name,
+        l.laundry_position,
+        l.credit,
+        l.turnover,
+        l.sqtime,
+        l.state,
+        s.state_name
         FROM
-            laundry l
-            LEFT JOIN state_info s ON l.STATE = s.STATE
+        laundry l
+        LEFT JOIN state_info s ON l.STATE = s.STATE
         WHERE
-            laundry_id = #{laundryId}
+        laundry_id = #{laundryId}
     </select>
-<!--    查询一个洗衣店有多少个用户-->
+    <!--    查询一个洗衣店有多少个用户-->
     <select id="queryIndexShow" resultType="java.util.Map">
-    SELECT
+        SELECT
         l.LAUNDRY_ID,
         l.LAUNDRY_NAME,
         l.LAUNDRY_POSITION,
         l.TURNOVER,
         l.CREDIT,
         IFNULL( u.numberOfUser, 0 ) AS numberOfUser
-    FROM
+        FROM
         laundry l
-        LEFT JOIN ( SELECT count( LAUNDRY_ID ) AS "numberOfUser", LAUNDRY_ID AS "laundry_id" FROM user1 GROUP BY LAUNDRY_ID ) u ON u.laundry_id = l.LAUNDRY_ID
+        LEFT JOIN ( SELECT count( LAUNDRY_ID ) AS "numberOfUser", LAUNDRY_ID AS "laundry_id" FROM user1 GROUP BY
+        LAUNDRY_ID ) u ON u.laundry_id = l.LAUNDRY_ID
         where l.state = 2
     </select>
-<!--    主页 普通管理员/普通用户的show  -->
+    <!--    主页 普通管理员/普通用户的show  -->
     <select id="queryIndexShowPT" resultType="java.util.Map">
         SELECT
-            t1.clothesCount,
-            t2.orderCount
+        t1.clothesCount,
+        t2.orderCount
         FROM
-            (
-                SELECT
-                    sum(NUMBER) AS clothesCount
-                FROM
-                    `order`
-                WHERE
-                    LAUNDRY_ID = #{laundryId}
-            ) t1,
-            (
-                SELECT
-                    count( * ) AS orderCount
-                FROM
-                    (
-                        SELECT
-                            c.CLOTHES_TYPE_NAME,
-                            c.CLOTHES_TYPE_NUMBER
-                        FROM
-                            `order` o
-                                LEFT JOIN clothes_type c ON o.CLOTHES_TYPE_ID = c.CLOTHES_TYPE_ID
-                        WHERE
-                            LAUNDRY_ID =  #{laundryId}
-                    ) a
-            ) t2
+        (
+        SELECT
+        sum(NUMBER) AS clothesCount
+        FROM
+        `order`
+        WHERE
+        LAUNDRY_ID = #{laundryId}
+        ) t1,
+        (
+        SELECT
+        count( * ) AS orderCount
+        FROM
+        (
+        SELECT
+        c.CLOTHES_TYPE_NAME,
+        c.CLOTHES_TYPE_NUMBER
+        FROM
+        `order` o
+        LEFT JOIN clothes_type c ON o.CLOTHES_TYPE_ID = c.CLOTHES_TYPE_ID
+        WHERE
+        LAUNDRY_ID = #{laundryId}
+        ) a
+        ) t2
     </select>
-<!--查询总的营业额-->
+    <!--查询总的营业额-->
     <select id="queryTurnover" resultType="java.util.Map">
-       SELECT
-            sum( TURNOVER ) as sumOfTurnover
+        SELECT
+        sum( TURNOVER ) as sumOfTurnover
         FROM
-            laundry
+        laundry
     </select>
-<!--    根据洗衣店名称模糊查询-->
+    <!--    根据洗衣店名称模糊查询-->
     <select id="queryLaundryInfoByName" resultType="java.util.Map">
         <bind name="laundryName" value=" '%' + laundryName + '%' "/>
         SELECT
@@ -183,290 +184,291 @@
         LEFT JOIN state_info s ON l.STATE = s.STATE
         WHERE l.LAUNDRY_NAME like #{laundryName}
     </select>
-<!--    查询已经入驻的连锁店-->
+    <!--    查询已经入驻的连锁店-->
     <select id="queryNotSetInLaundryInfo" resultType="java.util.Map">
-              SELECT
-            a.laundry_id,
-            a.laundry_name,
-            a.laundry_position,
-            a.turnover,
-            a.credit,
-            a.sqtime,
-            a.state_name,
-            b.user_name,
-            b.phone
+        SELECT
+        a.laundry_id,
+        a.laundry_name,
+        a.laundry_position,
+        a.turnover,
+        a.credit,
+        a.sqtime,
+        a.state_name,
+        b.user_name,
+        b.phone
         FROM
-            (
-            SELECT
-                l.laundry_id,
-                l.laundry_name,
-                l.laundry_position,
-                l.credit,
-                l.turnover,
-                l.sqtime,
-                l.state,
-                s.state_name
-            FROM
-                laundry l
-                LEFT JOIN state_info s ON l.STATE = s.STATE
-            ) a
-            LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
-            WHERE
-              b.user_type = '普通管理员'
-              AND ( a.state_name = '未加盟' OR a.state_name = '审核中' )
-              ORDER BY
-            a.laundry_id
+        (
+        SELECT
+        l.laundry_id,
+        l.laundry_name,
+        l.laundry_position,
+        l.credit,
+        l.turnover,
+        l.sqtime,
+        l.state,
+        s.state_name
+        FROM
+        laundry l
+        LEFT JOIN state_info s ON l.STATE = s.STATE
+        ) a
+        LEFT JOIN user1 b ON a.LAUNDRY_ID = b.LAUNDRY_ID
+        WHERE
+        b.user_type = '普通管理员'
+        AND ( a.state_name = '未加盟' OR a.state_name = '审核中' )
+        ORDER BY
+        a.laundry_id
     </select>
-<!--  定位管理  -->
+    <!--  定位管理  -->
     <select id="queryPosition" resultType="java.util.Map">
         select LAUNDRY_POSITION as position,count(*) as count from laundry where state = 2 GROUP BY LAUNDRY_POSITION
     </select>
-<!--  某位置下的连锁店信息列表  -->
+    <!--  某位置下的连锁店信息列表  -->
     <select id="queryLaundryByPosition" resultType="java.util.Map">
-        select laundry_Id id,laundry_name name,credit,turnover,LAUNDRY_POSITION as position from laundry where state = 2  and  LAUNDRY_POSITION = #{position}
+        select laundry_Id id,laundry_name name,credit,turnover,LAUNDRY_POSITION as position from laundry where state = 2
+        and LAUNDRY_POSITION = #{position}
     </select>
-<!--    根据ID申请处理跟审核处理   -->
+    <!--    根据ID申请处理跟审核处理   -->
     <update id="updateStateByLaundryId" parameterType="String">
-       UPDATE laundry
-       SET state = state + 1
-       WHERE
-            LAUNDRY_ID = #{laundryId}
+        UPDATE laundry
+        SET state = state + 1
+        WHERE
+        LAUNDRY_ID = #{laundryId}
     </update>
-<!--    查询状态码表-->
+    <!--    查询状态码表-->
     <select id="queryStateInfo" resultType="java.util.Map">
         SELECT
-            STATE,
-            STATE_NAME
+        STATE,
+        STATE_NAME
         FROM
-            `state_info`
+        `state_info`
     </select>
-<!--查询所有用户信息-->
+    <!--查询所有用户信息-->
     <select id="queryAllUserInfo" resultType="java.util.Map">
         SELECT
-            u.USER_ID,
-            u.USER_NAME,
-            u.USER_AGE,
-            u.USER_SEX,
-            u.USER_TYPE,
-            u.PHONE,
-            l.LAUNDRY_NAME,
-            u.TIME
+        u.USER_ID,
+        u.USER_NAME,
+        u.USER_AGE,
+        u.USER_SEX,
+        u.USER_TYPE,
+        u.PHONE,
+        l.LAUNDRY_NAME,
+        u.TIME
         FROM
-            user1 u
-            LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+        user1 u
+        LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
         WHERE
-            USER_ID != #{uId}
+        USER_ID != #{uId}
     </select>
     <!--查询所有普通用户信息-->
     <select id="queryAllUserInfoPT" resultType="java.util.Map">
         SELECT
-            u.USER_ID,
-            u.USER_NAME,
-            u.USER_AGE,
-            u.USER_SEX,
-            u.USER_TYPE,
-            u.PHONE,
-            l.LAUNDRY_NAME,
-            u.TIME
+        u.USER_ID,
+        u.USER_NAME,
+        u.USER_AGE,
+        u.USER_SEX,
+        u.USER_TYPE,
+        u.PHONE,
+        l.LAUNDRY_NAME,
+        u.TIME
         FROM
-            user1 u
-                LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+        user1 u
+        LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
         WHERE
-            USER_ID != #{uId}
-            and u.LAUNDRY_ID = #{laundryId}
+        USER_ID != #{uId}
+        and u.LAUNDRY_ID = #{laundryId}
     </select>
 
-<!--    根据用户name模糊查询用户列表-->
+    <!--    根据用户name模糊查询用户列表-->
     <select id="queryUserInfoByName" resultType="java.util.Map">
         <bind name="userName" value=" '%' + userName + '%' "/>
-           SELECT
-            u.USER_ID,
-            u.USER_NAME,
-            u.USER_AGE,
-            u.USER_SEX,
-            u.USER_TYPE,
-            u.PHONE,
-            l.LAUNDRY_NAME
+        SELECT
+        u.USER_ID,
+        u.USER_NAME,
+        u.USER_AGE,
+        u.USER_SEX,
+        u.USER_TYPE,
+        u.PHONE,
+        l.LAUNDRY_NAME
         FROM
-            user1 u
-            LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
-            WHERE u.USER_NAME like #{userName}
+        user1 u
+        LEFT JOIN laundry l ON u.LAUNDRY_ID = l.LAUNDRY_ID
+        WHERE u.USER_NAME like #{userName}
     </select>
-<!--  批量删除用户    -->
+    <!--  批量删除用户    -->
     <delete id="deleteUserById">
-    DELETE
+        DELETE
         FROM
-            user1
+        user1
         WHERE
-            USER_ID IN
-                <foreach collection="userIds" open="(" separator="," item="userId" close=")">
-                    #{userId}
-                </foreach>
+        USER_ID IN
+        <foreach collection="userIds" open="(" separator="," item="userId" close=")">
+            #{userId}
+        </foreach>
     </delete>
-<!--    查询用户对应的头像   -->
+    <!--    查询用户对应的头像   -->
     <select id="queryImageById" resultType="java.util.Map">
         SELECT
-            u.user_id,
-            u.user_name,
-            u.image_id,
-            i.image_desc AS image
+        u.user_id,
+        u.user_name,
+        u.image_id,
+        i.image_desc AS image
         FROM
-            user1 u
-                LEFT JOIN image_info i ON u.image_id = i.image_id
+        user1 u
+        LEFT JOIN image_info i ON u.image_id = i.image_id
         WHERE
-            user_id = #{userId}
+        user_id = #{userId}
     </select>
-<!--    根据ID修改用户密码  -->
+    <!--    根据ID修改用户密码  -->
     <update id="updatePwd">
         update user1 set user_pwd = #{userPwd} where user_id = #{userId}
     </update>
-<!--    查询物资信息  -->
+    <!--    查询物资信息  -->
     <select id="queryMaterialInfo" resultType="java.util.Map">
         SELECT
-            m1.material_id mId,
-            m1.material_name mName,
-            m1.material_type_id mTypeId,
-            m1.material_number mNumber,
-            m1.state_id mState,
-            m3.state_name mStateName,
-            m2.material_type_desc mTypeDesc
+        m1.material_id mId,
+        m1.material_name mName,
+        m1.material_type_id mTypeId,
+        m1.material_number mNumber,
+        m1.state_id mState,
+        m3.state_name mStateName,
+        m2.material_type_desc mTypeDesc
         FROM
-            material m1,
-            material_type m2,
-            material_state m3
+        material m1,
+        material_type m2,
+        material_state m3
         WHERE
-            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
-          AND m1.STATE_ID = m3.STATE_ID
+        m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+        AND m1.STATE_ID = m3.STATE_ID
         ORDER BY m1.material_id
     </select>
     <!--    查询物资信息rk  -->
     <select id="queryMaterialInfoRk" resultType="java.util.Map">
         SELECT
-            m1.material_id mId,
-            m1.material_name mName,
-            m1.material_type_id mTypeId,
-            m1.material_number mNumber,
-            m1.state_id mState,
-            m3.state_name mStateName,
-            m2.material_type_desc mTypeDesc
+        m1.material_id mId,
+        m1.material_name mName,
+        m1.material_type_id mTypeId,
+        m1.material_number mNumber,
+        m1.state_id mState,
+        m3.state_name mStateName,
+        m2.material_type_desc mTypeDesc
         FROM
-            material m1,
-            material_type m2,
-            material_state m3
+        material m1,
+        material_type m2,
+        material_state m3
         WHERE
-            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
-          AND m1.STATE_ID = m3.STATE_ID
-          AND (m1.state_id = 0 OR m1.state_id = 2)
-          ORDER BY m1.material_id
+        m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+        AND m1.STATE_ID = m3.STATE_ID
+        AND (m1.state_id = 0 OR m1.state_id = 2)
+        ORDER BY m1.material_id
     </select>
     <!--    查询物资信息ck  -->
     <select id="queryMaterialInfoCk" resultType="java.util.Map">
         SELECT
-            m1.material_id mId,
-            m1.material_name mName,
-            m1.material_type_id mTypeId,
-            m1.material_number mNumber,
-            m1.state_id mState,
-            m3.state_name mStateName,
-            m2.material_type_desc mTypeDesc
+        m1.material_id mId,
+        m1.material_name mName,
+        m1.material_type_id mTypeId,
+        m1.material_number mNumber,
+        m1.state_id mState,
+        m3.state_name mStateName,
+        m2.material_type_desc mTypeDesc
         FROM
-            material m1,
-            material_type m2,
-            material_state m3
+        material m1,
+        material_type m2,
+        material_state m3
         WHERE
-            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
-          AND m1.STATE_ID = m3.STATE_ID
-          AND m1.state_id = 0
+        m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+        AND m1.STATE_ID = m3.STATE_ID
+        AND m1.state_id = 0
         ORDER BY m1.material_id
     </select>
-<!--    物资入库（新物资） -->
+    <!--    物资入库（新物资） -->
     <insert id="addMaterial">
         insert into material values(#{mId},#{mName},#{mTypeId},#{mNumber},0)
     </insert>
-<!--    添加物资入库（旧物资） -->
-    <update id="updateMaterial" >
+    <!--    添加物资入库（旧物资） -->
+    <update id="updateMaterial">
         update material set material_number = material_number + #{mNumber}
         where material_id = #{mId} and state_id = 0
     </update>
     <!--    未入库物资数量减少（旧物资） -->
-    <update id="updateNumber" >
+    <update id="updateNumber">
         update material set material_number = material_number - #{mNumber}
         where material_id = #{mId} and state_id = 2
     </update>
-<!--    查询物资类型码表    -->
+    <!--    查询物资类型码表    -->
     <select id="queryMaterialTypeInfo" resultType="java.util.Map">
         select material_type_id as mTypeId,material_type_desc as mTypeDesc from material_type
     </select>
-<!--    判断未入库物资是否已经存在    -->
+    <!--    判断未入库物资是否已经存在    -->
     <select id="materialIsExist" resultType="java.util.Map">
         SELECT
-            *
+        *
         FROM
-            material
+        material
         WHERE
-            material_id = #{mId}
-          AND material_name = #{mName}
-          AND material_type_id = #{mTypeId}
-          AND state_id = 2
+        material_id = #{mId}
+        AND material_name = #{mName}
+        AND material_type_id = #{mTypeId}
+        AND state_id = 2
     </select>
     <!--    判断要入库物资是否已经存在    -->
     <select id="materialIsExistNow" resultType="java.util.Map">
         SELECT
-            *
+        *
         FROM
-            material
+        material
         WHERE
-            material_id = #{mId}
-          AND material_name = #{mName}
-          AND material_type_id = #{mTypeId}
-          AND state_id = 0
+        material_id = #{mId}
+        AND material_name = #{mName}
+        AND material_type_id = #{mTypeId}
+        AND state_id = 0
     </select>
-<!--    根据物资类别模糊查询物资信息  -->
+    <!--    根据物资类别模糊查询物资信息  -->
     <select id="queryMaterialByName" resultType="java.util.Map">
         <bind name="mName" value=" '%' + mName + '%' "/>
         SELECT
-            m1.material_id mId,
-            m1.material_name mName,
-            m1.material_type_id mTypeId,
-            m1.material_number mNumber,
-            m1.state_id mState,
-            m3.state_name mStateName,
-            m2.material_type_desc mTypeDesc
+        m1.material_id mId,
+        m1.material_name mName,
+        m1.material_type_id mTypeId,
+        m1.material_number mNumber,
+        m1.state_id mState,
+        m3.state_name mStateName,
+        m2.material_type_desc mTypeDesc
         FROM
-            material m1,
-            material_type m2,
-            material_state m3
+        material m1,
+        material_type m2,
+        material_state m3
         WHERE
-              m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
-          AND m1.STATE_ID = m3.STATE_ID
-          AND material_name like #{mName}
+        m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+        AND m1.STATE_ID = m3.STATE_ID
+        AND material_name like #{mName}
         ORDER BY m1.material_id
     </select>
-<!--    根据在库物资id查询物资列表    -->
+    <!--    根据在库物资id查询物资列表    -->
     <select id="queryMaterialById" resultType="java.util.Map">
         SELECT
-            m1.material_id mId,
-            m1.material_name mName,
-            m1.material_type_id mTypeId,
-            m1.material_number mNumber,
-            m1.state_id mState,
-            m3.state_name mStateName,
-            m2.material_type_desc mTypeDesc
+        m1.material_id mId,
+        m1.material_name mName,
+        m1.material_type_id mTypeId,
+        m1.material_number mNumber,
+        m1.state_id mState,
+        m3.state_name mStateName,
+        m2.material_type_desc mTypeDesc
         FROM
-            material m1,
-            material_type m2,
-            material_state m3
+        material m1,
+        material_type m2,
+        material_state m3
         WHERE
-            m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
-          AND m1.STATE_ID = m3.STATE_ID
-          AND material_id in 
+        m1.MATERIAL_TYPE_ID = m2.MATERIAL_TYPE_ID
+        AND m1.STATE_ID = m3.STATE_ID
+        AND material_id in
         <foreach collection="mIds" item="mId" open="(" separator="," close=")">
             #{mId}
         </foreach>
         AND m1.state_id = 0
         ORDER BY m1.material_id
     </select>
-<!--更新所选在库物资的数量-->
+    <!--更新所选在库物资的数量-->
     <update id="updateSelectMaterialNumber">
         update material set material_number = material_number - #{selectNumber}
         where material_id in
@@ -475,30 +477,30 @@
         </foreach>
         and state_id = 0
     </update>
-<!--    添加出库物资  -->
-    <insert id="addMaterialCk" >
+    <!--    添加出库物资  -->
+    <insert id="addMaterialCk">
         insert into material(material_id,material_name,material_type_id,material_number,state_id)
         values
         <foreach collection="materialist" item="map" separator=",">
             (
-             #{map.mId},#{map.mName},#{map.mTypeId},#{map.mNumber},#{map.mState}
+            #{map.mId},#{map.mName},#{map.mTypeId},#{map.mNumber},#{map.mState}
             )
         </foreach>
     </insert>
-<!--    查询在库物资是否存在  -->
+    <!--    查询在库物资是否存在  -->
     <select id="queryCkMaterial" resultType="java.util.Map">
         SELECT
-            *
+        *
         FROM
-            material
+        material
         WHERE
-            material_id IN
+        material_id IN
         <foreach collection="mIds" item="mId" open="(" separator="," close=")">
             #{mId}
         </foreach>
-          AND state_id = 1
+        AND state_id = 1
     </select>
-<!--    更新出库物资的数量（存在出库物资）-->
+    <!--    更新出库物资的数量（存在出库物资）-->
     <update id="updateMaterialById">
         update material set material_number = material_number + #{selectNumber}
         where material_id in
@@ -507,98 +509,100 @@
         </foreach>
         and state_id = 1
     </update>
-<!--    查询公告（动态数字==不可变更）    -->
+    <!--    查询公告（动态数字==不可变更）    -->
     <select id="queryNoticeInfo" resultType="java.util.Map">
         SELECT
-            c.nDesc,
-            a.number
+        c.nDesc,
+        a.number
         FROM
-            (
-                SELECT
-                    '003' AS 'nId',
-                    sum( MATERIAL_NUMBER ) number
-                FROM
-                    material
-                WHERE
-                    STATE_ID = 0 UNION ALL
-                SELECT
-                    '002',
-                    sum( MATERIAL_NUMBER ) number
-                FROM
-                    material
-                WHERE
-                    STATE_ID = 1 UNION ALL
-                SELECT
-                    '001',
-                    sum( laundry_id ) number
-                FROM
-                    laundry
-            ) a
-                LEFT JOIN ( SELECT * FROM ( SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info ) b ) c ON a.nId = c.nId
+        (
+        SELECT
+        '003' AS 'nId',
+        sum( MATERIAL_NUMBER ) number
+        FROM
+        material
+        WHERE
+        STATE_ID = 0 UNION ALL
+        SELECT
+        '002',
+        sum( MATERIAL_NUMBER ) number
+        FROM
+        material
+        WHERE
+        STATE_ID = 1 UNION ALL
+        SELECT
+        '001',
+        sum( laundry_id ) number
+        FROM
+        laundry
+        ) a
+        LEFT JOIN ( SELECT * FROM ( SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info ) b ) c ON a.nId =
+        c.nId
     </select>
-<!--    查询其他可发布的公告  -->
+    <!--    查询其他可发布的公告  -->
     <select id="queryNoticeY" resultType="java.util.Map">
         select notice_id as noticeId,notice_desc as noticeDesc from notice_info where
         spare = #{spare} and note = "Y" and notice_state_id = 1
     </select>
-<!--    查询普通管理员/普通用户公告  -->
+    <!--    查询普通管理员/普通用户公告  -->
     <select id="queryNoticeInfoPT" resultType="java.util.Map">
         SELECT
-            t2.nDesc,
-            t1.number
+        t2.nDesc,
+        t1.number
         FROM
-            (
-                SELECT
-                    '005' AS 'nId',
-                    count( * ) number
-                FROM
-                    `order`
-                WHERE
-                    order_time =  #{date}
-                  AND laundry_id = #{laundryId} UNION ALL
-                SELECT
-                    '004',
-                    count( * ) number
-                FROM
-                    `order`
-                WHERE
-                    order_time =  #{date}
-                  AND laundry_id =  #{laundryId}
-                  AND state_id = 1
-            ) t1
-                LEFT JOIN (SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info WHERE spare = "普通管理员" ) t2 ON t1.nId = t2.nId
+        (
+        SELECT
+        '005' AS 'nId',
+        count( * ) number
+        FROM
+        `order`
+        WHERE
+        order_time = #{date}
+        AND laundry_id = #{laundryId} UNION ALL
+        SELECT
+        '004',
+        count( * ) number
+        FROM
+        `order`
+        WHERE
+        order_time = #{date}
+        AND laundry_id = #{laundryId}
+        AND state_id = 1
+        ) t1
+        LEFT JOIN (SELECT notice_id AS nId, notice_desc AS nDesc FROM notice_info WHERE spare = "普通管理员" ) t2 ON t1.nId =
+        t2.nId
     </select>
-<!--    升级普通用户为店长   -->
+    <!--    升级普通用户为店长   -->
     <select id="upgradeUser" resultType="java.util.Map">
-        SELECT USER_ID as userId,user_type as userType  FROM `user1` where user_id = #{userId}
+        SELECT USER_ID as userId,user_type as userType FROM `user1` where user_id = #{userId}
     </select>
-<!--    更改用户信息  -->
+    <!--    更改用户信息  -->
     <update id="updateUserType">
         update user1 set user_type = #{userType} where user_id =#{userId}
     </update>
-<!--    查询订单信息  -->
+    <!--    查询订单信息  -->
     <select id="queryOrderInfo" resultType="java.util.Map">
         select
-            o.ORDER_ID  id,
-            o.ORDER_USER  user,
-            o.ORDER_ID name,
-            o.ORDER_USER_PHONE phone,
-            o.ORDER_TIME time,
-            o.ORDER_USER_ADDRESS address,
-            o.note,
-            o.PAYMENT_METHOD method,
-            o.TOTAL total,
-            o.state_id sId,
-            s.state_name sName
-            from `order` o left join order_state s on o.state_id = s.state_id
-            where laundry_id = #{laundryId}
+        o.ORDER_ID id,
+        o.ORDER_USER user,
+        o.ORDER_ID name,
+        o.ORDER_USER_PHONE phone,
+        o.ORDER_TIME time,
+        o.ORDER_USER_ADDRESS address,
+        o.note,
+        o.PAYMENT_METHOD method,
+        o.TOTAL total,
+        o.state_id sId,
+        s.state_name sName
+        from `order` o left join order_state s on o.state_id = s.state_id
+        where laundry_id = #{laundryId}
     </select>
-<!--  模糊查询订单信息  -->
+    <!--  模糊查询订单信息  -->
     <select id="queryOrderInfoByState" resultType="java.util.Map">
         <bind name="state" value=" '%' + state + '%' "/>
         select
-        o.ORDER_ID  id,
-        o.ORDER_USER  user,
+        o.ORDER_ID id,
+        o.ORDER_USER user,
         o.ORDER_ID name,
         o.ORDER_USER_PHONE phone,
         o.ORDER_TIME time,
@@ -612,7 +616,7 @@
         where s.state_name like #{state}
         and laundry_id = #{laundryId}
     </select>
-<!--  更新订单的状态  -->
+    <!--  更新订单的状态  -->
     <update id="updateOrderState">
         update `order`
         set state_id = state_id +1
@@ -621,22 +625,23 @@
             #{orderId}
         </foreach>
     </update>
-<!--    查询超级管理员电话   -->
+    <!--    查询超级管理员电话   -->
     <select id="queryPhone" resultType="java.util.Map">
         select phone as cgPhone from user1 where user_type = "超级管理员" and evaluate = "1"
     </select>
-<!--    查询公告列表  -->
+    <!--    查询公告列表  -->
     <select id="queryNoticeList" resultType="java.util.Map">
-        select n.notice_id as noticeId,n.notice_desc as noticeDesc,n.spare,n.notice_state_id as stateId, notice_state_name as stateName
+        select n.notice_id as noticeId,n.notice_desc as noticeDesc,n.spare,n.notice_state_id as stateId,
+        notice_state_name as stateName
         from notice_info n left join notice_state s
         on n.notice_state_id = s.notice_state_id where n.spare = #{spare} order by n.notice_id
     </select>
-<!--    添加公告    -->
-    <insert id="addNotice" >
+    <!--    添加公告    -->
+    <insert id="addNotice">
         insert into notice_info values(#{noticeId},#{noticeDesc},#{spare},0,'Y');
     </insert>
 
-<!--  发布公告  -->
+    <!--  发布公告  -->
     <update id="updateNoticeById">
         update notice_info set notice_state_id = notice_state_id + 1
         where notice_id in
@@ -653,7 +658,7 @@
         </foreach>
     </update>
 
-<!--  删除公告  -->
+    <!--  删除公告  -->
     <delete id="deleteNoticeById">
         delete from notice_info
         where notice_id in
@@ -661,28 +666,30 @@
             #{noticeId}
         </foreach>
     </delete>
-<!--    更新订单表日期数据   -->
+    <!--    更新订单表日期数据   -->
     <update id="updateOrderTime">
-        UPDATE `order` SET  `ORDER_TIME` = #{date}
+        UPDATE `order` SET `ORDER_TIME` = #{date}
     </update>
-<!--    查看衣物类型  -->
+    <!--    查看衣物类型  -->
     <select id="queryClothesType" resultType="java.util.Map">
         select clothes_type_id as typeId ,clothes_type_name as typeName from clothes_type
     </select>
-<!--    查询位置信息  -->
+    <!--    查询位置信息  -->
     <select id="queryPositionQT" resultType="java.util.Map">
-        select DISTINCT LAUNDRY_POSITION as position  from laundry
+        select DISTINCT LAUNDRY_POSITION as position from laundry
     </select>
-<!--    添加订单    -->
+    <!--    添加订单    -->
     <insert id="addOrder">
-        insert into `order` values(#{orderId},#{orderName},#{user},#{phone},#{time},#{address},#{note},#{method},#{money},#{type},0,#{laundryId},#{number});
+        insert into `order`
+        values(#{orderId},#{orderName},#{user},#{phone},#{time},#{address},#{note},#{method},#{money},#{type},0,#{laundryId},#{number});
     </insert>
-<!--    查看订单信息  -->
+    <!--    查看订单信息  -->
     <select id="queryOrderByUserId" resultType="java.util.Map">
-        SELECT * FROM `order` o left join order_state os on o.STATE_ID = os.state_id where ORDER_USER =  #{userId}
+        SELECT * FROM `order` o left join order_state os on o.STATE_ID = os.state_id where ORDER_USER = #{userId}
     </select>
-<!--    修改订单信息  -->
+    <!--    修改订单信息  -->
     <update id="updateOrderById">
-       update `order` set order_user_phone=#{phone},order_user=#{userName},order_user_address=#{address},note=#{note} where order_id = #{orderId}
+        update `order` set order_user_phone=#{phone},order_user=#{userName},order_user_address=#{address},note=#{note}
+        where order_id = #{orderId}
     </update>
 </mapper>

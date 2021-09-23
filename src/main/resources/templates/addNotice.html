@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -49,7 +49,7 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe70b;</i>
                         用户管理
@@ -82,7 +82,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -130,13 +130,13 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
+                    <ul class="sub-menu opened">
                         <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -163,7 +163,7 @@
                         订单管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryOrderInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -205,7 +205,7 @@
                 <div class="layui-form-item">
                     <label for="save" class="layui-form-label">
                     </label>
-                    <button  class="layui-btn" id="save" type="button">
+                    <button class="layui-btn" id="save" type="button">
                         新增公告
                     </button>
                 </div>
@@ -218,7 +218,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -251,22 +251,22 @@
             var noticeId = document.getElementById("noticeId").value;
             var noticeDesc = document.getElementById("noticeDesc").value;
             $.ajax({
-                type:"post",
-                url:"/addNoticeInfo",
+                type: "post",
+                url: "/addNoticeInfo",
                 data: {
                     noticeId,
                     noticeDesc
                 },
-                success:function (data) {
-                    if(data == "success"){
+                success: function (data) {
+                    if (data == "success") {
                         layer.msg("新增成功！");
-                        setTimeout(' window.location.href="/queryNoticeList";',3000);
+                        setTimeout(' window.location.href="/queryNoticeList";', 3000);
 
-                    }else if(data == "fail"){
+                    } else if (data == "fail") {
                         layer.msg("新增失败！系统异常")
                     }
                 },
-                error:function(res){
+                error: function (res) {
                     console.log(res)
                 }
             })
@@ -276,7 +276,7 @@
 
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

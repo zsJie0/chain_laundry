@@ -17,6 +17,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 根据id和pwd查询用户
+     *
      * @param param
      * @return
      */
@@ -28,16 +29,18 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 查询所有洗衣店信息
+     *
      * @param
      * @return
      */
     @Override
-    public List<Map<String,Object>> queryAllLaundryInfo() {
+    public List<Map<String, Object>> queryAllLaundryInfo() {
         return loginMapper.queryAllLaundryInfo();
     }
 
     /**
      * 注册(添加)用户信息
+     *
      * @param param
      * @return
      */
@@ -48,6 +51,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 判断用户是否存在
+     *
      * @param param
      * @return
      */
@@ -58,6 +62,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 根据id查询用户信息
+     *
      * @param userId
      * @return
      */
@@ -68,6 +73,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 根据id查询洗衣店信息
+     *
      * @param laundryId
      * @return
      */
@@ -78,6 +84,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 主页显示
+     *
      * @return
      */
     @Override
@@ -87,6 +94,7 @@ public class LoginMapperImpl implements LoginService {
 
     /**
      * 模糊查询
+     *
      * @param laundryName
      * @return
      */

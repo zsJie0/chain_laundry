@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -82,7 +82,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -130,14 +130,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -163,7 +163,7 @@
                         订单管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryOrderInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -209,39 +209,45 @@
                 <div class="layui-form-item ">
                     <label class="layui-form-label ">用户名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="userId" autocomplete="off" placeholder="" class="layui-input" th:value="${userMap.get('user_id')}" readonly="readonly" id="userId">
+                        <input type="text" name="userId" autocomplete="off" placeholder="" class="layui-input"
+                               th:value="${userMap.get('user_id')}" readonly="readonly" id="userId">
                     </div>
                     <div class="layui-form-mid layui-word-aux">注：用户名唯一且不可变更！</div>
                 </div>
                 <div class="layui-form-item  layui-inline">
                     <label class="layui-form-label">姓名</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="userName" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_name')}" id="userName">
+                        <input type="text" name="userName" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('user_name')}" id="userName">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline ">
                     <label class="layui-form-label">性别</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="userSex" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_sex')}" id="userSex">
+                        <input type="text" name="userSex" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('user_sex')}" id="userSex">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">手机号</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="phone" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('phone')}" id="phone">
+                        <input type="text" name="phone" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('phone')}" id="phone">
                     </div>
                 </div>
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">年龄</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="userAge" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_age')}" id="userAge">
+                        <input type="text" name="userAge" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('user_age')}" id="userAge">
                     </div>
                 </div>
 
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">加入时间</label>
-                    <div class="layui-input-inline" >
-                        <input type="text" name="time" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('time')}" id="time" onclick="layui.laydate({elem: this})">
+                    <div class="layui-input-inline">
+                        <input type="text" name="time" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('time')}" id="time" onclick="layui.laydate({elem: this})">
                     </div>
                     <div class="layui-form-mid layui-word-aux">注：yyyy-MM-dd形式，其他形式将保存不成功</div>
                 </div>
@@ -250,27 +256,30 @@
                 <div class="layui-form-item " style="display: none">
                     <label class="layui-form-label">洗衣店Id</label>
                     <div class="layui-input-inline">
-                        <input type="laundryId" name="laundryId" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('laundry_id')}" id="laundryId">
+                        <input type="laundryId" name="laundryId" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('laundry_id')}" id="laundryId">
                     </div>
                 </div>
                 <div class="layui-form-item ">
                     <label class="layui-form-label">所属洗衣店</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="laundryName" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('laundry_name')}" id="laundryName" readonly>
+                        <input type="text" name="laundryName" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('laundry_name')}" id="laundryName" readonly>
                     </div>
                     <div class="layui-form-mid layui-word-aux">注：您没有权限更改自己所在的洗衣店！</div>
                 </div>
                 <div class="layui-form-item layui-inline">
                     <label class="layui-form-label">角色</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="userType" autocomplete="on" placeholder="" class="layui-input" th:value="${userMap.get('user_type')}" id="userType" readonly="readonly">
+                        <input type="text" name="userType" autocomplete="on" placeholder="" class="layui-input"
+                               th:value="${userMap.get('user_type')}" id="userType" readonly="readonly">
                     </div>
                     <div class="layui-form-mid layui-word-aux">注：您没有权限更改自己的角色类型！</div>
                 </div>
                 <div class="layui-form-item ">
                     <button class="layui-btn" id="update" type="button">修改</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                    <a class="layui-btn"  lay-filter="ref" href="/userInfo" style="background: saddlebrown">刷新</a>
+                    <a class="layui-btn" lay-filter="ref" href="/userInfo" style="background: saddlebrown">刷新</a>
                 </div>
             </form>
             <!-- 右侧内容框架，更改从这里结束 -->
@@ -281,7 +290,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -323,28 +332,28 @@
             var phone = document.getElementById("phone").value;
             // alert(time);
             $.ajax({
-                type:"post",
-                url:"/updateUserInfo",
+                type: "post",
+                url: "/updateUserInfo",
                 data: {
-                    userId     ,
-                    userName   ,
-                    time       ,
-                    userAge    ,
-                    userSex    ,
-                    userType   ,
+                    userId,
+                    userName,
+                    time,
+                    userAge,
+                    userSex,
+                    userType,
                     laundryName,
-                    laundryId  ,
+                    laundryId,
                     phone
                 },
-                success:function (data) {
-                    if(data == "success"){
+                success: function (data) {
+                    if (data == "success") {
                         layer.msg("修改成功！请点击刷新按钮");
                         // window.location.href = "settleIn";
-                    }else if(data == "fail"){
+                    } else if (data == "fail") {
                         layer.msg("修改失败！系统异常")
                     }
                 },
-                error:function(res){
+                error: function (res) {
                     console.log(res)
                 }
             })
@@ -354,7 +363,7 @@
 
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

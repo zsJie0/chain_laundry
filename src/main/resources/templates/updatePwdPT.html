@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -82,7 +82,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -130,14 +130,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -163,7 +163,7 @@
                         订单管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryOrderInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -211,7 +211,8 @@
                         昵称
                     </label>
                     <div class="layui-input-inline">
-                        <input type="text" id="userId" name="username"  th:value="${userMap.get('user_id')}" class="layui-input" readonly >
+                        <input type="text" id="userId" name="username" th:value="${userMap.get('user_id')}"
+                               class="layui-input" readonly>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -250,7 +251,7 @@
                 <div class="layui-form-item">
                     <label for="save" class="layui-form-label">
                     </label>
-                    <button  class="layui-btn" id="save" type="button">
+                    <button class="layui-btn" id="save" type="button">
                         保存
                     </button>
                 </div>
@@ -263,7 +264,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -291,22 +292,23 @@
 <!-- 页面动态效果 -->
 <script>
     //两次输入密码
-    function check(){
+    function check() {
         var newpass = document.getElementById("newpass").value;
         var repass = document.getElementById("repass").value;
-        if(newpass == repass){
-            document.getElementById("tishi").innerHTML="<br><font color='green'>两次密码输入一致</font>";
-        }else {
-            document.getElementById("tishi").innerHTML="<br><font color='red'>两次输入密码不一致!</font>"
+        if (newpass == repass) {
+            document.getElementById("tishi").innerHTML = "<br><font color='green'>两次密码输入一致</font>";
+        } else {
+            document.getElementById("tishi").innerHTML = "<br><font color='red'>两次输入密码不一致!</font>"
         }
     }
-//判断密码长度
-    function sixNumber(){
+
+    //判断密码长度
+    function sixNumber() {
         var newpass = document.getElementById("newpass").value;
-        if(newpass.length >= 6 && newpass.length <= 12){
-            document.getElementById("xshi").innerHTML="<br><font color='green'>密码合法</font>";
-        }else {
-            document.getElementById("xshi").innerHTML="<br><font color='red'>密码长度必须在6-12位!</font>";
+        if (newpass.length >= 6 && newpass.length <= 12) {
+            document.getElementById("xshi").innerHTML = "<br><font color='green'>密码合法</font>";
+        } else {
+            document.getElementById("xshi").innerHTML = "<br><font color='red'>密码长度必须在6-12位!</font>";
         }
     }
 
@@ -316,22 +318,22 @@
             var userId = document.getElementById("userId").value;
             var userPwd = document.getElementById("repass").value;
             $.ajax({
-                type:"post",
-                url:"/updatePassword",
+                type: "post",
+                url: "/updatePassword",
                 data: {
                     userId,
                     userPwd
                 },
-                success:function (data) {
-                    if(data == "success"){
+                success: function (data) {
+                    if (data == "success") {
                         layer.msg("您的密码已修改，系统将在3秒后跳转到登录页面！");
-                        setTimeout('window.location.href = "/login";',3000);
+                        setTimeout('window.location.href = "/login";', 3000);
 
-                    }else if(data == "fail"){
+                    } else if (data == "fail") {
                         layer.msg("修改失败！系统异常")
                     }
                 },
-                error:function(res){
+                error: function (res) {
                     console.log(res)
                 }
             })
@@ -341,7 +343,7 @@
 
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

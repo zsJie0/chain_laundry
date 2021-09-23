@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-下单人注册</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -14,16 +14,17 @@
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <style>
 
-        .formItme{
+        .formItme {
             width: 49%;
             display: inline-block;
         }
-        .login-box{
+
+        .login-box {
             width: 310px;
             height: 350px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             margin: 0 auto;
         }
     </style>
@@ -40,36 +41,39 @@
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <form class="layui-form layui-form-pane">
 
-        <h3 style="padding-left: 190px;color: #eea236 " >下单人注册</h3>
+        <h3 style="padding-left: 190px;color: #eea236 ">下单人注册</h3>
         <div class="formItme">
-            <label class="login-title" >账号</label>
+            <label class="login-title">账号</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <input type="text" id="userId" name="userId" lay-verify="required" placeholder="请输入你的帐号" autocomplete="on" class="layui-input">
+                    <input type="text" id="userId" name="userId" lay-verify="required" placeholder="请输入你的帐号"
+                           autocomplete="on" class="layui-input">
                 </div>
             </div>
         </div>
 
         <div class="formItme">
-            <label class="login-title" >密码</label>
+            <label class="login-title">密码</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <input type="password" id="userPwd" name="userPwd" lay-verify="required" placeholder="请输入你的密码" autocomplete="on" class="layui-input">
+                    <input type="password" id="userPwd" name="userPwd" lay-verify="required" placeholder="请输入你的密码"
+                           autocomplete="on" class="layui-input">
                 </div>
             </div>
         </div>
 
         <div class="formItme">
-            <label class="login-title" >姓名</label>
+            <label class="login-title">姓名</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <input type="text" id="userName" name="userName" lay-verify="required" placeholder="请输入你的姓名" autocomplete="on" class="layui-input">
+                    <input type="text" id="userName" name="userName" lay-verify="required" placeholder="请输入你的姓名"
+                           autocomplete="on" class="layui-input">
                 </div>
             </div>
         </div>
 
         <div class="formItme">
-            <label class="login-title" >性别</label>
+            <label class="login-title">性别</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
                     <select name="userSex" class="layui-select" id="userSex">
@@ -81,26 +85,28 @@
         </div>
 
         <div class="formItme">
-            <label class="login-title" >手机号</label>
+            <label class="login-title">手机号</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <input type="text" id="userPhone" name="userPhone" lay-verify="required" placeholder="请输入你的手机号" autocomplete="on" class="layui-input">
+                    <input type="text" id="userPhone" name="userPhone" lay-verify="required" placeholder="请输入你的手机号"
+                           autocomplete="on" class="layui-input">
                 </div>
             </div>
         </div>
 
         <div class="formItme">
-            <label class="login-title" >注册日期</label>
+            <label class="login-title">注册日期</label>
             <div class="layui-form-item">
                 <div class="layui-input-inline login-inline">
-                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="on" class="layui-input" onclick="layui.laydate({elem: this})">
+                    <input type="text" name="date" id="date" lay-verify="date" placeholder="yyyy-mm-dd"
+                           autocomplete="on" class="layui-input" onclick="layui.laydate({elem: this})">
                 </div>
             </div>
         </div>
 
-            <div style="text-align: center">
-                <a class="btn btn-warning pull-right" lay-submit lay-filter="register" type="button" id="register">注册</a>
-            </div>
+        <div style="text-align: center">
+            <a class="btn btn-warning pull-right" lay-submit lay-filter="register" type="button" id="register">注册</a>
+        </div>
     </form>
 </div>
 <div class="bg-changer">
@@ -124,7 +130,7 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <script>
-    layui.use('laydate', function() {
+    layui.use('laydate', function () {
         var laydate = layui.laydate;
     });
     <!-- 注册 -->
@@ -137,8 +143,8 @@
             var phone = document.getElementById("userPhone").value;
             var time = document.getElementById("date").value;
             $.ajax({
-                type:"post",
-                url:"addUserInfoXD",
+                type: "post",
+                url: "addUserInfoXD",
                 data: {
                     userId,
                     userPwd,
@@ -147,27 +153,27 @@
                     phone,
                     time
                 },
-                success:function (data) {
-                    if(data == "success"){
+                success: function (data) {
+                    if (data == "success") {
                         layer.msg("注册成功！系统将在三秒后跳转到下单平台");
-                       setTimeout('window.location.href = "queryClothesType";',3000);
-                    }else if(data == "exist"){
+                        setTimeout('window.location.href = "queryClothesType";', 3000);
+                    } else if (data == "exist") {
                         layer.msg("注册失败！该账号已存在！")
-                    }else if(data == "exist"){
+                    } else if (data == "exist") {
                         layer.msg("注册失败！系统异常")
                     }
                 },
-                error:function(res){
+                error: function (res) {
                     console.log(res)
                 }
             })
-            })
-        });
+        })
+    });
 </script>
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

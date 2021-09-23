@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -109,7 +109,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -157,14 +157,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -190,7 +190,7 @@
                         订单管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryOrderInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -229,7 +229,8 @@
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
             <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
-                欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('user_type')}"></span>
+                欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd"
+                                          th:text="${userMap.get('user_type')}"></span>
                 如果您相对自己的身份进行变更，请致电：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('cgPhone')}"></span>
             </blockquote>
             <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
@@ -269,7 +270,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -297,7 +298,7 @@
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];
@@ -311,7 +312,9 @@
         margin: 0;
     }
 
-    ul.pagination li {display: inline;}
+    ul.pagination li {
+        display: inline;
+    }
 
     ul.pagination li a {
         color: black;
@@ -326,7 +329,9 @@
         color: white;
     }
 
-    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+    ul.pagination li a:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 </body>
 </html>

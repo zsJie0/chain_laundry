@@ -11,8 +11,9 @@ import java.sql.SQLException;
 public class DataSourceTest {
     @Autowired
     DataSource dataSource;
+
     @Test
     void test() throws SQLException {
-        System.out.println("获取数据库的连接为："+dataSource.getConnection());
+        System.out.println("获取数据库的连接为：" + dataSource.getConnection());
     }
 }

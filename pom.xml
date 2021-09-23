@@ -52,11 +52,11 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <!--devtools热部署-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-devtools</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -68,11 +68,11 @@
             <version>1.1.1</version>
         </dependency>
         <!-- 分页 -->
-<!--        <dependency>-->
-<!--            <groupId>com.github.pagehelper</groupId>-->
-<!--            <artifactId>pagehelper</artifactId>-->
-<!--            <version>4.1.0</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.pagehelper</groupId>-->
+        <!--            <artifactId>pagehelper</artifactId>-->
+        <!--            <version>4.1.0</version>-->
+        <!--        </dependency>-->
         <!-- mybatis的分页插件 -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
@@ -93,14 +93,14 @@
         </dependency>
     </dependencies>
 
-<!--    <build>-->
-<!--        <plugins>-->
-<!--            <plugin>-->
-<!--                <groupId>org.springframework.boot</groupId>-->
-<!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--            </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
+    <!--    <build>-->
+    <!--        <plugins>-->
+    <!--            <plugin>-->
+    <!--                <groupId>org.springframework.boot</groupId>-->
+    <!--                <artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--            </plugin>-->
+    <!--        </plugins>-->
+    <!--    </build>-->
     <build>
         <plugins>
             <plugin>

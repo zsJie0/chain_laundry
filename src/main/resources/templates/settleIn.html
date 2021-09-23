@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -48,12 +48,12 @@
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
-                <li class="list" >
-                        <a href="javascript:;">
-                            <i class="iconfont">&#xe70b;</i>
-                            用户管理
-                            <i class="iconfont nav_right">&#xe697;</i>
-                        </a>
+                <li class="list">
+                    <a href="javascript:;">
+                        <i class="iconfont">&#xe70b;</i>
+                        用户管理
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
                     <ul class="sub-menu">
                         <li>
                             <a href="/queryUserList">
@@ -81,7 +81,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu opened" >
+                    <ul class="sub-menu opened">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -129,14 +129,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -167,7 +167,8 @@
                 温馨提示：本列表只显示未加盟或审核中的连锁店
             </blockquote>
             <xblock>
-                <a class="btn btn-warning pull-right" lay-submit lay-filter="refresh" type="button" id="refresh" href="/settleIn">刷新显示全部</a>
+                <a class="btn btn-warning pull-right" lay-submit lay-filter="refresh" type="button" id="refresh"
+                   href="/settleIn">刷新显示全部</a>
                 <span class="x-right" style="line-height:40px">
                     共有数据：<span th:text="${pageInfo.size}"></span> &nbsp;条
                 </span>
@@ -229,11 +230,13 @@
                     <td th:text="${laundry.get('sqtime')}">
                     </td>
                     <td class="td-status">
-                            <span class="layui-btn layui-btn-normal layui-btn-mini"th:text="${laundry.get('state_name')}" id="stateName">
+                            <span class="layui-btn layui-btn-normal layui-btn-mini"
+                                  th:text="${laundry.get('state_name')}" id="stateName">
                             </span>
                     </td>
                     <td class="td-manage">
-                        <a title="编辑" href="javascript:;" th:onclick="edit('处理','handle/[[${laundry.get('laundry_id')}]]','4','' ,'450' )">
+                        <a title="编辑" href="javascript:;"
+                           th:onclick="edit('处理','handle/[[${laundry.get('laundry_id')}]]','4','' ,'450' )">
                             <i class="layui-icon">&#xe642;</i>
                         </a>
                     </td>
@@ -243,7 +246,8 @@
             <div class="page">
                 <ul class="pagination">
                     <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
-                    <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                    <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}"
+                                                                       th:text="${nums}"></a></li>
                     <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
                 </ul>
             </div>
@@ -255,7 +259,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -296,20 +300,21 @@
     });
 
     //批量删除提交
-    function delAll () {
-        layer.confirm('确认要删除吗？',function(index){
+    function delAll() {
+        layer.confirm('确认要删除吗？', function (index) {
             //捉到所有被选中的，发异步进行删除
             layer.msg('删除成功', {icon: 1});
         });
     }
 
     // 用户-编辑
-    function edit(title,url,id,w,h) {
+    function edit(title, url, id, w, h) {
         //handle/"003"
-        var url2 = url.replace('"','').slice(0,-1);
+        var url2 = url.replace('"', '').slice(0, -1);
         // alert(url2);
-        x_admin_show(title,url2,w,h);
+        x_admin_show(title, url2, w, h);
     }
+
     //立即执行函数
     // (function () {
     //    var stateName = document.getElementById("stateName").value ;
@@ -323,7 +328,7 @@
 
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];
@@ -337,7 +342,9 @@
         margin: 0;
     }
 
-    ul.pagination li {display: inline;}
+    ul.pagination li {
+        display: inline;
+    }
 
     ul.pagination li a {
         color: black;
@@ -352,7 +359,9 @@
         color: white;
     }
 
-    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+    ul.pagination li a:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 </body>
 </html>

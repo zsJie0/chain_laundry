@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -109,7 +109,7 @@
                         连锁店管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/laundryList">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -157,14 +157,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="list" >
+                <li class="list">
                     <a href="javascript:;">
                         <i class="iconfont">&#xe6a3;</i>
                         公告管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
-                        <li  th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
+                    <ul class="sub-menu">
+                        <li th:hidden="${userMap.get('user_type')} == '普通员工'? true:false ">
                             <a href="/queryNoticeList">
                                 <i class="iconfont">&#xe6a7;</i>
                                 发布公告
@@ -190,7 +190,7 @@
                         订单管理
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
-                    <ul class="sub-menu" >
+                    <ul class="sub-menu">
                         <li>
                             <a href="/queryOrderInfo">
                                 <i class="iconfont">&#xe6a7;</i>
@@ -208,12 +208,15 @@
         <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
             <blockquote class="layui-elem-quote" style="font-weight: bold;color: black">
-                欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('user_type')}"></span>
+                欢迎使用连锁洗衣店管理系统！您的身份是：<span class="f-14" style="color: #dddddd"
+                                          th:text="${userMap.get('user_type')}"></span>
             </blockquote>
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black" th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false">
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black"
+                        th:hidden="${userMap.get('user_type')} == '超级管理员'? true:false">
                 当前所登录的连锁店为：<span class="f-14" style="color: #dddddd" th:text="${userMap.get('laundry_name')}"></span>
             </blockquote>
-            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
+            <blockquote class="layui-elem-quote" style="font-weight: bold;color: black"
+                        th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 温馨提示：ChainLaundry每个页面都可以独立设置一个背景主题，如果每个都设置会比较消耗本地的存储，如果想全部恢复，请重置。
             </blockquote>
             <fieldset class="layui-elem-field layui-field-title site-title">
@@ -231,25 +234,27 @@
                 </tr>
                 </thead>
                 <tbody>
-<!--                <tr th:each="laundry:${pageInfo.list}">-->
+                <!--                <tr th:each="laundry:${pageInfo.list}">-->
                 <tr th:each="laundry:${pageInfo.list}">
-                   <td th:text="${laundry.get('LAUNDRY_ID')}"></td>
-                   <td th:text="${laundry.get('LAUNDRY_NAME')}"></td>
-                   <td th:text="${laundry.get('LAUNDRY_POSITION')}"></td>
-                   <td th:text="${laundry.get('CREDIT')}"></td>
-                   <td th:text="${laundry.get('TURNOVER')}"></td>
-                   <td th:text="${laundry.get('numberOfUser')}"></td>
+                    <td th:text="${laundry.get('LAUNDRY_ID')}"></td>
+                    <td th:text="${laundry.get('LAUNDRY_NAME')}"></td>
+                    <td th:text="${laundry.get('LAUNDRY_POSITION')}"></td>
+                    <td th:text="${laundry.get('CREDIT')}"></td>
+                    <td th:text="${laundry.get('TURNOVER')}"></td>
+                    <td th:text="${laundry.get('numberOfUser')}"></td>
                 </tr>
                 </tbody>
             </table>
             <div class="page" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 <ul class="pagination">
                     <li><a th:href="@{'?page='+${pageInfo.prePage}}">上一页</a></li>
-                        <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}" th:text="${nums}"></a></li>
+                    <li th:each="nums:${pageInfo.navigatepageNums}"><a th:href="@{'?page='+${nums}}"
+                                                                       th:text="${nums}"></a></li>
                     <li><a th:href="@{'?page='+${pageInfo.nextPage}}">下一页</a></li>
                 </ul>
             </div>
-            <fieldset class="layui-elem-field layui-field-title site-title" th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
+            <fieldset class="layui-elem-field layui-field-title site-title"
+                      th:hidden="${userMap.get('user_type')} == '超级管理员'? false:true">
                 今日营业总额：<span th:text="${turnoverMap.get('sumOfTurnover')}"></span>元
             </fieldset>
         </div>
@@ -259,7 +264,7 @@
 <!-- 中部结束 -->
 <!-- 底部开始 -->
 <div class="footer">
-    <div class="copyright">Welcome to chain laundry management system .    欢迎使用连锁洗衣店管理系统</div>
+    <div class="copyright">Welcome to chain laundry management system . 欢迎使用连锁洗衣店管理系统</div>
 </div>
 <!-- 底部结束 -->
 <!-- 背景切换开始 -->
@@ -287,7 +292,7 @@
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];
@@ -301,7 +306,9 @@
         margin: 0;
     }
 
-    ul.pagination li {display: inline;}
+    ul.pagination li {
+        display: inline;
+    }
 
     ul.pagination li a {
         color: black;
@@ -316,7 +323,9 @@
         color: white;
     }
 
-    ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+    ul.pagination li a:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 </body>
 </html>

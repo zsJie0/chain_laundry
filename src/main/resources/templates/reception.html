@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-前台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -14,16 +14,17 @@
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <style>
 
-        .formItme{
+        .formItme {
             width: 49%;
             display: inline-block;
         }
-        .login-box{
+
+        .login-box {
             width: 310px;
             height: 480px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             margin: 0 auto;
         }
     </style>
@@ -33,74 +34,84 @@
     <div class="logo"><a href="/queryAllLaundryInfo">连锁洗衣店管理系统</a></div>
     <div class="open-nav"><i class="iconfont">&#xe699;</i></div>
     <ul class="layui-nav right" lay-filter="">
-                <li class="layui-nav-item"><a href="/login">登录首页</a></li>
+        <li class="layui-nav-item"><a href="/login">登录首页</a></li>
     </ul>
 </div>
 <div class="login-logo"><h1>ChainLaundry下单平台</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <div style="padding-left: 115px">
-    <form class="layui-form layui-form-pane">
-        <div class="login-title">
-            <label class="layui-form-label login-inline">订单编号</label>
-            <div class="layui-input-inline">
-                <input type="text" name="orderId" lay-verify="required"  autocomplete="on" class="layui-input" id="orderId" required="required">
+        <form class="layui-form layui-form-pane">
+            <div class="login-title">
+                <label class="layui-form-label login-inline">订单编号</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="orderId" lay-verify="required" autocomplete="on" class="layui-input"
+                           id="orderId" required="required">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">订单名称</label>
-            <div class="layui-input-inline">
-                <input type="text" name="orderName" lay-verify="required" autocomplete="on" class="layui-input" id="orderName" required>
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="orderName" lay-verify="required" autocomplete="on" class="layui-input"
+                           id="orderName" required>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">订单下单人</label>
-            <div class="layui-input-inline">
-                <input type="text" name="user" lay-verify="required"  class="layui-input" id="userName" readonly  th:value="${userMap.get('userName')}">
-                <input type="text" name="user" lay-verify="required"  class="layui-input" id="user" readonly th:value="${userMap.get('userId')}" style="display: none">
+            <div class="layui-form-item">
+                <label class="layui-form-label">订单下单人</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="user" lay-verify="required" class="layui-input" id="userName" readonly
+                           th:value="${userMap.get('userName')}">
+                    <input type="text" name="user" lay-verify="required" class="layui-input" id="user" readonly
+                           th:value="${userMap.get('userId')}" style="display: none">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">联系方式</label>
-            <div class="layui-input-inline">
-                <input type="text" name="phone" lay-verify="required"   class="layui-input" id="phone" readonly th:value="${userMap.get('phone')}">
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="phone" lay-verify="required" class="layui-input" id="phone" readonly
+                           th:value="${userMap.get('phone')}">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">下单时间</label>
-            <div class="layui-input-inline">
-                <input type="text" name="time" lay-verify="required" autocomplete="on" class="layui-input" id="time" placeholder="yyyy-MM-dd"
-                onclick="layui.laydate({elem:this})" required>
+            <div class="layui-form-item">
+                <label class="layui-form-label">下单时间</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="time" lay-verify="required" autocomplete="on" class="layui-input" id="time"
+                           placeholder="yyyy-MM-dd"
+                           onclick="layui.laydate({elem:this})" required>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">下单地址</label>
-            <div class="layui-input-inline">
-                <select name="address" class="layui-select" id="address" required>
-                    <option th:each="laundry : ${laundryList}" th:value="${laundry.get('position')}" th:text="${laundry.get('position') }"></option>
-                </select>
+            <div class="layui-form-item">
+                <label class="layui-form-label">下单地址</label>
+                <div class="layui-input-inline">
+                    <select name="address" class="layui-select" id="address" required>
+                        <option th:each="laundry : ${laundryList}" th:value="${laundry.get('position')}"
+                                th:text="${laundry.get('position') }"></option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">备注</label>
-            <div class="layui-input-inline">
-                <input type="text" name="note" lay-verify="required"  autocomplete="on" class="layui-input" id="note">
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="note" lay-verify="required" autocomplete="on" class="layui-input"
+                           id="note">
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">衣物类型</label>
-            <div class="layui-input-inline">
-                <select name="type" class="layui-select" id="type" required>
-                    <option th:each="type : ${clothesType}" th:value="${type.get('typeId')}" th:text="${type.get('typeName') }"></option>
-                </select>
+            <div class="layui-form-item">
+                <label class="layui-form-label">衣物类型</label>
+                <div class="layui-input-inline">
+                    <select name="type" class="layui-select" id="type" required>
+                        <option th:each="type : ${clothesType}" th:value="${type.get('typeId')}"
+                                th:text="${type.get('typeName') }"></option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">衣物量</label>
-            <div class="layui-input-inline">
-                <input type="number" name="number" lay-verify="required" autocomplete="on" class="layui-input" id="number" required>
+            <div class="layui-form-item">
+                <label class="layui-form-label">衣物量</label>
+                <div class="layui-input-inline">
+                    <input type="number" name="number" lay-verify="required" autocomplete="on" class="layui-input"
+                           id="number" required>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
     <div style="text-align: center">
         <a class="btn btn-warning pull-right" lay-submit lay-filter="reception" type="button" id="reception">开始下单</a>
@@ -129,11 +140,11 @@
 </div>
 <script>
 
-    layui.use('laydate', function() {
+    layui.use('laydate', function () {
         var laydate = layui.laydate;
     });
 
-        <!-- 开始下单 -->
+    <!-- 开始下单 -->
     $(document).ready(function () {
         $("#reception").click(function () {
             var orderId = document.getElementById("orderId").value;
@@ -149,35 +160,35 @@
             //     orderId == "" || orderName == "" || number == ""){
             //     layer.msg("请完整的填写完订单信息！")
             // }else {
-                $.ajax({
-                    type:"post",
-                    url:"order",
-                    data: {
-                        orderId  ,
-                        orderName,
-                        user     ,
-                        phone    ,
-                        time     ,
-                        address  ,
-                        note     ,
-                        type     ,
-                        number
-                    },
-                    success:function (data) {
-                        if(data == "success"){
-                            window.location.href = "orderPosition?address="+address;
-                        }else if(data == "fail"){
-                            layer.msg("系统异常！")
-                        }else if(data == "empty"){
-                            layer.msg("请完整的填写完订单信息!")
-                        }else {
+            $.ajax({
+                type: "post",
+                url: "order",
+                data: {
+                    orderId,
+                    orderName,
+                    user,
+                    phone,
+                    time,
+                    address,
+                    note,
+                    type,
+                    number
+                },
+                success: function (data) {
+                    if (data == "success") {
+                        window.location.href = "orderPosition?address=" + address;
+                    } else if (data == "fail") {
+                        layer.msg("系统异常！")
+                    } else if (data == "empty") {
+                        layer.msg("请完整的填写完订单信息!")
+                    } else {
 
-                        }
-                    },
-                    error:function(res){
-                        console.log(res)
                     }
-                })
+                },
+                error: function (res) {
+                    console.log(res)
+                }
+            })
             // }
 
         })
@@ -186,7 +197,7 @@
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

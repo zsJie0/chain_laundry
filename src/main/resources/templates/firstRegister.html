@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-前台</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="./css/font.css">
     <link rel="stylesheet" href="./css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -14,16 +14,17 @@
     <script type="text/javascript" src="./js/xadmin.js"></script>
     <style>
 
-        .formItme{
+        .formItme {
             width: 49%;
             display: inline-block;
         }
-        .login-box{
+
+        .login-box {
             width: 310px;
             height: 250px;
             padding: 20px 15px 15px;
             background-color: rgba(0, 0, 0, 0.25);
-            border: 1px solid rgba(255,255,255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             margin: 0 auto;
         }
     </style>
@@ -39,17 +40,17 @@
 <div class="login-logo"><h1>ChainLaundry注册第一步</h1></div>
 <div class="login-box" style="width: 520px; padding-bottom: 50px">
     <div>
-    <form class="layui-form layui-form-pane">
-        <div class="layui-form-item">
-            <label class="layui-form-label">身份选择</label>
-            <div class="layui-input-block">
-                <select name="method" class="layui-select" id="method">
-                    <option>我是用户</option>
-                    <option>我是员工</option>
-                </select>
+        <form class="layui-form layui-form-pane">
+            <div class="layui-form-item">
+                <label class="layui-form-label">身份选择</label>
+                <div class="layui-input-block">
+                    <select name="method" class="layui-select" id="method">
+                        <option>我是用户</option>
+                        <option>我是员工</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
     <div style="text-align: center">
         <a class="btn btn-warning pull-right" lay-submit lay-filter="nextStep" type="button" id="nextStep">下一步</a>
@@ -76,22 +77,22 @@
     <div id="changer-set"><i class="iconfont">&#xe696;</i></div>
 </div>
 <script>
-    function code(){
+    function code() {
         var NUM = "";
-        for(var i=10;i<=50;i++){
-            NUM  = Math.floor(Math.random()*50+10);
+        for (var i = 10; i <= 50; i++) {
+            NUM = Math.floor(Math.random() * 50 + 10);
         }
         document.getElementById("money").value = NUM;
     }
 
-        <!-- 注册 -->
+    <!-- 注册 -->
     $(document).ready(function () {
         $("#nextStep").click(function () {
             var method = document.getElementById("method").value;
-            if(method == "我是员工"){
-                window.location.href="/queryAllLaundryInfo"
-            }else {
-                window.location.href="/registerXD"
+            if (method == "我是员工") {
+                window.location.href = "/queryAllLaundryInfo"
+            } else {
+                window.location.href = "/registerXD"
             }
 
         })
@@ -100,7 +101,7 @@
 <script>
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
+    (function () {
         var hm = document.createElement("script");
         hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
         var s = document.getElementsByTagName("script")[0];

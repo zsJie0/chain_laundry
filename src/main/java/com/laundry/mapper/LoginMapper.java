@@ -13,98 +13,111 @@ public interface LoginMapper {
 
     /**
      * 根据id查询用户信息
+     *
      * @param param
      * @return
      */
-    Map<String,Object> queryUserByIdAndPwd(Map<String,Object> param);
+    Map<String, Object> queryUserByIdAndPwd(Map<String, Object> param);
 
     /**
      * 查询所有的洗衣店信息
+     *
      * @param
      * @return
      */
-    List<Map<String,Object>> queryAllLaundryInfo();
+    List<Map<String, Object>> queryAllLaundryInfo();
 
     /**
      * 注册用户信息
+     *
      * @param param
      * @return
      */
-    int addUserInfo(Map<String,Object> param);
+    int addUserInfo(Map<String, Object> param);
 
     /**
      * 注册下单人
+     *
      * @param param
      * @return
      */
-    int addUserInfoXD(Map<String,Object> param);
+    int addUserInfoXD(Map<String, Object> param);
 
     /**
      * 判断用户是否存在
+     *
      * @param param
      * @return
      */
-    Map<String,Object> isExist(Map<String,Object> param);
+    Map<String, Object> isExist(Map<String, Object> param);
 
     /**
      * 根据id查询用户信息
+     *
      * @param userId
      * @return
      */
-    Map<String,Object> queryUserById(String userId);
+    Map<String, Object> queryUserById(String userId);
 
     /**
      * 查询下单人信息
+     *
      * @param userId
      * @return
      */
-    Map<String,Object> queryUserByIdPT(String userId);
+    Map<String, Object> queryUserByIdPT(String userId);
 
     /**
      * 根据id查询洗衣店信息
+     *
      * @param laundryId
      * @return
      */
-    Map<String,Object> queryLaundryById(String laundryId);
+    Map<String, Object> queryLaundryById(String laundryId);
 
     /**
      * 主页显示
+     *
      * @return
      */
-    List<Map<String,Object>> queryIndexShow();
+    List<Map<String, Object>> queryIndexShow();
 
     /**
      * 普通管理员/用户主页显示
+     *
      * @return
      */
-    Map<String,Object> queryIndexShowPT(@Param("laundryId") String laundryId);
+    Map<String, Object> queryIndexShowPT(@Param("laundryId") String laundryId);
 
     /**
      * 查询营业额
+     *
      * @return
      */
-    Map<String,Object> queryTurnover();
+    Map<String, Object> queryTurnover();
 
     /**
      * 根据洗衣店模糊查询
+     *
      * @return
      */
-    List<Map<String,Object>> queryLaundryInfoByName(@Param("laundryName") String laundryName);
+    List<Map<String, Object>> queryLaundryInfoByName(@Param("laundryName") String laundryName);
 
     /**
      * 查询已入驻的连锁店
+     *
      * @return
      */
-    List<Map<String,Object>> queryNotSetInLaundryInfo();
+    List<Map<String, Object>> queryNotSetInLaundryInfo();
 
     /**
      * 查询状态码表
-     *
      */
-    List<Map<String,Object>> queryStateInfo();
+    List<Map<String, Object>> queryStateInfo();
 
     /**
      * 修改状态
+     *
      * @param laundryId
      * @return
      */
@@ -113,23 +126,25 @@ public interface LoginMapper {
     /**
      * 查询所有用户的信息
      */
-    List<Map<String,Object>> queryAllUserInfo(@Param("uId") String uId);
+    List<Map<String, Object>> queryAllUserInfo(@Param("uId") String uId);
 
     /**
      * 查询所有普通用户的信息
      */
-    List<Map<String,Object>> queryAllUserInfoPT(@Param("uId") String uId,@Param("laundryId") String laundryId);
+    List<Map<String, Object>> queryAllUserInfoPT(@Param("uId") String uId, @Param("laundryId") String laundryId);
 
 
     /**
      * 根据name模糊查询用户信息
+     *
      * @param userName
      * @return
      */
-    List<Map<String,Object>> queryUserInfoByName(@Param("userName") String userName);
+    List<Map<String, Object>> queryUserInfoByName(@Param("userName") String userName);
 
     /**
      * 批量删除
+     *
      * @param userIds
      * @return
      */
@@ -137,6 +152,7 @@ public interface LoginMapper {
 
     /**
      * 根据ID删除用户信息
+     *
      * @param userId
      * @return
      */
@@ -144,174 +160,199 @@ public interface LoginMapper {
 
     /**
      * 根据id查询用户头像
+     *
      * @param userId
      * @return
      */
-    Map<String,Object> queryImageById(@Param("userId") String userId);
+    Map<String, Object> queryImageById(@Param("userId") String userId);
 
     /**
      * 修改个人信息
+     *
      * @param param
      * @return
      */
-    int updateUserInfoById(Map<String,Object> param);
+    int updateUserInfoById(Map<String, Object> param);
 
     /**
      * 修改密码
      */
-    int  updatePwd(Map<String,Object> param);
+    int updatePwd(Map<String, Object> param);
 
     /**
      * 查询物资资料
+     *
      * @return
      */
-    List<Map<String,Object>> queryMaterialInfo();
+    List<Map<String, Object>> queryMaterialInfo();
 
     /**
      * 入库列表
+     *
      * @return
      */
-    List<Map<String,Object>> queryMaterialInfoRk();
+    List<Map<String, Object>> queryMaterialInfoRk();
 
     /**
      * 出库列表
+     *
      * @return
      */
-    List<Map<String,Object>> queryMaterialInfoCk();
+    List<Map<String, Object>> queryMaterialInfoCk();
 
     /**
      * 添加物资入库(新物资)
+     *
      * @param param
      * @return
      */
-    int addMaterial(Map<String,Object> param);
+    int addMaterial(Map<String, Object> param);
 
     /**
      * 添加物资入库(旧物资)
+     *
      * @param param
      * @return
      */
-    int updateMaterial(Map<String,Object> param);
+    int updateMaterial(Map<String, Object> param);
 
     /**
      * 未入库物资数量减少(旧物资)
+     *
      * @param param
      * @return
      */
-    int updateNumber(Map<String,Object> param);
+    int updateNumber(Map<String, Object> param);
 
 
     /**
      * 查询物资码表信息
+     *
      * @return
      */
-    List<Map<String,Object>> queryMaterialTypeInfo();
+    List<Map<String, Object>> queryMaterialTypeInfo();
 
     /**
      * 判断在未入库物资中是否已经存在
+     *
      * @param param
      * @return
      */
-    Map<String,Object> materialIsExist(Map<String,Object> param);
+    Map<String, Object> materialIsExist(Map<String, Object> param);
 
     /**
      * 判断在已入库物资中是否已经存在
+     *
      * @param param
      * @return
      */
-    Map<String,Object> materialIsExistNow(Map<String,Object> param);
+    Map<String, Object> materialIsExistNow(Map<String, Object> param);
 
     /**
      * 根据物资类别模糊查询
+     *
      * @return
      */
-    List<Map<String,Object>> queryMaterialByName(@Param("mName") String mName);
+    List<Map<String, Object>> queryMaterialByName(@Param("mName") String mName);
 
     /**
      * 根据id查询物资列表
+     *
      * @param mIds
      * @return
      */
-    List<Map<String,Object>> queryMaterialById(@Param("mIds") String[] mIds);
+    List<Map<String, Object>> queryMaterialById(@Param("mIds") String[] mIds);
 
     /**
      * 批量更新
+     *
      * @param mIds
      * @return
      */
-    int updateSelectMaterialNumber(@Param("mIds") String[] mIds,@Param("selectNumber") String selectNumber);
+    int updateSelectMaterialNumber(@Param("mIds") String[] mIds, @Param("selectNumber") String selectNumber);
 
     /**
      * 插入出库物资
+     *
      * @return
      */
-    int addMaterialCk(Map<String,Object> param);
+    int addMaterialCk(Map<String, Object> param);
 
     /**
      * 根据id查询出库物资
+     *
      * @param mIds
      * @return
      */
-    List<Map<String,Object>> queryCkMaterial(@Param("mIds") String[] mIds);
+    List<Map<String, Object>> queryCkMaterial(@Param("mIds") String[] mIds);
 
     /**
      * 更新出库物资的数量
+     *
      * @param mIds
      * @return
      */
-    int updateMaterialById(@Param("mIds") String[] mIds,@Param("selectNumber") String selectNumber);
+    int updateMaterialById(@Param("mIds") String[] mIds, @Param("selectNumber") String selectNumber);
 
     /**
      * 查询公告
+     *
      * @return
      */
-    List<Map<String,Object>> queryNoticeInfo();
+    List<Map<String, Object>> queryNoticeInfo();
 
     /**
      * 查询普通管理员/员工的公告
+     *
      * @return
      */
-    List<Map<String,Object>> queryNoticeInfoPT(@Param("date") String date,@Param("laundryId") String laundryId);
+    List<Map<String, Object>> queryNoticeInfoPT(@Param("date") String date, @Param("laundryId") String laundryId);
 
     /**
      * 升级为店长
+     *
      * @return
      */
-    Map<String,Object> upgradeUser(@Param("userId") String userId);
+    Map<String, Object> upgradeUser(@Param("userId") String userId);
 
     /**
      * 更改用户类型
+     *
      * @param param
      * @return
      */
-    int updateUserType(Map<String,Object> param);
+    int updateUserType(Map<String, Object> param);
 
     /**
      * 定位管理
+     *
      * @return
      */
-    List<Map<String,Object>> queryPosition();
+    List<Map<String, Object>> queryPosition();
 
     /**
      * 定位下的连锁店列表信息
+     *
      * @param position
      * @return
      */
-    List<Map<String,Object>> queryLaundryByPosition(@Param("position") String position);
+    List<Map<String, Object>> queryLaundryByPosition(@Param("position") String position);
 
     /**
      * 查询订单信息
      */
-    List<Map<String,Object>> queryOrderInfo(@Param("laundryId") String laundryId);
+    List<Map<String, Object>> queryOrderInfo(@Param("laundryId") String laundryId);
 
     /**
      * 模糊查询订单信息
+     *
      * @return
      */
-    List<Map<String,Object>> queryOrderInfoByState(@Param("state") String state,@Param("laundryId") String laundryId);
+    List<Map<String, Object>> queryOrderInfoByState(@Param("state") String state, @Param("laundryId") String laundryId);
 
     /**
      * 更新订单状态
+     *
      * @param orderIds
      * @return
      */
@@ -320,28 +361,31 @@ public interface LoginMapper {
     /**
      * 查询超管电话
      */
-    Map<String,Object> queryPhone();
+    Map<String, Object> queryPhone();
 
     /**
      * 查询公告列表
      */
-    List<Map<String,Object>> queryNoticeList(String spare);
+    List<Map<String, Object>> queryNoticeList(String spare);
 
     /**
      * 新增公告
+     *
      * @param param
      * @return
      */
-    int addNotice(Map<String,Object> param);
+    int addNotice(Map<String, Object> param);
 
     /**
      * 查询可发布的公告
+     *
      * @return
      */
-    List<Map<String,Object>> queryNoticeY(String spare);
+    List<Map<String, Object>> queryNoticeY(String spare);
 
     /**
      * 发布公告
+     *
      * @param noticeIdList
      * @return
      */
@@ -349,6 +393,7 @@ public interface LoginMapper {
 
     /**
      * 删除公告
+     *
      * @param noticeIdList
      * @return
      */
@@ -356,6 +401,7 @@ public interface LoginMapper {
 
     /**
      * 取消发布公告
+     *
      * @param noticeIdList
      * @return
      */
@@ -363,35 +409,37 @@ public interface LoginMapper {
 
     /**
      * 更新订单的数据 日期
-     *
      */
     int updateOrderTime(String date);
 
     /**
      * 查看衣物类型
+     *
      * @return
      */
-    List<Map<String,Object>> queryClothesType();
+    List<Map<String, Object>> queryClothesType();
 
     /**
      * 查询下单人位置信息
+     *
      * @return
      */
-    List<Map<String,Object>> queryPositionQT();
+    List<Map<String, Object>> queryPositionQT();
 
     /**
      * 添加订单
      */
-    int addOrder(Map<String,Object> param);
+    int addOrder(Map<String, Object> param);
 
     /**
      * 查询订单信息
      */
-    List<Map<String,Object>> queryOrderByUserId(String userId);
+    List<Map<String, Object>> queryOrderByUserId(String userId);
 
     /**
      * 修改订单信息
+     *
      * @return
      */
-    int updateOrderById(Map<String,Object> param);
+    int updateOrderById(Map<String, Object> param);
 }

@@ -8,11 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 
 @Configuration
-public class DefaultController  extends WebMvcConfigurerAdapter {
+public class DefaultController extends WebMvcConfigurerAdapter {
     @Override
-    public void addViewControllers( ViewControllerRegistry registry ) {
-        registry.addViewController( "/" ).setViewName( "forward:/login" );
-        registry.setOrder( Ordered.HIGHEST_PRECEDENCE );
-        super.addViewControllers( registry );
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("forward:/login");
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        super.addViewControllers(registry);
     }
 }

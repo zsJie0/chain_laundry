@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>ChainLaundry-处理</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../css/font.css">
     <link rel="stylesheet" href="../css/xadmin.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/Swiper/3.4.2/css/swiper.min.css">
@@ -14,113 +14,113 @@
     <script type="text/javascript" src="../js/xadmin.js"></script>
 </head>
 <body>
-    <!-- 中部开始 -->
-    <div class="wrapper">
-        <!-- 右侧主体开始 -->
-        <div class="page-content">
-          <div class="content">
+<!-- 中部开始 -->
+<div class="wrapper">
+    <!-- 右侧主体开始 -->
+    <div class="page-content">
+        <div class="content">
             <!-- 右侧内容框架，更改从这里开始 -->
-              <form class="layui-form">
-                  <div class="layui-form-item">
-                      <label for="mId" class="layui-form-label">
-                          物资编号
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="mId" name="mId" class="layui-input">
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>提示：型号-类型编号-0(类型编号)</span>
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label for="mName" class="layui-form-label">
-                          物资名称
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="mName" name="mName" class="layui-input">
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label for="mName" class="layui-form-label">
-                      物资类别
-                     </label>
-                      <div class="layui-input-inline">
-                          <select class="select" id="mTypeId"  name="mTypeId">
-                              <option th:each="type:${typeList}" th:value="${type.get('mTypeId')}">[[${type.mTypeDesc}]]</option>
-                          </select>
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>注：物资类型编号从上到下依次为1、2、3、4</span>
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label for="mNumber" class="layui-form-label">
-                          入库数量
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="number" id="mNumber" name="mNumber"  class="layui-input">
-                      </div>
-                      <div class="layui-form-mid layui-word-aux">
-                          <span>*必须是数字哦！</span>
-                      </div>
-                  </div>
-                  <div class="layui-form-item">
-                      <label  class="layui-form-label">
-                      </label>
-                      <button class="layui-btn"  type="button" id="ruku" style="background: goldenrod">
-                          <i class="layui-icon">&#xe650;</i> 开始入库</button>
-                  </div>
-              </form>
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <label for="mId" class="layui-form-label">
+                        物资编号
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="mId" name="mId" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span>提示：型号-类型编号-0(类型编号)</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mName" class="layui-form-label">
+                        物资名称
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="mName" name="mName" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mName" class="layui-form-label">
+                        物资类别
+                    </label>
+                    <div class="layui-input-inline">
+                        <select class="select" id="mTypeId" name="mTypeId">
+                            <option th:each="type:${typeList}" th:value="${type.get('mTypeId')}">[[${type.mTypeDesc}]]
+                            </option>
+                        </select>
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span>注：物资类型编号从上到下依次为1、2、3、4</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label for="mNumber" class="layui-form-label">
+                        入库数量
+                    </label>
+                    <div class="layui-input-inline">
+                        <input type="number" id="mNumber" name="mNumber" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">
+                        <span>*必须是数字哦！</span>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">
+                    </label>
+                    <button class="layui-btn" type="button" id="ruku" style="background: goldenrod">
+                        <i class="layui-icon">&#xe650;</i> 开始入库
+                    </button>
+                </div>
+            </form>
             <!-- 右侧内容框架，更改从这里结束 -->
-          </div>
         </div>
-        <!-- 右侧主体结束 -->
     </div>
-    <!-- 中部结束 -->
-    <script>
-        //处理
-        $(document).ready(function () {
-            $("#ruku").click(function () {
-                var mId = document.getElementById("mId").value;
-                var mName = document.getElementById("mName").value;
-                var mTypeId = document.getElementById("mTypeId").value;
-                var mNumber = document.getElementById("mNumber").value;
-                $.ajax({
-                    type:"post",
-                    url:"/ruK",
-                    data: {
-                        mId       ,
-                        mName     ,
-                        mTypeId ,
-                        mNumber
-                    },
-                    success:function (data) {
-                        if(data == "success"){
-                            layer.msg("入库成功！");
-                            // window.location.reload();
-                            // setTimeout('window.location.href="/queryMaterialInfo"',3000)
-                        }else if(data == "fail"){
-                            layer.msg("入库失败！系统异常")
-                        }
-                    },
-                    error:function(res){
-                        console.log(res)
+    <!-- 右侧主体结束 -->
+</div>
+<!-- 中部结束 -->
+<script>
+    //处理
+    $(document).ready(function () {
+        $("#ruku").click(function () {
+            var mId = document.getElementById("mId").value;
+            var mName = document.getElementById("mName").value;
+            var mTypeId = document.getElementById("mTypeId").value;
+            var mNumber = document.getElementById("mNumber").value;
+            $.ajax({
+                type: "post",
+                url: "/ruK",
+                data: {
+                    mId,
+                    mName,
+                    mTypeId,
+                    mNumber
+                },
+                success: function (data) {
+                    if (data == "success") {
+                        layer.msg("入库成功！");
+                        // window.location.reload();
+                        // setTimeout('window.location.href="/queryMaterialInfo"',3000)
+                    } else if (data == "fail") {
+                        layer.msg("入库失败！系统异常")
                     }
-                })
+                },
+                error: function (res) {
+                    console.log(res)
+                }
             })
-        });
-
-
+        })
+    });
 
 
     //百度统计可去掉
     var _hmt = _hmt || [];
-    (function() {
-      var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
-      var s = document.getElementsByTagName("script")[0]; 
-      s.parentNode.insertBefore(hm, s);
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
     })();
-    </script>
+</script>
 </body>
 </html>
